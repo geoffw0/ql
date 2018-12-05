@@ -91,6 +91,25 @@ predicate definedInIfDef(Function f) {
   )
 }
 
+/**
+ * Holds if `e` is an expression with children we may have incomplete
+ * data about (typically in templates or due to errors during
+ * extraction).  These expressions may be incorrectly determined to be
+ * pure due to the lack of information about their children. 
+ */
+predicate suspectExpr(Expr e) {
+  not exists(e.getType()) or
+  suspectExpr(e.getAChild()) or
+  suspectFunction(e.(FunctionCall).getTarget())
+}
+
+predicate suspectFunction(Function f) {
+  exists(Expr e |
+    suspectExpr(e) and
+    e.getEnclosingFunction() = f
+  )
+}
+
 from PureExprInVoidContext peivc, Locatable parent,
   Locatable info, string info_text, string tail
 where // EQExprs are covered by CompareWhereAssignMeant.ql
@@ -108,6 +127,7 @@ where // EQExprs are covered by CompareWhereAssignMeant.ql
       not peivc.getType() instanceof UnknownType and
       not containsDisabledCode(peivc.(FunctionCall).getTarget()) and
       not definedInIfDef(peivc.(FunctionCall).getTarget()) and
+      not suspectExpr(peivc) and
       if peivc instanceof FunctionCall then
         exists(Function target |
           target = peivc.(FunctionCall).getTarget() and
@@ -118,3 +138,4 @@ where // EQExprs are covered by CompareWhereAssignMeant.ql
         (tail = "." and info = peivc and info_text = "")
 select peivc, "This expression has no effect" + tail,
        info, info_text
+
