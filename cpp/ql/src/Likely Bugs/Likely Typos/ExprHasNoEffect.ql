@@ -98,7 +98,11 @@ predicate definedInIfDef(Function f) {
  * pure due to the lack of information about their children. 
  */
 predicate suspectExpr(Expr e) {
+  // base cases
   not exists(e.getType()) or
+  e.getType() instanceof UnknownType or
+
+  // recursion
   suspectExpr(e.getAChild()) or
   suspectFunction(e.(FunctionCall).getTarget())
 }
@@ -124,7 +128,6 @@ where // EQExprs are covered by CompareWhereAssignMeant.ql
       not parent.isInMacroExpansion() and
       not parent instanceof PureExprInVoidContext and
       not peivc.getEnclosingFunction().isCompilerGenerated() and
-      not peivc.getType() instanceof UnknownType and
       not containsDisabledCode(peivc.(FunctionCall).getTarget()) and
       not definedInIfDef(peivc.(FunctionCall).getTarget()) and
       not suspectExpr(peivc) and
