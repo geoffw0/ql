@@ -14,7 +14,7 @@
 import cpp
 import semmle.code.cpp.security.TaintTracking
 
-from Expr source, Expr tainted, BinaryArithmeticOperation oper,
+/*from Expr source, Expr tainted, BinaryArithmeticOperation oper,
      SizeofOperator sizeof, string taintCause
 where tainted(source, tainted)
   and oper.getAnOperand() = tainted
@@ -26,3 +26,7 @@ where tainted(source, tainted)
 select
   oper, "This allocation size is derived from $@ and might overflow",
   source, "user input (" + taintCause + ")"
+*/
+from Literal l
+where l.getValue().toInt() = 0
+select l, concat(l.getAQlClass(), ", ")
