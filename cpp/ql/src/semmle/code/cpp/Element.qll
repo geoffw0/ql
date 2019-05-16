@@ -221,7 +221,7 @@ class Element extends ElementBase {
    * Holds if this `Element` is a part of a template instantiation (but not
    * the template itself).
    */
-  predicate isFromTemplateInstantiation(Element instantiation) {
+  cached predicate isFromTemplateInstantiation(Element instantiation) {
     exists(Element e |
       isFromTemplateInstantiationRec(e, instantiation) |
       this = e or
@@ -238,7 +238,7 @@ class Element extends ElementBase {
    * If an element is nested within several templates, this predicate holds with
    * a value of `template` for each containing template.
    */
-  predicate isFromUninstantiatedTemplate(Element template) {
+  cached predicate isFromUninstantiatedTemplate(Element template) {
     exists(Element e |
       isFromUninstantiatedTemplateRec(e, template) |
       this = e or
