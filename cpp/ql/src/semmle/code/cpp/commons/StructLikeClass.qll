@@ -48,7 +48,7 @@ class StructLikeClass extends Class {
  * Holds if `f` is a setter member function for `v`, in class `c`.
  * See `StructLikeClass.getASetter`.
  */
-predicate setter(MemberVariable v, MemberFunction f, Class c) {
+private predicate setter(MemberVariable v, MemberFunction f, Class c) {
     f.getDeclaringType() = c and
     v.getDeclaringType() = c and
     f.getName().matches("set%") and
@@ -66,7 +66,7 @@ predicate setter(MemberVariable v, MemberFunction f, Class c) {
  * Holds if `f` is a getter member function for `v`, in class `c`.
  * See `StructLikeClass.getAGetter`.
  */
-predicate getter(MemberVariable v, MemberFunction f, Class c) {
+private predicate getter(MemberVariable v, MemberFunction f, Class c) {
     f.getDeclaringType() = c and
     v.getDeclaringType() = c and
     f.getName().matches("get%") and
