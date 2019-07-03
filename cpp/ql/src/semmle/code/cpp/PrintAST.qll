@@ -151,12 +151,10 @@ class PrintASTNode extends TPrintASTNode {
 }
 
 /**
- * Retrieves the canonical QL class for entity `el`
+ * A concatenation of all the leaf QL types of `el`
  */
-private string qlClass(ElementBase el) { result = "[" + el.getCanonicalQLClass() + "]: " }
+private string qlClass(ElementBase el) { result = "["+ el.getCanonicalQLClass() + "]: " }
 
-// Do not delete this - it is useful for QL class discovery
-//private string qlClass(ElementBase el) { result = "["+ concat(el.getAQlClass(), ",") + "]: " }
 /**
  * A node representing an AST node.
  */
@@ -165,7 +163,9 @@ abstract class ASTNode extends PrintASTNode, TASTNode {
 
   ASTNode() { this = TASTNode(ast) }
 
-  override string toString() { result = qlClass(ast) + ast.toString() }
+  override string toString() {
+    result = qlClass(ast) + ast.toString()
+  }
 
   final override Location getLocation() { result = getRepresentativeLocation(ast) }
 
@@ -188,19 +188,24 @@ class ExprNode extends ASTNode {
   }
 
   override string getProperty(string key) {
-    result = super.getProperty(key)
-    or
-    key = "Value" and
-    result = qlClass(expr) + getValue()
-    or
-    key = "Type" and
-    result = qlClass(expr.getType()) + expr.getType().toString()
-    or
-    key = "ValueCategory" and
-    result = expr.getValueCategoryString()
+    result = super.getProperty(key) or
+    (
+      key = "Value" and
+      result = qlClass(expr) + getValue()
+    ) or
+    (
+      key = "Type" and
+      result = qlClass(expr.getType()) + expr.getType().toString()
+    ) or
+    (
+      key = "ValueCategory" and
+      result = expr.getValueCategoryString()
+    )
   }
 
-  string getValue() { result = expr.getValue() }
+  string getValue() {
+    result = expr.getValue()
+  }
 }
 
 /**
@@ -257,10 +262,11 @@ class DeclarationEntryNode extends ASTNode {
   override PrintASTNode getChild(int childIndex) { none() }
 
   override string getProperty(string key) {
-    result = super.getProperty(key)
-    or
-    key = "Type" and
-    result = qlClass(entry.getType()) + entry.getType().toString()
+    result = super.getProperty(key) or
+    (
+      key = "Type" and
+      result = qlClass(entry.getType()) + entry.getType().toString()
+    )
   }
 }
 
@@ -322,11 +328,12 @@ class ParameterNode extends ASTNode {
 
   final override PrintASTNode getChild(int childIndex) { none() }
 
-  final override string getProperty(string key) {
-    result = super.getProperty(key)
-    or
-    key = "Type" and
-    result = qlClass(param.getType()) + param.getType().toString()
+  override final string getProperty(string key) {
+    result = super.getProperty(key) or
+    (
+      key = "Type" and
+      result = qlClass(param.getType()) + param.getType().toString()
+    )
   }
 }
 
@@ -412,7 +419,9 @@ class FunctionNode extends ASTNode {
 
   FunctionNode() { func = ast }
 
-  override string toString() { result = qlClass(func) + getIdentityString(func) }
+  override string toString() {
+    result = qlClass(func) + getIdentityString(func)
+  }
 
   override PrintASTNode getChild(int childIndex) {
     childIndex = 0 and

@@ -167,8 +167,8 @@ abstract class StmtParent extends ControlFlowNode {
  */
 class ExprStmt extends Stmt, @stmt_expr {
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "ExprStmt" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "ExprStmt" }
   
   /**
    * Gets the expression of this 'expression' statement.
@@ -222,8 +222,8 @@ abstract class ConditionalStmt extends ControlStructure {
  */
 class IfStmt extends ConditionalStmt, @stmt_if {
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "IfStmt" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "IfStmt" }
 
   /**
    * Gets the condition expression of this 'if' statement.
@@ -318,8 +318,8 @@ abstract class Loop extends ControlStructure {
  * ```
  */
 class WhileStmt extends Loop, @stmt_while {
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "WhileStmt" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "WhileStmt" }
 
   override Expr getCondition() { result = this.getChild(0) }
   override Expr getControllingExpr() { result = this.getCondition() }
@@ -387,8 +387,8 @@ class WhileStmt extends Loop, @stmt_while {
  */
 abstract class JumpStmt extends Stmt, @jump {
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "JumpStmt" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "JumpStmt" }
   
   /** Gets the target of this jump statement. */
   Stmt getTarget() { jumpinfo(underlyingElement(this),_,unresolveElement(result)) }
@@ -404,8 +404,8 @@ abstract class JumpStmt extends Stmt, @jump {
  */
 class GotoStmt extends JumpStmt, @stmt_goto {
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "GotoStmt" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "GotoStmt" }
 
   /**
    * Gets the name of the label this 'goto' statement refers to.
@@ -498,8 +498,8 @@ class ComputedGotoStmt extends Stmt, @stmt_assigned_goto {
  */
 class ContinueStmt extends JumpStmt, @stmt_continue {
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "ContinueStmt" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "ContinueStmt" }
 
   override string toString() { result = "continue;" }
 
@@ -530,8 +530,8 @@ private Stmt getEnclosingContinuable(Stmt s) {
  */
 class BreakStmt extends JumpStmt, @stmt_break {
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "BreakStmt" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "BreakStmt" }
 
   override string toString() { result = "break;" }
 
@@ -562,8 +562,8 @@ private Stmt getEnclosingBreakable(Stmt s) {
  */
 class LabelStmt extends Stmt, @stmt_label {
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "LabelStmt" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "LabelStmt" }
   
   /** Gets the name of this 'label' statement. */
   string getName() { jumpinfo(underlyingElement(this),result,_) and result != "" }
@@ -591,8 +591,8 @@ class LabelStmt extends Stmt, @stmt_label {
  */
 class ReturnStmt extends Stmt, @stmt_return {
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "ReturnStmt" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "ReturnStmt" }
 
   /**
    * Gets the expression of this 'return' statement.
@@ -644,8 +644,8 @@ class ReturnStmt extends Stmt, @stmt_return {
  */
 class DoStmt extends Loop, @stmt_end_test_while {
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "DoStmt" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "DoStmt" }
 
   override Expr getCondition() { result = this.getChild(0) }
   override Expr getControllingExpr() { result = this.getCondition() }
@@ -691,8 +691,8 @@ class DoStmt extends Loop, @stmt_end_test_while {
  * where `begin_expr` and `end_expr` depend on the type of `xs`.
  */
 class RangeBasedForStmt extends Loop, @stmt_range_based_for {
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "RangeBasedForStmt" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "RangeBasedForStmt" }
 
   /**
    * Gets the 'body' statement of this range-based 'for' statement.
@@ -787,8 +787,8 @@ class RangeBasedForStmt extends Loop, @stmt_range_based_for {
  */
 class ForStmt extends Loop, @stmt_for {
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "ForStmt" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "ForStmt" }
 
   /**
    * Gets the initialization statement of this 'for' statement.
@@ -1016,8 +1016,8 @@ private predicate inForUpdate(Expr forUpdate, Expr child) {
  */
 class SwitchCase extends Stmt, @stmt_switch_case {
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "SwitchCase" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "SwitchCase" }
 
   /**
    * Gets the expression of this 'switch case' statement (or the start of
@@ -1379,8 +1379,8 @@ class DefaultCase extends SwitchCase {
  * ```
  */
 class SwitchStmt extends ConditionalStmt, @stmt_switch {
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "SwitchStmt" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "SwitchStmt" }
 
   /**
    * Gets the expression that this 'switch' statement switches on.
@@ -1649,8 +1649,8 @@ deprecated class FinallyEnd extends Stmt {
  */
 class TryStmt extends Stmt, @stmt_try_block {
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "TryStmt" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "TryStmt" }
 
   override string toString() { result = "try { ... }" }
 
@@ -1737,8 +1737,8 @@ class FunctionTryStmt extends TryStmt {
  * A 'catch block', from either C++'s `catch` or Objective C's `@catch`.
  */
 class CatchBlock extends Block {
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "CatchBlock" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "CatchBlock" }
 
   CatchBlock() { ishandler(underlyingElement(this)) }
 
@@ -1822,8 +1822,8 @@ class MicrosoftTryFinallyStmt extends MicrosoftTryStmt {
  */
 class DeclStmt extends Stmt, @stmt_decl {
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "DeclStmt" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "DeclStmt" }
 
   /**
    * Gets the `i`th declaration entry declared by this 'declaration' statement.
@@ -1904,8 +1904,8 @@ class DeclStmt extends Stmt, @stmt_decl {
  */
 class EmptyStmt extends Stmt, @stmt_empty {
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "EmptyStmt" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "EmptyStmt" }
 
   override string toString() { result = ";" }
 

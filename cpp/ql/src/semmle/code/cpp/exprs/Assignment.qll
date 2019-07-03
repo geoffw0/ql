@@ -32,8 +32,8 @@ abstract class Assignment extends Operation {
 class AssignExpr extends Assignment, @assignexpr {
   override string getOperator() { result = "=" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "AssignExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "AssignExpr" }
   
   /** Gets a textual representation of this assignment. */
   override string toString() { result = "... = ..." }
@@ -57,8 +57,8 @@ abstract class AssignArithmeticOperation extends AssignOperation {
  * A non-overloaded `+=` assignment expression on a non-pointer lvalue.
  */
 class AssignAddExpr extends AssignArithmeticOperation, @assignaddexpr {
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "AssignAddExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "AssignAddExpr" }
   
   override string getOperator() { result = "+=" }
 }
@@ -67,8 +67,8 @@ class AssignAddExpr extends AssignArithmeticOperation, @assignaddexpr {
  * A non-overloaded `-=` assignment expression on a non-pointer lvalue.
  */
 class AssignSubExpr extends AssignArithmeticOperation, @assignsubexpr {
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "AssignSubExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "AssignSubExpr" }
   
   override string getOperator() { result = "-=" }
 }
@@ -77,8 +77,8 @@ class AssignSubExpr extends AssignArithmeticOperation, @assignsubexpr {
  * A non-overloaded `*=` assignment expression.
  */
 class AssignMulExpr extends AssignArithmeticOperation, @assignmulexpr {
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "AssignMulExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "AssignMulExpr" }
   
   override string getOperator() { result = "*=" }
 }
@@ -87,8 +87,8 @@ class AssignMulExpr extends AssignArithmeticOperation, @assignmulexpr {
  * A non-overloaded `/=` assignment expression.
  */
 class AssignDivExpr extends AssignArithmeticOperation, @assigndivexpr {
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "AssignDivExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "AssignDivExpr" }
   
   override string getOperator() { result = "/=" }
 }
@@ -97,8 +97,8 @@ class AssignDivExpr extends AssignArithmeticOperation, @assigndivexpr {
  * A non-overloaded `%=` assignment expression.
  */
 class AssignRemExpr extends AssignArithmeticOperation, @assignremexpr {
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "AssignRemExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "AssignRemExpr" }
   
   override string getOperator() { result = "%=" }
 }
@@ -114,8 +114,8 @@ abstract class AssignBitwiseOperation extends AssignOperation {
  * A non-overloaded `&=` assignment expression.
  */
 class AssignAndExpr extends AssignBitwiseOperation, @assignandexpr {
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "AssignAndExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "AssignAndExpr" }
   
   override string getOperator() { result = "&=" }
 }
@@ -124,8 +124,8 @@ class AssignAndExpr extends AssignBitwiseOperation, @assignandexpr {
  * A non-overloaded `|=` assignment expression.
  */
 class AssignOrExpr extends AssignBitwiseOperation, @assignorexpr {
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "AssignOrExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "AssignOrExpr" }
   
   override string getOperator() { result = "|=" }
 }
@@ -134,8 +134,8 @@ class AssignOrExpr extends AssignBitwiseOperation, @assignorexpr {
  * A non-overloaded `^=` assignment expression.
  */
 class AssignXorExpr extends AssignBitwiseOperation, @assignxorexpr {
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "AssignXorExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "AssignXorExpr" }
   
   override string getOperator() { result = "^=" }
 }
@@ -144,8 +144,8 @@ class AssignXorExpr extends AssignBitwiseOperation, @assignxorexpr {
  * A non-overloaded `<<=` assignment expression.
  */
 class AssignLShiftExpr extends AssignBitwiseOperation, @assignlshiftexpr {
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "AssignLShiftExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "AssignLShiftExpr" }
   
   override string getOperator() { result = "<<=" }
 }
@@ -154,8 +154,8 @@ class AssignLShiftExpr extends AssignBitwiseOperation, @assignlshiftexpr {
  * A non-overloaded `>>=` assignment expression.
  */
 class AssignRShiftExpr extends AssignBitwiseOperation, @assignrshiftexpr {
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "AssignRShiftExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "AssignRShiftExpr" }
   
   override string getOperator() { result = ">>=" }
 }
@@ -164,8 +164,8 @@ class AssignRShiftExpr extends AssignBitwiseOperation, @assignrshiftexpr {
  * A non-overloaded `+=` pointer assignment expression.
  */
 class AssignPointerAddExpr extends AssignOperation, @assignpaddexpr {
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "AssignPointerAddExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "AssignPointerAddExpr" }
   
   override string getOperator() { result = "+=" }
 }
@@ -174,8 +174,8 @@ class AssignPointerAddExpr extends AssignOperation, @assignpaddexpr {
  * A non-overloaded `-=` pointer assignment expression.
  */
 class AssignPointerSubExpr extends AssignOperation, @assignpsubexpr {
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "AssignPointerSubExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "AssignPointerSubExpr" }
   
   override string getOperator() { result = "-=" }
 }

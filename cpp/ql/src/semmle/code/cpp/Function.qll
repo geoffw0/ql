@@ -707,8 +707,8 @@ class TopLevelFunction extends Function {
   TopLevelFunction() {
     not this.isMember()
   }
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "TopLevelFunction" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "TopLevelFunction" }
 }
 
 /**
@@ -720,8 +720,8 @@ class MemberFunction extends Function {
     this.isMember()
   }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "MemberFunction" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "MemberFunction" }
 
   /**
    * Gets the number of parameters of this function, including any implicit

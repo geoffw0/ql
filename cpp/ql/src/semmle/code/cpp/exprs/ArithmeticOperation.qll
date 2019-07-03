@@ -12,8 +12,8 @@ abstract class UnaryArithmeticOperation extends UnaryOperation {
 class UnaryMinusExpr extends UnaryArithmeticOperation, @arithnegexpr {
   override string getOperator() { result = "-" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "UnaryMinusExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "UnaryMinusExpr" }
   
   override int getPrecedence() { result = 15 }
 }
@@ -24,8 +24,8 @@ class UnaryMinusExpr extends UnaryArithmeticOperation, @arithnegexpr {
 class UnaryPlusExpr extends UnaryArithmeticOperation, @unaryplusexpr {
   override string getOperator() { result = "+" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "UnaryPlusExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "UnaryPlusExpr" }
   
   override int getPrecedence() { result = 15 }
 }
@@ -96,8 +96,8 @@ abstract class PostfixCrementOperation extends CrementOperation {
 class PrefixIncrExpr extends IncrementOperation, PrefixCrementOperation, @preincrexpr {
   override string getOperator() { result = "++" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "PrefixIncrExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "PrefixIncrExpr" }
   
   override int getPrecedence() { result = 15 }
 }
@@ -110,8 +110,8 @@ class PrefixIncrExpr extends IncrementOperation, PrefixCrementOperation, @preinc
 class PrefixDecrExpr extends DecrementOperation, PrefixCrementOperation, @predecrexpr {
   override string getOperator() { result = "--" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "PrefixDecrExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "PrefixDecrExpr" }
   
   override int getPrecedence() { result = 15 }
 }
@@ -124,8 +124,8 @@ class PrefixDecrExpr extends DecrementOperation, PrefixCrementOperation, @predec
 class PostfixIncrExpr extends IncrementOperation, PostfixCrementOperation, @postincrexpr {
   override string getOperator() { result = "++" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "PostfixIncrExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "PostfixIncrExpr" }
   
   override int getPrecedence() { result = 16 }
 
@@ -140,8 +140,8 @@ class PostfixIncrExpr extends IncrementOperation, PostfixCrementOperation, @post
 class PostfixDecrExpr extends DecrementOperation, PostfixCrementOperation, @postdecrexpr {
   override string getOperator() { result = "--" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "PostfixDecrExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "PostfixDecrExpr" }
   
   override int getPrecedence() { result = 16 }
 
@@ -174,8 +174,8 @@ abstract class BinaryArithmeticOperation extends BinaryOperation {
 class AddExpr extends BinaryArithmeticOperation, @addexpr {
   override string getOperator() { result = "+" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "AddExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "AddExpr" }
   
   override int getPrecedence() { result = 12 }
 }
@@ -186,8 +186,8 @@ class AddExpr extends BinaryArithmeticOperation, @addexpr {
 class SubExpr extends BinaryArithmeticOperation, @subexpr {
   override string getOperator() { result = "-" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "SubExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "SubExpr" }
   
   override int getPrecedence() { result = 12 }
 }
@@ -198,8 +198,8 @@ class SubExpr extends BinaryArithmeticOperation, @subexpr {
 class MulExpr extends BinaryArithmeticOperation, @mulexpr {
   override string getOperator() { result = "*" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "MulExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "MulExpr" }
   
   override int getPrecedence() { result = 13 }
 }
@@ -210,8 +210,8 @@ class MulExpr extends BinaryArithmeticOperation, @mulexpr {
 class DivExpr extends BinaryArithmeticOperation, @divexpr {
   override string getOperator() { result = "/" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "DivExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "DivExpr" }
   
   override int getPrecedence() { result = 13 }
 }
@@ -222,8 +222,8 @@ class DivExpr extends BinaryArithmeticOperation, @divexpr {
 class RemExpr extends BinaryArithmeticOperation, @remexpr {
   override string getOperator() { result = "%" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "RemExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "RemExpr" }
   
   override int getPrecedence() { result = 13 }
 }
@@ -308,8 +308,8 @@ abstract class PointerArithmeticOperation extends BinaryArithmeticOperation {
 class PointerAddExpr extends PointerArithmeticOperation, @paddexpr {
   override string getOperator() { result = "+" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "PointerAddExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "PointerAddExpr" }
   
   override int getPrecedence() { result = 12 }
 }
@@ -320,8 +320,8 @@ class PointerAddExpr extends PointerArithmeticOperation, @paddexpr {
 class PointerSubExpr extends PointerArithmeticOperation, @psubexpr {
   override string getOperator() { result = "-" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "PointerSubExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "PointerSubExpr" }
   
   override int getPrecedence() { result = 12 }
 }
@@ -332,8 +332,8 @@ class PointerSubExpr extends PointerArithmeticOperation, @psubexpr {
 class PointerDiffExpr extends PointerArithmeticOperation, @pdiffexpr {
   override string getOperator() { result = "-" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "PointerDiffExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "PointerDiffExpr" }
   
   override int getPrecedence() { result = 12 }
 }

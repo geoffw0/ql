@@ -155,8 +155,8 @@ class IntegralConversion extends ArithmeticConversion {
     isIntegralOrEnum(getExpr().getUnspecifiedType())
   }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "IntegralConversion" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "IntegralConversion" }
 
   override string getSemanticConversionString() {
     result = "integral conversion"
@@ -227,8 +227,8 @@ class PointerConversion extends Cast {
     isPointerOrNullPointer(getExpr().getUnspecifiedType())
   }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "PointerConversion" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "PointerConversion" }
   
   override string getSemanticConversionString() {
     result = "pointer conversion"
@@ -643,8 +643,8 @@ abstract class SizeofOperator extends Expr, @runtime_sizeof {
 class SizeofExprOperator extends SizeofOperator {
   SizeofExprOperator() { exists(Expr e | this.getChild(0) = e) }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "SizeofExprOperator" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "SizeofExprOperator" }
   
   /** Gets the contained expression. */
   Expr getExprOperand() { result = this.getChild(0) }
@@ -745,8 +745,8 @@ class ArrayToPointerConversion extends Conversion, @array_to_pointer {
   /** Gets a textual representation of this conversion. */
   override string toString() { result = "array to pointer conversion" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "ArrayToPointerConversion" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "ArrayToPointerConversion" }
   
   override predicate mayBeImpure() {
     none()

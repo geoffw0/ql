@@ -501,8 +501,8 @@ class AssumeExpr extends Expr, @assume {
  * A C/C++ comma expression.
  */
 class CommaExpr extends Expr, @commaexpr {
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "CommaExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "CommaExpr" }
   
   /**
    * Gets the left operand, which is the one whose value is discarded.
@@ -533,8 +533,8 @@ class CommaExpr extends Expr, @commaexpr {
  * A C/C++ address-of expression.
  */
 class AddressOfExpr extends UnaryOperation, @address_of {
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "AddressOfExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "AddressOfExpr" }
   
   /** Gets the function or variable whose address is taken. */
   Declaration getAddressable() {
@@ -577,8 +577,8 @@ class ReferenceToExpr extends Conversion, @reference_to {
  * For user-defined types, see OverloadedPointerDereferenceExpr.
  */
 class PointerDereferenceExpr extends UnaryOperation, @indirect {
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "PointerDereferenceExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "PointerDereferenceExpr" }
   
   /**
    * DEPRECATED: Use getOperand() instead.
@@ -718,8 +718,8 @@ class NewOrNewArrayExpr extends Expr, @any_new_expr {
 class NewExpr extends NewOrNewArrayExpr, @new_expr {
   override string toString() { result = "new" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "NewExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "NewExpr" }
   
   /**
    * Gets the type that is being allocated.
@@ -745,8 +745,8 @@ class NewExpr extends NewOrNewArrayExpr, @new_expr {
 class NewArrayExpr extends NewOrNewArrayExpr, @new_array_expr {
   override string toString() { result = "new[]" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "NewArrayExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "NewArrayExpr" }
   
   /**
    * Gets the type that is being allocated.
@@ -791,8 +791,8 @@ class NewArrayExpr extends NewOrNewArrayExpr, @new_array_expr {
 class DeleteExpr extends Expr, @delete_expr {
   override string toString() { result = "delete" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "DeleteExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "DeleteExpr" }
   
   override int getPrecedence() { result = 15 }
 
@@ -862,8 +862,8 @@ class DeleteExpr extends Expr, @delete_expr {
 class DeleteArrayExpr extends Expr, @delete_array_expr {
   override string toString() { result = "delete[]" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "DeleteArrayExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "DeleteArrayExpr" }
   
   override int getPrecedence() { result = 15 }
 
@@ -966,8 +966,8 @@ private Expr getStmtResultExpr(Stmt stmt) {
 class ThisExpr extends Expr, @thisaccess {
   override string toString() { result = "this" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "ThisExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "ThisExpr" }
   
   override predicate mayBeImpure() {
     none()
@@ -1004,8 +1004,8 @@ class BlockExpr extends Literal {
 class NoExceptExpr extends Expr, @noexceptexpr {
   override string toString() { result = "noexcept(...)" }
 
-  /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "NoExceptExpr" }
+  /** Retrieves canonical QL class(es) corresponding to this element. */
+  string getCanonicalQLClass() { result = "NoExceptExpr" }
   
   /**
    * Gets the expression inside this noexcept expression.
