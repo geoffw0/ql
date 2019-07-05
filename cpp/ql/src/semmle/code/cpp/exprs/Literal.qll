@@ -13,7 +13,7 @@ class Literal extends Expr, @literal {
     )
   }
 
-  /** Retrieves canonical QL class(es) corresponding to this element. */
+  /** Canonical QL class corresponding to this element. */
   string getCanonicalQLClass() { result = "Literal" }
   
   override predicate mayBeImpure() {
@@ -103,7 +103,7 @@ class CharLiteral extends TextLiteral {
   }
 
   /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "CharLiteral" }
+  string getCanonicalQLClass() { result = "CharLiteral" }
 
   /**
    * Gets the character of this literal. For example `L'a'` has character `"a"`.
@@ -123,7 +123,7 @@ class StringLiteral extends TextLiteral
     // Note that `AggregateLiteral`s can also have an array type, but they derive from
     // @aggregateliteral rather than @literal.
   }
-  /** Retrieves canonical QL class(es) corresponding to this element. */
+  /** Canonical QL class corresponding to this element. */
   string getCanonicalQLClass() { result = "StringLiteral" }
   
 }
@@ -137,7 +137,7 @@ class OctalLiteral extends Literal {
   }
   
   /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "OctalLiteral" }
+  string getCanonicalQLClass() { result = "OctalLiteral" }
 }
 
 /**
@@ -149,7 +149,7 @@ class HexLiteral extends Literal {
   }
   
   /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "HexLiteral" }
+  string getCanonicalQLClass() { result = "HexLiteral" }
 }
 
 /**
@@ -183,7 +183,7 @@ class ClassAggregateLiteral extends AggregateLiteral {
   }
 
   /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "ClassAggregateLiteral" }
+  string getCanonicalQLClass() { result = "ClassAggregateLiteral" }
 
   /**
    * Gets the expression within the aggregate literal that is used to initialize
@@ -245,7 +245,7 @@ class ArrayAggregateLiteral extends AggregateLiteral {
   }
 
   /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "ArrayAggregateLiteral" }
+  string getCanonicalQLClass() { result = "ArrayAggregateLiteral" }
 
   /**
    * Gets the expression within the aggregate literal that is used to initialize

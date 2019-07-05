@@ -9,7 +9,7 @@ class Struct extends Class {
   Struct() { usertypes(underlyingElement(this),_,1) or usertypes(underlyingElement(this),_,3) }
 
   /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "Struct" }
+  string getCanonicalQLClass() { result = "Struct" }
   
   override string explain() { result =  "struct " + this.getName() }
 

@@ -9,7 +9,7 @@ class Union extends Struct  {
   Union() { usertypes(underlyingElement(this),_,3)  }
 
   /** Canonical QL class corresponding to this element. */
-  override string getCanonicalQLClass() { result = "Union" }
+  string getCanonicalQLClass() { result = "Union" }
 
   override string explain() { result =  "union " + this.getName() }
 
