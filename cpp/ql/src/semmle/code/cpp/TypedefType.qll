@@ -9,7 +9,7 @@ class TypedefType extends UserType {
   TypedefType() { usertypes(underlyingElement(this),_,5) }
 
   /** Canonical QL class corresponding to this element. */
-  string getCanonicalQLClass() { result = "TypedefType" }
+  override string getCanonicalQLClass() { result = "TypedefType" }
   
   /**
    * Gets the base type of this typedef type.
