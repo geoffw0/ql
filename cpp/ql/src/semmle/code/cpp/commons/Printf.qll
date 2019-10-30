@@ -130,10 +130,10 @@ class FormattingFunctionCall extends Expr {
     exists(FormatLiteral fl |
       fl = this.getFormat() and
       (
-        result = this.getFormatArgument(fl.getParameterFieldPositional(n))
+        result = this.getFormatArgument(fl.getParameterFieldValue(n))
         or
         result = this.getFormatArgument(fl.getFormatArgumentIndexFor(n, 2)) and
-        not exists(fl.getParameterFieldPositional(n))
+        not exists(fl.getParameterFieldValue(n))
       )
     )
   }
@@ -147,10 +147,10 @@ class FormattingFunctionCall extends Expr {
     exists(FormatLiteral fl |
       fl = this.getFormat() and
       (
-        result = this.getFormatArgument(fl.getMinFieldWidthPositional(n))
+        result = this.getFormatArgument(fl.getMinFieldWidthParameterFieldValue(n))
         or
         result = this.getFormatArgument(fl.getFormatArgumentIndexFor(n, 0)) and
-        not exists(fl.getMinFieldWidthPositional(n))
+        not exists(fl.getMinFieldWidthParameterFieldValue(n))
       )
     )
   }
@@ -164,10 +164,10 @@ class FormattingFunctionCall extends Expr {
     exists(FormatLiteral fl |
       fl = this.getFormat() and
       (
-        result = this.getFormatArgument(fl.getPrecisionPositional(n))
+        result = this.getFormatArgument(fl.getPrecisionParameterFieldValue(n))
         or
         result = this.getFormatArgument(fl.getFormatArgumentIndexFor(n, 1)) and
-        not exists(fl.getPrecisionPositional(n))
+        not exists(fl.getPrecisionParameterFieldValue(n))
       )
     )
   }
@@ -372,7 +372,7 @@ class FormatLiteral extends Literal {
    * Gets the parameter field of the nth conversion specifier (if it has one) as a
    * zero-based number.
    */
-  int getParameterFieldPositional(int n) {
+  int getParameterFieldValue(int n) {
     result = this.getParameterField(n).regexpCapture("([0-9]*)\\$", 1).toInt() - 1
   }
 
@@ -447,9 +447,9 @@ class FormatLiteral extends Literal {
 
   /**
    * Gets the zero-based parameter number of the minimum field width of the nth
-   * conversion specifier, if it is implicit and uses a positional parameter.
+   * conversion specifier, if it is implicit and uses a parameter field (such as `*1$`).
    */
-  int getMinFieldWidthPositional(int n) {
+  int getMinFieldWidthParameterFieldValue(int n) {
     result = this.getMinFieldWidthOpt(n).regexpCapture("\\*([0-9]*)\\$", 1).toInt() - 1
   }
 
@@ -485,9 +485,9 @@ class FormatLiteral extends Literal {
 
   /**
    * Gets the zero-based parameter number of the precision of the nth conversion
-   * specifier, if it is implicit and uses a positional parameter.
+   * specifier, if it is implicit and uses a parameter field (such as `*1$`).
    */
-  int getPrecisionPositional(int n) {
+  int getPrecisionParameterFieldValue(int n) {
     result = this.getPrecisionOpt(n).regexpCapture("\\.\\*([0-9]*)\\$", 1).toInt() - 1
   }
 
@@ -830,8 +830,8 @@ class FormatLiteral extends Literal {
   }
 
   /**
-   * Gets the format argument index for the nth conversion specifier of this format
-   * string (if `mode = 2`), it's minimum field width (if `mode = 0`) or it's
+   * Gets the computed format argument index for the nth conversion specifier of this
+   * format string (if `mode = 2`), it's minimum field width (if `mode = 0`) or it's
    * precision (if `mode = 1`).  Has no result if that element is not present.  Does
    * not account for positional arguments (`$`).
    */
