@@ -31,16 +31,23 @@ predicate terminationProblem(MallocCall malloc, string msg) {
   exists(StrlenCall strlen |
     DataFlow::localExprFlow(strlen, malloc.getAllocatedSize())
   ) and
-  // flows into a null-terminated string function
-  exists(ArrayFunction af, FunctionCall fc, int arg |
+  // flows to somewhere that implies it's a null-terminated string
+  exists(FunctionCall fc, int arg |
     DataFlow::localExprFlow(malloc, fc.getArgument(arg)) and
-    fc.getTarget() = af and
     (
-      // null terminated string
-      af.hasArrayWithNullTerminator(arg)
+      // flows into null terminated string argument
+      fc.getTarget().(ArrayFunction).hasArrayWithNullTerminator(arg)
       or
-      // likely a null terminated string (such as `strcpy`, `strcat`)
-      af.hasArrayWithUnknownSize(arg)
+      // flows into likely null terminated string argument (such as `strcpy`, `strcat`)
+      fc.getTarget().(ArrayFunction).hasArrayWithUnknownSize(arg)
+      or
+      // flows into string argument to a formatting function (such as `printf`)
+      exists(int n, Type t |
+        fc.(FormattingFunctionCall).getConversionArgument(n) = fc.getArgument(arg) and
+        fc.(FormattingFunctionCall).getFormat().(FormatLiteral).getConversionType(n) = t and
+        t.getUnspecifiedType() instanceof PointerType and // `%s`, `%ws` etc
+        not t.getUnspecifiedType() instanceof VoidPointerType // but not `%p`
+      )
     )
   ) and
   msg = "This allocation does not include space to null-terminate the string."
