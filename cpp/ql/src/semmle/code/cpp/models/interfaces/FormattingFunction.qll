@@ -7,6 +7,9 @@
  */
 
 import semmle.code.cpp.Function
+import semmle.code.cpp.models.interfaces.ArrayFunction
+import semmle.code.cpp.models.interfaces.DataFlow
+import semmle.code.cpp.models.interfaces.Taint
 
 private Type stripTopLevelSpecifiersOnly(Type t) {
   result = stripTopLevelSpecifiersOnly(t.(SpecifiedType).getBaseType())
@@ -39,7 +42,7 @@ private Type getAFormatterWideTypeOrDefault() {
 /**
  * A standard library function that uses a `printf`-like formatting string.
  */
-abstract class FormattingFunction extends Function {
+abstract class FormattingFunction extends ArrayFunction {
   /** Gets the position at which the format parameter occurs. */
   abstract int getFormatParameterIndex();
 
@@ -133,4 +136,37 @@ abstract class FormattingFunction extends Function {
    * Gets the position of the buffer size argument, if any.
    */
   int getSizeParameterIndex() { none() }
+
+  /**
+   * Holds if parameter `bufParam` is a null-terminated buffer and the
+   * null-terminator will not be written past.
+   *
+   * Note that the varargs parameters are not modelled in this predicate.
+   */
+  override predicate hasArrayWithNullTerminator(int bufParam) {
+  	bufParam = getFormatParameterIndex()
+  } 	
+
+  override predicate hasArrayWithVariableSize(int bufParam, int countParam) {
+  	bufParam = getOutputParameterIndex() and
+  	countParam = getSizeParameterIndex()
+  }
+
+  override predicate hasArrayWithUnknownSize(int bufParam) {
+  	bufParam = getOutputParameterIndex() and
+  	not exists(getSizeParameterIndex())
+  }
+
+  /**
+   * Holds if parameter `bufParam` is used as an input buffer.
+   *
+   * Note that the varargs parameters are not modelled in this predicate.
+   */
+  predicate hasArrayInput(int bufParam) {
+  	bufParam = getFormatParameterIndex()
+  }
+
+  predicate hasArrayOutput(int bufParam) {
+  	bufParam = getOutputParameterIndex()
+  }
 }
