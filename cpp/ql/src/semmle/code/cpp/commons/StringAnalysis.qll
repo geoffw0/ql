@@ -1,5 +1,6 @@
 import semmle.code.cpp.exprs.Expr
 import semmle.code.cpp.controlflow.SSA
+private import semmle.code.cpp.models.implementations.Strlen
 
 /**
  * Holds if a value can flow directly from one expr to another.
@@ -52,17 +53,12 @@ class AnalysedString extends Expr {
  * A call to a strlen like function.
  */
 class StrlenCall extends FunctionCall {
-  StrlenCall() {
-    this.getTarget().hasGlobalOrStdName("strlen") or
-    this.getTarget().hasGlobalOrStdName("wcslen") or
-    this.getTarget().hasGlobalName("_mbslen") or
-    this.getTarget().hasGlobalName("_mbslen_l") or
-    this.getTarget().hasGlobalName("_mbstrlen") or
-    this.getTarget().hasGlobalName("_mbstrlen_l")
-  }
+  StrlenCall() { this.getTarget() instanceof StrlenFunction }
 
   /**
    * The string argument passed into this strlen-like call.
    */
-  Expr getStringExpr() { result = this.getArgument(0) }
+  Expr getStringExpr() {
+    result = this.getArgument(this.getTarget().(StrlenFunction).getStringArgument())
+  }
 }
