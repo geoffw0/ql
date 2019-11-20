@@ -85,7 +85,7 @@ void bad7(char *str, char *str2) {
 }
 
 void bad8(wchar_t *str) {
-    // BAD -- zero-termination proved by wcslen [NOT DETECTED]
+    // BAD -- zero-termination proved by wcslen
     wchar_t *wbuffer = (wchar_t *)malloc(wcslen(str));
     wdecode(wbuffer, str);
     if (wcslen(wbuffer) == 0) {
