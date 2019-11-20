@@ -17,4 +17,4 @@ The following changes in version 1.24 affect C/C++ analysis in all applications.
 
 ## Changes to libraries
 
-* 
+* Added a model for `strlen` and similar functions in the models library.
