@@ -81,8 +81,6 @@ predicate functionArgumentMustBeNullTerminated(Function f, int i) {
   or
   f instanceof StrcatFunction and i = 0
   or
-  f.hasName("strlen") and i = 0
-  or
   f.hasName("strcmp") and i in [0 .. 1]
   or
   f.hasName("strchr") and i = 0
