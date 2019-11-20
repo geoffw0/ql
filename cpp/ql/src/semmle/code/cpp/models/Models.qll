@@ -5,6 +5,7 @@ private import implementations.Memset
 private import implementations.Printf
 private import implementations.Pure
 private import implementations.Strcat
+private import implementations.Strcmp
 private import implementations.Strcpy
 private import implementations.Strftime
 private import implementations.Strlen

@@ -75,7 +75,7 @@ void bad6(char *str, char *dest) {
 }
 
 void bad7(char *str, char *str2) {
-    // BAD -- zero-termination proved by strcmp [NOT DETECTED]
+    // BAD -- zero-termination proved by strcmp
     char *buffer = (char *)malloc(strlen(str));
     decode(buffer, str);
     if (strcmp(buffer, str2) == 0) {
