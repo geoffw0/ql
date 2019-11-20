@@ -17,4 +17,4 @@ The following changes in version 1.24 affect C/C++ analysis in all applications.
 
 ## Changes to libraries
 
-* 
+* `FormattingFunction`s are now included in the `ArrayFunction` model.  Only fixed parameters (not varargs) are included in the model.
