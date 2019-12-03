@@ -151,3 +151,39 @@ void test5()
 	}
 }
 
+bool initializeIfNonNull(int *p, int *from)
+{
+	if (from == 0) return false; // FAIL
+
+	*p = *from;
+	return true; // SUCCESS
+}
+
+bool initializeIfNull(int *p, int *override)
+{
+	if (override == 0)
+	{
+		*p = 10;
+		return true; // SUCCESS
+	} else {
+		return false; // FAIL
+	}
+}
+
+void test6()
+{
+	int a, b, c, d, e;
+
+	a = 10;
+	initializeIfNonNull(&b, &a); // GOOD (initialization succeeds)
+	use(b);
+
+	initializeIfNonNull(&c, 0); // BAD (initialization fails)
+	use(c);
+
+	initializeIfNull(&d, &a); // BAD (initialization fails)
+	use(d);
+
+	initializeIfNull(&e, 0); // GOOD (initialization succeeds)
+	use(e);
+}
