@@ -94,3 +94,60 @@ void test3()
 		use(b);
 	}
 }
+
+bool someCondition(int i);
+
+bool alwaysInitialize2(int *v)
+{
+	for (int i = 0; i < 10; i++)
+	{
+		*v = i;
+
+		if (someCondition(i)) return true; // SUCCESS
+	}
+
+	// (not that *v has been initialized here)
+	return false; // FAIL
+}
+
+void test4()
+{
+	int a, b;
+
+	alwaysInitialize2(&a); // GOOD (initialization never fails) [FALSE POSITIVE]
+	use(a);
+
+	if (alwaysInitialize2(&b) == 1) // GOOD
+	{
+		use(b);
+	}
+}
+
+int someNumber();
+
+bool maybeInitialize3(int *v)
+{
+	for (int i = 0; i < someNumber(); i++)
+	{
+		*v = i;
+
+		if (someCondition(i)) return true; // SUCCESS
+	}
+
+	// (not that *v may not have been initialized here)
+	return false; // FAIL
+}
+
+void test5()
+{
+	int a, b;
+
+	maybeInitialize3(&a); // BAD (initialization not checked)
+	use(a);
+
+	if (maybeInitialize3(&b) == 1) // GOOD
+	{
+		use(b);
+	}
+}
+
