@@ -16,8 +16,8 @@ int maybeInitialize1(int *v)
 
 void test1()
 {
-	int a, b, c, d, e, f;
-	int result1, result2;
+	int a, b, c, d, e, f, g, h;
+	int result1, result2, result3;
 
 	maybeInitialize1(&a); // BAD (initialization not checked)
 	use(a);
@@ -46,6 +46,12 @@ void test1()
 		return;
 	}
 	use(f);
+
+	maybeInitialize1(&g); // GOOD (never used)
+
+	result3 = maybeInitialize1(&h); // BAD (initialization check is too late)
+	use(h);
+	if (result3 == 0) return;
 }
 
 bool maybeInitialize2(int *v)
@@ -186,4 +192,103 @@ void test6()
 
 	initializeIfNull(&e, 0); // GOOD (initialization succeeds)
 	use(e);
+}
+
+bool alwaysInitialize3(int *v)
+{
+	if (*v != 0)
+	{
+		*v = 0;
+		return true; // SUCCESS
+	}
+
+	return false; // FAIL (but `v` is known to be NULL in this case anyway)
+}
+
+
+bool maybeInitialize4(int *v)
+{
+	if (v != 0)
+	{
+		*v = 0;
+		return true; // SUCCESS
+	}
+
+	return false; // FAIL
+}
+
+void test7(int *c)
+{
+	int a, b;
+
+	alwaysInitialize3(&a); // GOOD (initialization failure is safe)
+	use(a);
+
+	maybeInitialize4(&b); // GOOD (initialization this way never fails)
+	use(b);
+
+	maybeInitialize4(c); // GOOD (initialization fails if there's nothing to initialize)
+	if (c != 0)
+	{
+		use(*c);
+	}
+}
+
+bool alwaysInitialize4(int *v)
+{
+	int *v2;
+
+	v2 = v;
+	*v2 = 1;
+	if (someCondition(1))
+	{
+		return true; // SUCCESS
+	}
+
+	return false; // FAIL
+}
+
+bool maybeInitialize5(int *v)
+{
+	int *v2;
+
+	v2 = v;
+	if (someCondition(1))
+	{
+		*v2 = 1;
+		return true; // SUCCESS
+	}
+
+	return false; // FAIL
+}
+
+void test8()
+{
+	int a, b;
+
+	alwaysInitialize4(&a); // GOOD (initialization never fails)
+	use(a);
+
+	maybeInitialize5(&b); // BAD (initialization may fail) [NOT DETECTED]
+	use(b);
+}
+
+bool alwaysInitializeFirst(int *a, int *b)
+{
+	*a = 1;
+	if (someCondition(1))
+	{
+		*b = 1;
+	}
+
+	return true; // SUCCESS
+}
+
+void test9()
+{
+	int a, b;
+
+	alwaysInitializeFirst(&a, &b); // BAD (`b` isn't always initialized)
+	use(a);
+	use(b);
 }
