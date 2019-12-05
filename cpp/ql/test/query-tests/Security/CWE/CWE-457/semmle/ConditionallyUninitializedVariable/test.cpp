@@ -292,3 +292,38 @@ void test9()
 	use(a);
 	use(b);
 }
+
+int maybeInitializeBoth(int *a, int *b)
+{
+	int i;
+
+	i = someNumber();
+	if (i == 1)
+	{
+		if (*a)
+		{
+			*a = 1;
+		}
+		if (*b)
+		{
+			*b = 2;
+		}
+	}
+
+	return i;
+}
+
+void test10()
+{
+	int a, b;
+
+	maybeInitializeBoth(&a, &b); // BAD (x2, may not be initialized)
+	if (a < 10)
+	{
+		// ...
+	}	
+	if (b == 20)
+	{
+		// ...
+	}
+}
