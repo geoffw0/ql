@@ -175,46 +175,48 @@ private predicate isPointerDereferenceAssignmentTarget(VariableAccess target) {
 }
 
 /**
+ * A function and a parameter that it initializes.
+ */
+private predicate initializationFunction(Function f, int i, Evidence evidence) {
+  evidence = DefinitionInSnapshot() and
+  (
+    // Assignment by pointer dereferencing the parameter
+    isPointerDereferenceAssignmentTarget(f.getParameter(i).getAnAccess()) or
+    // Field wise assignment to the parameter
+    any(Assignment e).getLValue() = getAFieldAccess(f.getParameter(i)) or
+    i = f
+          .(MemberFunction)
+          .getAnOverridingFunction+()
+          .(InitializationFunction)
+          .initializedParameter() or
+    f.getParameter(i) = any(InitializationFunctionCall c).getAnInitParameter()
+  )
+  or
+  // If we have no definition, we look at SAL annotations
+  not f.isDefined() and
+  f.getParameter(i).(SALParameter).isOut() and
+  evidence = SuggestiveSALAnnotation()
+  or
+  // We have some external information that this function conditionally initializes
+  not f.isDefined() and
+  any(ValidatedExternalCondInitFunction vc).isExternallyVerified(f, i) and
+  evidence = ExternalEvidence()
+}
+
+/**
  * A function which initializes one or more of its parameters.
  */
 class InitializationFunction extends Function {
-  int i;
-  Evidence evidence;
-
-  InitializationFunction() {
-    evidence = DefinitionInSnapshot() and
-    (
-      // Assignment by pointer dereferencing the parameter
-      isPointerDereferenceAssignmentTarget(this.getParameter(i).getAnAccess()) or
-      // Field wise assignment to the parameter
-      any(Assignment e).getLValue() = getAFieldAccess(this.getParameter(i)) or
-      i = this
-            .(MemberFunction)
-            .getAnOverridingFunction+()
-            .(InitializationFunction)
-            .initializedParameter() or
-      getParameter(i) = any(InitializationFunctionCall c).getAnInitParameter()
-    )
-    or
-    // If we have no definition, we look at SAL annotations
-    not this.isDefined() and
-    this.getParameter(i).(SALParameter).isOut() and
-    evidence = SuggestiveSALAnnotation()
-    or
-    // We have some external information that this function conditionally initializes
-    not this.isDefined() and
-    any(ValidatedExternalCondInitFunction vc).isExternallyVerified(this, i) and
-    evidence = ExternalEvidence()
-  }
+  InitializationFunction() { initializationFunction(this, _, _) }
 
   /** Gets a parameter index which is initialized by this function. */
-  int initializedParameter() { result = i }
+  int initializedParameter() { initializationFunction(this, result, _) }
 
   /** Gets a `ControlFlowNode` which assigns a new value to the parameter with the given index. */
   ControlFlowNode paramReassignment(int index) {
-    index = i and
+    initializationFunction(this, index, _) and
     (
-      result = this.getParameter(i).getAnAccess() and
+      result = this.getParameter(index).getAnAccess() and
       (
         result = any(Assignment a).getLValue().(PointerDereferenceExpr).getOperand()
         or
@@ -227,7 +229,7 @@ class InitializationFunction extends Function {
         result = getAnInitializedArgument(any(Call c))
         or
         exists(IfStmt check | result = check.getCondition().getAChild*() |
-          paramReassignmentCondition(check)
+          paramReassignmentCondition(check, index)
         )
       )
       or
@@ -242,17 +244,19 @@ class InitializationFunction extends Function {
    * reassignment to the `i`th parameter within its `then` statement.
    */
   pragma[noinline]
-  private predicate paramReassignmentCondition(IfStmt check) {
-    this.paramReassignment(i).getEnclosingStmt().getParentStmt*() = check.getThen()
+  private predicate paramReassignmentCondition(IfStmt check, int index) {
+    initializationFunction(this, index, _) and
+    this.paramReassignment(index).getEnclosingStmt().getParentStmt*() = check.getThen()
   }
 
   /** Holds if `n` can be reached without the parameter at `index` being reassigned. */
   predicate paramNotReassignedAt(ControlFlowNode n, int index, Context c) {
+    initializationFunction(this, index, _) and
     c = getAContext(index) and
     (
-      not exists(this.getEntryPoint()) and index = i and n = this
+      not exists(this.getEntryPoint()) and n = this
       or
-      n = this.getEntryPoint() and index = i
+      n = this.getEntryPoint()
       or
       exists(ControlFlowNode mid | paramNotReassignedAt(mid, index, c) |
         n = mid.getASuccessor() and
@@ -285,7 +289,7 @@ class InitializationFunction extends Function {
 
   /** Gets a parameter which is not at the given index. */
   private Parameter getOtherParameter(int index) {
-    index = i and
+    initializationFunction(this, index, _) and
     result = getAParameter() and
     not result.getIndex() = index
   }
@@ -295,7 +299,7 @@ class InitializationFunction extends Function {
    * be conditionally initialized.
    */
   Context getAContext(int index) {
-    index = i and
+    initializationFunction(this, index, _) and
     /*
      * If there is one and only one other parameter which is null checked in the body of the method,
      * then we have two contexts to consider - that the other param is null, or that the other param
@@ -376,53 +380,54 @@ class InitializationFunction extends Function {
 }
 
 /**
+ * A function and a parameter that it initializes, but not on all paths.
+ * `c` is a context in which it is not initialized.
+ */
+private predicate conditionalInitializationFunction(
+  InitializationFunction f, int i, Evidence evidence
+) {
+  initializationFunction(f, i, evidence) and
+  not f.whitelisted() and
+  exists(Type status | status = f.getType().getUnspecifiedType() |
+    status instanceof IntegralType or
+    status instanceof Enum
+  ) and
+  not f.getType().getName().toLowerCase() = "size_t" and
+  (
+    /*
+     * If there is no definition, consider this to be conditionally initializing (based on either
+     * SAL or external data).
+     */
+
+    not evidence = DefinitionInSnapshot()
+    or
+    /*
+     * If this function is defined in this snapshot, then it conditionally initializes if there
+     * is at least one path through the function which doesn't initialize the parameter.
+     *
+     * Explicitly ignore pure virtual functions.
+     */
+
+    f.isDefined() and
+    not f instanceof PureVirtualFunction
+  )
+}
+
+/**
  * A function which initializes one or more of its parameters, but not on all paths.
  */
 class ConditionalInitializationFunction extends InitializationFunction {
-  Context c;
-
-  ConditionalInitializationFunction() {
-    c = this.getAContext(i) and
-    not this.whitelisted() and
-    exists(Type status | status = this.getType().getUnspecifiedType() |
-      status instanceof IntegralType or
-      status instanceof Enum
-    ) and
-    not this.getType().getName().toLowerCase() = "size_t" and
-    (
-      /*
-       * If there is no definition, consider this to be conditionally initializing (based on either
-       * SAL or external data).
-       */
-
-      not evidence = DefinitionInSnapshot()
-      or
-      /*
-       * If this function is defined in this snapshot, then it conditionally initializes if there
-       * is at least one path through the function which doesn't initialize the parameter.
-       *
-       * Explicitly ignore pure virtual functions.
-       */
-
-      this.isDefined() and
-      this.paramNotReassignedAt(this, i, c) and
-      not this instanceof PureVirtualFunction
-    )
-  }
+  ConditionalInitializationFunction() { conditionalInitializationFunction(this, _, _) }
 
   /** Gets the evidence associated with the given parameter. */
-  Evidence getEvidence(int param) {
-    /*
-     * Note: due to the way the predicate dispatch interacts with fields, this needs to be
-     * implemented on this class, not `InitializationFunction`. If implemented on the latter it
-     * can return evidence that does not result in conditional initialization.
-     */
-
-    param = i and evidence = result
-  }
+  Evidence getEvidence(int param) { conditionalInitializationFunction(this, param, result) }
 
   /** Gets the index of a parameter which is conditionally initialized. */
-  int conditionallyInitializedParameter(Context context) { result = i and context = c }
+  int conditionallyInitializedParameter(Context context) {
+    conditionalInitializationFunction(this, result, _) and
+    context = this.getAContext(result) and
+    this.paramNotReassignedAt(this, result, context)
+  }
 }
 
 /**
