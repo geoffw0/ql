@@ -8,6 +8,7 @@ private import semmle.code.cpp.dispatch.VirtualDispatchPrototype
 import semmle.code.cpp.NestedFields
 import Microsoft.SAL
 import semmle.code.cpp.controlflow.Guards
+private import semmle.code.cpp.controlflow.StackVariableReachability
 
 /** A context under which a function may be called. */
 private newtype TContext =
@@ -201,6 +202,93 @@ private predicate initializationFunction(Function f, int i, Evidence evidence) {
   not f.isDefined() and
   any(ValidatedExternalCondInitFunction vc).isExternallyVerified(f, i) and
   evidence = ExternalEvidence()
+}
+
+/**
+ * Parameter value reachabilitiy for initialized parameters.
+ */
+abstract class InitialParameterValueReachability extends StackVariableReachabilityWithReassignment {
+  bindingset[this]
+  InitialParameterValueReachability() { length() >= 0 }
+
+  override predicate isSourceActual(ControlFlowNode node, StackVariable v) {
+    node = v.(Parameter).getFunction().(InitializationFunction).getEntryPoint()
+  }
+
+  override predicate isSinkActual(ControlFlowNode node, StackVariable v) {
+    //v.(Parameter).getFunction() = node.(InitializationFunction)
+    any()
+  }
+
+  override predicate isBarrier(ControlFlowNode node, StackVariable v) {
+    definitionBarrier(v, node)
+    or
+    /*exists(InitializationFunction f, int index |
+      f = v.getFunction() and
+      f.getParameter(index) = v and
+      node = f.paramReassignment(index)
+    )
+    or*/
+    /*
+     * Ignore successor edges where the parameter is null, because it is then confirmed to be
+     * initialized.
+     */
+    /*exists(ParameterNullCheck nullCheck |
+      nullCheck.getParameter() = v and
+      node = nullCheck.getNullSuccessor()
+    )
+    or*/
+    /*
+     * Ignore successor edges which are excluded by the given context
+     */
+
+    exists(ParameterCheck paramCheck |
+      node = paramCheck.getIgnoredSuccessorForContext(getContext(v))
+    )
+  }
+
+  abstract Context getContext(StackVariable v);
+
+  predicate reachesWithContext(
+    ControlFlowNode source, SemanticStackVariable v, ControlFlowNode sink, Context c
+  ) {
+    reaches(source, v, sink) and
+    c = getContext(v)
+  }
+}
+
+/**
+ * Parameter value reachabilitiy for initialized parameters, in a context
+ * that is either `NoContext` or `ParamNull`.
+ */
+class InitialParameterValueReachability1 extends InitialParameterValueReachability {
+  InitialParameterValueReachability1() { this = "InitialParameterValueReachability1" }
+
+  override Context getContext(StackVariable v) {
+    exists(InitializationFunction f, int index |
+      f = v.(Parameter).getFunction() and
+      f.getParameter(index) = v and
+      result = f.getAContext(index) and
+      not result = ParamNotNull(_)
+    )
+  }
+}
+
+/**
+ * Parameter value reachabilitiy for initialized parameters, in a context
+ * that is `ParamNotNull`.
+ */
+class InitialParameterValueReachability2 extends InitialParameterValueReachability {
+  InitialParameterValueReachability2() { this = "InitialParameterValueReachability2" }
+
+  override Context getContext(StackVariable v) {
+    exists(InitializationFunction f, int index |
+      f = v.(Parameter).getFunction() and
+      f.getParameter(index) = v and
+      result = f.getAContext(index) and
+      result = ParamNotNull(_)
+    )
+  }
 }
 
 /**
@@ -426,7 +514,13 @@ class ConditionalInitializationFunction extends InitializationFunction {
   int conditionallyInitializedParameter(Context context) {
     conditionalInitializationFunction(this, result, _) and
     context = this.getAContext(result) and
-    this.paramNotReassignedAt(this, result, context)
+    this.paramNotReassignedAt(this, result, context) and
+    exists(InitialParameterValueReachability r |
+      //r.reaches(this.getEntryPoint(), this.getParameter(result), this)
+      // any() 52 results (correct)
+      //r.reaches(_, _, _) 52 results (correct)
+      r.reaches(this.getEntryPoint(), _, _) //7 results
+    )
   }
 }
 
