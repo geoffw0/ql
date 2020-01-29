@@ -1,13 +1,24 @@
+| format.cpp:56:8:56:15 | call to snprintf | format.cpp:56:36:56:49 | call to source |
 | format.cpp:57:8:57:13 | buffer | format.cpp:56:36:56:49 | call to source |
+| format.cpp:61:8:61:15 | call to snprintf | format.cpp:61:30:61:43 | call to source |
 | format.cpp:62:8:62:13 | buffer | format.cpp:61:30:61:43 | call to source |
+| format.cpp:66:8:66:15 | call to snprintf | format.cpp:66:52:66:65 | call to source |
 | format.cpp:67:8:67:13 | buffer | format.cpp:66:52:66:65 | call to source |
+| format.cpp:71:8:71:15 | call to snprintf | format.cpp:71:42:71:55 | call to source |
 | format.cpp:72:8:72:13 | buffer | format.cpp:71:42:71:55 | call to source |
+| format.cpp:82:8:82:15 | call to snprintf | format.cpp:82:36:82:41 | call to source |
 | format.cpp:83:8:83:13 | buffer | format.cpp:82:36:82:41 | call to source |
+| format.cpp:87:8:87:15 | call to snprintf | format.cpp:87:38:87:43 | call to source |
 | format.cpp:88:8:88:13 | buffer | format.cpp:87:38:87:43 | call to source |
+| format.cpp:93:8:93:15 | call to snprintf | format.cpp:93:36:93:49 | call to source |
 | format.cpp:94:8:94:13 | buffer | format.cpp:93:36:93:49 | call to source |
+| format.cpp:99:8:99:14 | call to sprintf | format.cpp:99:30:99:43 | call to source |
 | format.cpp:100:8:100:13 | buffer | format.cpp:99:30:99:43 | call to source |
+| format.cpp:104:8:104:14 | call to sprintf | format.cpp:104:31:104:45 | call to source |
 | format.cpp:105:8:105:13 | buffer | format.cpp:104:31:104:45 | call to source |
+| format.cpp:109:8:109:15 | call to swprintf | format.cpp:109:38:109:52 | call to source |
 | format.cpp:110:8:110:14 | wbuffer | format.cpp:109:38:109:52 | call to source |
+| format.cpp:114:8:114:16 | call to mysprintf | format.cpp:114:37:114:50 | call to source |
 | taint.cpp:8:8:8:13 | clean1 | taint.cpp:4:27:4:33 | source1 |
 | taint.cpp:16:8:16:14 | source1 | taint.cpp:12:22:12:27 | call to source |
 | taint.cpp:17:8:17:16 | ++ ... | taint.cpp:12:22:12:27 | call to source |

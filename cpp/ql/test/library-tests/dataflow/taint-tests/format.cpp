@@ -53,22 +53,22 @@ void test1()
 	}
 	{
 		char buffer[256] = {0};
-		sink(snprintf(buffer, 256, "%s", string::source()));
+		sink(snprintf(buffer, 256, "%s", string::source())); // tainted
 		sink(buffer); // tainted
 	}
 	{
 		char buffer[256] = {0};
-		sink(snprintf(buffer, 256, string::source(), "Hello."));
+		sink(snprintf(buffer, 256, string::source(), "Hello.")); // tainted
 		sink(buffer); // tainted
 	}
 	{
 		char buffer[256] = {0};
-		sink(snprintf(buffer, 256, "%s %s %s", "a", "b", string::source()));
+		sink(snprintf(buffer, 256, "%s %s %s", "a", "b", string::source())); // tainted
 		sink(buffer); // tainted
 	}
 	{
 		char buffer[256] = {0};
-		sink(snprintf(buffer, 256, "%.*s", 10, string::source()));
+		sink(snprintf(buffer, 256, "%.*s", 10, string::source())); // tainted
 		sink(buffer); // tainted
 	}
 
@@ -79,39 +79,39 @@ void test1()
 	}
 	{
 		char buffer[256] = {0};
-		sink(snprintf(buffer, 256, "%i", source()));
+		sink(snprintf(buffer, 256, "%i", source())); // tainted
 		sink(buffer); // tainted
 	}
 	{
 		char buffer[256] = {0};
-		sink(snprintf(buffer, 256, "%.*s", source(), "Hello."));
+		sink(snprintf(buffer, 256, "%.*s", source(), "Hello.")); // tainted
 		sink(buffer); // tainted
 	}
 
 	{
 		char buffer[256] = {0};
-		sink(snprintf(buffer, 256, "%p", string::source()));
+		sink(snprintf(buffer, 256, "%p", string::source())); // tainted (debatable)
 		sink(buffer); // tainted (debatable)
 	}
 
 	{
 		char buffer[256] = {0};
-		sink(sprintf(buffer, "%s", string::source()));
+		sink(sprintf(buffer, "%s", string::source())); // tainted
 		sink(buffer); // tainted
 	}
 	{
 		char buffer[256] = {0};
-		sink(sprintf(buffer, "%ls", wstring::source()));
+		sink(sprintf(buffer, "%ls", wstring::source())); // tainted
 		sink(buffer); // tainted
 	}
 	{
 		wchar_t wbuffer[256] = {0};
-		sink(swprintf(wbuffer, 256, L"%s", wstring::source()));
+		sink(swprintf(wbuffer, 256, L"%s", wstring::source())); // tainted
 		sink(wbuffer); // tainted
 	}
 	{
 		char buffer[256] = {0};
-		sink(mysprintf(buffer, 256, "%s", string::source()));
+		sink(mysprintf(buffer, 256, "%s", string::source())); // tainted
 		sink(buffer); // tainted [NOT DETECTED - implement UserDefinedFormattingFunction.getOutputParameterIndex()]
 	}
 
