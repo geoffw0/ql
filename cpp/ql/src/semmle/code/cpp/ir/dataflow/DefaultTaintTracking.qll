@@ -168,7 +168,11 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
     any(CallInstruction call |
       exists(int indexIn |
         modelTaintToReturnValue(call.getStaticCallTarget(), indexIn) and
-        i1 = getACallArgumentOrIndirection(call, indexIn)
+        i1 = getACallArgumentOrIndirection(call, indexIn) and
+        forall(Instruction arg | arg = call.getAnArgument() | arg = i1 or predictableInstruction(arg)) and
+        // flow through `strlen` tends to cause dubious results, if the length is
+        // bounded.
+        not call.getStaticCallTarget().getName() = "strlen"
       )
     )
   or
@@ -183,7 +187,11 @@ private predicate instructionTaintStep(Instruction i1, Instruction i2) {
         modelTaintToParameter(call.getStaticCallTarget(), indexIn, indexOut) and
         i1 = getACallArgumentOrIndirection(call, indexIn) and
         outNode.getIndex() = indexOut and
-        outNode.getPrimaryInstruction() = call
+        outNode.getPrimaryInstruction() = call and
+        forall(Instruction arg | arg = call.getAnArgument() | arg = i1 or predictableInstruction(arg)) and
+        // flow through `strlen` tends to cause dubious results, if the length is
+        // bounded.
+        not call.getStaticCallTarget().getName() = "strlen"
       )
     )
 }
