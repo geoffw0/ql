@@ -637,4 +637,9 @@ class TranslatedReadEffect extends TranslatedElement, TTranslatedReadEffect {
     operandTag = sideEffectOperand() and
     result = getUnknownType()
   }
+
+  final override IRVariable getInstructionVariable(InstructionTag tag) {
+    tag = OnlyInstructionTag() and
+    result = getIRUserVariable(getFunction(), param)
+  }
 }
