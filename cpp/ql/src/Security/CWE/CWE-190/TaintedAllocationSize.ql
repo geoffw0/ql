@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 8.1
- * @precision medium
+ * @precision high
  * @id cpp/uncontrolled-allocation-size
  * @tags reliability
  *       security
