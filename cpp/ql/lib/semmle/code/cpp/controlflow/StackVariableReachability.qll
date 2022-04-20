@@ -76,6 +76,7 @@ abstract class StackVariableReachability extends string {
       bb.getNode(i) = source and
       not bb.isUnreachable()
     |
+      // `source`, `sink` both in `bb`
       exists(int j |
         j > i and
         sink = bb.getNode(j) and
@@ -87,33 +88,45 @@ abstract class StackVariableReachability extends string {
         )
       )
       or
+      // `sink` in a later basic block
       not exists(int k | this.isBarrier(bb.getNode(k), v) | k > i) and
       this.bbSuccessorEntryReaches(bb, v, sink, _)
     )
   }
 
+  /**
+   * Holds if, from the end of `bb`, its possible to reach a `sink` for
+   * `v` (without crossing a barrier).
+   */
   private predicate bbSuccessorEntryReaches(
-    BasicBlock bb, SemanticStackVariable v, ControlFlowNode node,
+    BasicBlock bb, SemanticStackVariable v, ControlFlowNode sink,
     boolean skipsFirstLoopAlwaysTrueUponEntry
   ) {
+    // `succ` is a successor of `bb` (plus loop logic)
     exists(BasicBlock succ, boolean succSkipsFirstLoopAlwaysTrueUponEntry |
       bbSuccessorEntryReachesLoopInvariant(bb, succ, skipsFirstLoopAlwaysTrueUponEntry,
         succSkipsFirstLoopAlwaysTrueUponEntry)
     |
-      this.bbEntryReachesLocally(succ, v, node) and
+      // `sink` directly inside `succ`
+      this.bbEntryReachesLocally(succ, v, sink) and
       succSkipsFirstLoopAlwaysTrueUponEntry = false
       or
+      // recursive case
       not this.isBarrier(succ.getNode(_), v) and
-      this.bbSuccessorEntryReaches(succ, v, node, succSkipsFirstLoopAlwaysTrueUponEntry)
+      this.bbSuccessorEntryReaches(succ, v, sink, succSkipsFirstLoopAlwaysTrueUponEntry)
     )
   }
 
+  /**
+   * Holds if, from the beginning of `bb`, its possible to reach a `sink` for
+   * `v` that is inside `bb` (without crossing a barrier).
+   */
   private predicate bbEntryReachesLocally(
-    BasicBlock bb, SemanticStackVariable v, ControlFlowNode node
+    BasicBlock bb, SemanticStackVariable v, ControlFlowNode sink
   ) {
     exists(int n |
-      node = bb.getNode(n) and
-      this.isSink(node, v)
+      sink = bb.getNode(n) and
+      this.isSink(sink, v)
     |
       not exists(this.firstBarrierIndexIn(bb, v))
       or
@@ -121,6 +134,9 @@ abstract class StackVariableReachability extends string {
     )
   }
 
+  /**
+   * Gets the index of the first barrier for `v` in `bb` (if any).
+   */
   private int firstBarrierIndexIn(BasicBlock bb, SemanticStackVariable v) {
     result = min(int m | this.isBarrier(bb.getNode(m), v))
   }
