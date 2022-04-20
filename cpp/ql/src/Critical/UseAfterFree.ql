@@ -61,6 +61,6 @@ class UseAfterFreeReachability extends StackVariableReachability {
 }
 
 from UseAfterFreeReachability r, StackVariable v, Expr free, Expr e
-where r.reaches(free, v, e)
+where r.mustReach(free, v, e)
 select e, "Memory pointed to by '" + v.getName().toString() + "' may have been previously freed $@",
   free, "here"

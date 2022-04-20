@@ -95,6 +95,37 @@ abstract class StackVariableReachability extends string {
   }
 
   /**
+   * Holds if the source node `source` can reach the sink `sink` without
+   * crossing a barrier *and* no value other than `source` can reach that
+   * `sink`.
+   * TODO: expand on this.  Without a def-barrier its not true.  The actual
+   * promise is about control flow paths.
+   */
+  predicate mustReach(ControlFlowNode source, SemanticStackVariable v, ControlFlowNode sink) {
+    exists(BasicBlock bb, int j |
+      this.isSink(sink, v) and
+      sink = bb.getNode(j) and
+      not bb.isUnreachable() // TODO: why and did I tranlate it OK?
+    |
+      // source, sink both in `bb`
+      exists(int i |
+        j > i and
+        source = bb.getNode(i) and
+        this.isSource(source, v) and
+        not exists(int k, ControlFlowNode node |
+          node = bb.getNode(k) and this.isBarrier(pragma[only_bind_into](node), v)
+        |
+          k in [i + 1 .. j - 1]
+        )
+      )
+      or
+      // source in another basic block
+      this.bbMustReach(bb, v, source) and
+      not exists(int k | this.isBarrier(bb.getNode(k), v) | k < j)
+    )
+  }
+
+  /**
    * Holds if, from the end of `bb`, its possible to reach a `sink` for
    * `v` (without crossing a barrier).
    */
@@ -139,6 +170,27 @@ abstract class StackVariableReachability extends string {
    */
   private int firstBarrierIndexIn(BasicBlock bb, SemanticStackVariable v) {
     result = min(int m | this.isBarrier(bb.getNode(m), v))
+  }
+
+  /**
+   * Holds if `source` *must* reach the beginning of `bb` (without crossing a
+   * barrier).
+   */
+  private predicate bbMustReach(BasicBlock bb, SemanticStackVariable v, ControlFlowNode source) {
+    // reachable from all predecessors
+    forex(BasicBlock pred | pred.getASuccessor() = bb |
+      // source directly inside predecessor
+      exists(int i |
+        source = pred.getNode(i) and
+        this.isSource(source, v)
+      |
+        not exists(int j | this.isBarrier(pred.getNode(j), v) | j > i)
+      )
+      or
+      // recursive case
+      bbMustReach(pred, v, source) and
+      not this.isBarrier(bb.getNode(_), v)
+    )
   }
 }
 
