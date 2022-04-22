@@ -47,10 +47,16 @@ predicate isDerefByCallExpr(Call c, int i, VariableAccess va, StackVariable v) {
   (c.getTarget().hasEntryPoint() implies isDerefExpr(_, c.getTarget().getParameter(i)))
 }
 
+/**
+ * Dataflow configuration for flow from a free expression (or a definition)
+ * flows to a use.
+ */
 class UseAfterFreeReachability extends StackVariableReachability {
   UseAfterFreeReachability() { this = "UseAfterFree" }
 
-  override predicate isSource(ControlFlowNode node, StackVariable v) { isFreeExpr(node, v) }
+  override predicate isSource(ControlFlowNode node, StackVariable v) {
+    isFreeExpr(node, v) or definition(v, node)
+  }
 
   override predicate isSink(ControlFlowNode node, StackVariable v) { isDerefExpr(node, v) }
 
@@ -61,6 +67,11 @@ class UseAfterFreeReachability extends StackVariableReachability {
 }
 
 from UseAfterFreeReachability r, StackVariable v, Expr free, Expr e
-where r.reaches(free, v, e)
+where
+  // free -> use
+  isFreeExpr(free, v) and
+  r.reaches(free, v, e) and
+  // no alternative -> use
+  not exists(Expr alt | r.reaches(alt, v, e) and alt != free)
 select e, "Memory pointed to by '" + v.getName().toString() + "' may have been previously freed $@",
   free, "here"

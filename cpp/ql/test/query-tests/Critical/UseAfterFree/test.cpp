@@ -167,7 +167,7 @@ void test12(int count)
 	{
 		data = NULL;
 	}
-	use(data); // BAD
+	use(data); // BAD [NOT DETECTED]
 }
 
 void test13()
@@ -288,20 +288,20 @@ void test17()
 
 	for (int i = 0; i < 10; i++)
 	{
-		useIntPointer1(a); // BAD
+		useIntPointer1(a); // BAD [NOT DETECTED]
 		useIntPointer1(b); // GOOD (always allocated at this point in the loop)
-		useIntPointer1(c); // BAD
-		useIntPointer1(d); // GOOD (only freed in the final loop iteration) [FALSE POSITIVE]
+		useIntPointer1(c); // BAD [NOT DETECTED]
+		useIntPointer1(d); // GOOD (only freed in the final loop iteration)
 
-		free(a); // BAD (`a` is freed multiple times)
+		free(a); // BAD (`a` is freed multiple times) [NOT DETECTED]
 		free(b);
-		if (i == 0) free(c); // GOOD [FALSE POSITIVE]
-		if (i == 9) free(d); // GOOD [FALSE POSITIVE]
+		if (i == 0) free(c); // GOOD
+		if (i == 9) free(d); // GOOD
 
 		useIntPointer1(a); // BAD
 		useIntPointer1(b); // BAD
-		useIntPointer1(c); // BAD
-		useIntPointer1(d); // BAD
+		useIntPointer1(c); // BAD [NOT DETECTED]
+		useIntPointer1(d); // BAD [NOT DETECTED]
 
 		b = (int *)malloc(sizeof(int));
 	}
@@ -330,7 +330,7 @@ void test18()
 	}
 	if (b)
 	{
-		useIntPointer1(ptr); // GOOD [FALSE POSITIVE]
+		useIntPointer1(ptr); // GOOD
 	}
 }
 
@@ -357,7 +357,7 @@ void test20()
 	{
 		free(ptr);
 	}
-	useIntPointer1(ptr); // BAD
+	useIntPointer1(ptr); // BAD [NOT DETECTED]
 }
 
 struct container
