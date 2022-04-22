@@ -12,8 +12,8 @@
 
 import cpp
 //import semmle.code.cpp.controlflow.StackVariableReachability
-import semmle.code.cpp.ir.dataflow.DataFlow
-// TODO: paths properly
+//import semmle.code.cpp.ir.dataflow.DataFlow
+import semmle.code.cpp.ir.dataflow.MustFlow
 import DataFlow::PathGraph
 
 /**
@@ -55,7 +55,7 @@ predicate isDerefByCallExpr(Call c, int i, VariableAccess va, StackVariable v) {
 /**
  * Dataflow configuration tracking pointers that are freed to their use.
  */
-class UseAfterFreeConfig extends DataFlow::Configuration {
+class UseAfterFreeConfig extends MustFlowConfiguration {
   UseAfterFreeConfig() { this = "UseAfterFree" }
 
   override predicate isSource(DataFlow::Node node) {
@@ -66,18 +66,14 @@ class UseAfterFreeConfig extends DataFlow::Configuration {
     isDerefExpr(node.asExpr(), _)
   }
 
-  override predicate isBarrierOut(DataFlow::Node node) {
+  /*override predicate isBarrierOut(DataFlow::Node node) {
     isSink(node) // only report first use
     //node.asExpr() instanceof VariableAccess
     or
     dereferenced(node.asExpr())
-    /*or
-    node.asExpr() instanceof AddressOfExpr
-    or
-    any(AddressOfExpr a).get = node.asExpr()*/
-  }
+  }*/
 }
 
-from UseAfterFreeConfig c, DataFlow::PathNode source, DataFlow::PathNode sink
+from UseAfterFreeConfig c, MustFlowPathNode source, MustFlowPathNode sink
 where c.hasFlowPath(source, sink)
 select sink, source, sink, "Memory may have been previously freed $@", source, "here"
