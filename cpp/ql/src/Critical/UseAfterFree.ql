@@ -13,6 +13,8 @@
 import cpp
 //import semmle.code.cpp.controlflow.StackVariableReachability
 import semmle.code.cpp.ir.dataflow.DataFlow
+// TODO: paths properly
+import DataFlow::PathGraph
 
 /**
  * `e` is an expression that is being freed.
@@ -69,6 +71,10 @@ class UseAfterFreeConfig extends DataFlow::Configuration {
     //node.asExpr() instanceof VariableAccess
     or
     dereferenced(node.asExpr())
+    /*or
+    node.asExpr() instanceof AddressOfExpr
+    or
+    any(AddressOfExpr a).get = node.asExpr()*/
   }
 }
 
