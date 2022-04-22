@@ -1,7 +1,7 @@
 /**
  * @name Potential use after free
  * @description An allocated memory block is used after it has been freed. Behavior in such cases is undefined and can cause memory corruption.
- * @kind problem
+ * @kind path-problem
  * @id cpp/use-after-free
  * @problem.severity warning
  * @security-severity 9.3
@@ -11,23 +11,26 @@
  */
 
 import cpp
-import semmle.code.cpp.controlflow.StackVariableReachability
+//import semmle.code.cpp.controlflow.StackVariableReachability
+import semmle.code.cpp.ir.dataflow.DataFlow
 
-/** `e` is an expression that frees the memory pointed to by `v`. */
-predicate isFreeExpr(Expr e, StackVariable v) {
-  exists(VariableAccess va | va.getTarget() = v |
-    exists(FunctionCall fc | fc = e |
-      fc.getTarget().hasGlobalOrStdName("free") and
-      va = fc.getArgument(0)
-    )
-    or
-    e.(DeleteExpr).getExpr() = va
-    or
-    e.(DeleteArrayExpr).getExpr() = va
+/**
+ * `e` is an expression that is being freed.
+ */
+predicate isFreeExpr(Expr e) {
+  exists(FunctionCall fc |
+    fc.getTarget().hasGlobalOrStdName("free") and
+    e = fc.getArgument(0)
   )
+  or
+  any(DeleteExpr de).getExpr() = e
+  or
+  any(DeleteArrayExpr dae).getExpr() = e
 }
 
-/** `e` is an expression that (may) dereference `v`. */
+/**
+ * `e` is an expression that (may) dereference `v`.
+ */
 predicate isDerefExpr(Expr e, StackVariable v) {
   v.getAnAccess() = e and dereferenced(e)
   or
@@ -47,20 +50,27 @@ predicate isDerefByCallExpr(Call c, int i, VariableAccess va, StackVariable v) {
   (c.getTarget().hasEntryPoint() implies isDerefExpr(_, c.getTarget().getParameter(i)))
 }
 
-class UseAfterFreeReachability extends StackVariableReachability {
-  UseAfterFreeReachability() { this = "UseAfterFree" }
+/**
+ * Dataflow configuration tracking pointers that are freed to their use.
+ */
+class UseAfterFreeConfig extends DataFlow::Configuration {
+  UseAfterFreeConfig() { this = "UseAfterFree" }
 
-  override predicate isSource(ControlFlowNode node, StackVariable v) { isFreeExpr(node, v) }
+  override predicate isSource(DataFlow::Node node) {
+    isFreeExpr(node.asDefiningArgument())
+  }
 
-  override predicate isSink(ControlFlowNode node, StackVariable v) { isDerefExpr(node, v) }
+  override predicate isSink(DataFlow::Node node) {
+    isDerefExpr(node.asExpr(), _)
+  }
 
-  override predicate isBarrier(ControlFlowNode node, StackVariable v) {
-    definitionBarrier(v, node) or
-    isFreeExpr(node, v)
+  override predicate isBarrierOut(DataFlow::Node node) {
+    //isDerefExpr(node.asDefiningArgument(), _)
+    isSink(node) // only report first use
+    //definition(node, _)
   }
 }
 
-from UseAfterFreeReachability r, StackVariable v, Expr free, Expr e
-where r.mustReach(free, v, e)
-select e, "Memory pointed to by '" + v.getName().toString() + "' may have been previously freed $@",
-  free, "here"
+from UseAfterFreeConfig c, DataFlow::PathNode source, DataFlow::PathNode sink
+where c.hasFlowPath(source, sink)
+select sink, source, sink, "Memory may have been previously freed $@", source, "here"

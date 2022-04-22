@@ -42,10 +42,10 @@ void test2()
 	data = (char *)malloc(100*sizeof(char));
 	free(data);
 	myMalloc(&data);
-	use(data); // GOOD
+	use(data); // GOOD [FALSE POSITIVE]
 	free(data);
 	myMalloc2(data);
-	use(data); // GOOD
+	use(data); // GOOD [FALSE POSITIVE]
 }
 
 void test3()
@@ -85,7 +85,7 @@ char* returnsFreedData(int i)
 void test5()
 {
 	char* data = returnsFreedData(1);
-	use(data); // BAD (NOT REPORTED)
+	use(data); // BAD
 }
 
 void test6()
@@ -94,7 +94,7 @@ void test6()
 	data = (char *)malloc(100*sizeof(char));
 	data2 = data;
 	free(data);
-	use(data2); // BAD (NOT REPORTED)
+	use(data2); // BAD [NOT REPORTED]
 }
 
 void test7()
@@ -124,7 +124,7 @@ void test9()
 	char *data, *data2;
 	free(data);
 	noReturnWrapper();
-	use(data); // GOOD
+	use(data); // GOOD [FALSE POSITIVE]
 }
 
 void test10()
@@ -147,8 +147,8 @@ public:
 void test11() {
 	myClass* c = new myClass();
 	delete(c);
-	c->myMethod(); // BAD
-	(*c).myMethod(); // BAD
+	c->myMethod(); // BAD [NOT DETECTED]
+	(*c).myMethod(); // BAD [NOT DETECTED]
 }
 
 template<class T> T test()
@@ -156,7 +156,7 @@ template<class T> T test()
 	T* x;
 	use(x); // GOOD
 	delete x;
-	use(x); // BAD
+	use(x); // BAD [NOT DETECTED]
 }
 
 void test12(int count)
@@ -178,7 +178,7 @@ void test13()
 	{
 		data = NULL;
 	}
-	use(data); // GOOD
+	use(data); // GOOD [FALSE POSITIVE]
 }
 
 void test14()
@@ -198,7 +198,7 @@ template<class T> T test15()
 	T* x;
 	use(x); // GOOD
 	delete x;
-	use(x); // BAD
+	use(x); // BAD [NOT DETECTED]
 }
 void test15runner(void)
 {
@@ -288,15 +288,15 @@ void test17()
 
 	for (int i = 0; i < 10; i++)
 	{
-		useIntPointer1(a); // BAD
+		useIntPointer1(a); // BAD [NOT DETECTED]
 		useIntPointer1(b); // GOOD (always allocated at this point in the loop)
-		useIntPointer1(c); // BAD
-		useIntPointer1(d); // GOOD (only freed in the final loop iteration) [FALSE POSITIVE]
+		useIntPointer1(c); // BAD [NOT DETECTED]
+		useIntPointer1(d); // GOOD (only freed in the final loop iteration)
 
-		free(a); // BAD (`a` is freed multiple times)
+		free(a); // BAD (`a` is freed multiple times) [NOT DETECTED]
 		free(b);
-		if (i == 0) free(c); // GOOD [FALSE POSITIVE]
-		if (i == 9) free(d); // GOOD [FALSE POSITIVE]
+		if (i == 0) free(c); // GOOD
+		if (i == 9) free(d); // GOOD
 
 		useIntPointer1(a); // BAD
 		useIntPointer1(b); // BAD
