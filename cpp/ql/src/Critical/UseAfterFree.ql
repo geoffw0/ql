@@ -65,9 +65,10 @@ class UseAfterFreeConfig extends DataFlow::Configuration {
   }
 
   override predicate isBarrierOut(DataFlow::Node node) {
-    //isDerefExpr(node.asDefiningArgument(), _)
     isSink(node) // only report first use
-    //definition(node, _)
+    //node.asExpr() instanceof VariableAccess
+    or
+    dereferenced(node.asExpr())
   }
 }
 

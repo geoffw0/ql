@@ -10,9 +10,6 @@
 | test.cpp:181:6:181:9 | data | test.cpp:176:7:176:10 | free output argument | test.cpp:181:6:181:9 | data | Memory may have been previously freed $@ | test.cpp:176:7:176:10 | free output argument | here |
 | test.cpp:193:6:193:9 | data | test.cpp:187:7:187:10 | free output argument | test.cpp:193:6:193:9 | data | Memory may have been previously freed $@ | test.cpp:187:7:187:10 | free output argument | here |
 | test.cpp:193:6:193:9 | data | test.cpp:191:8:191:11 | free output argument | test.cpp:193:6:193:9 | data | Memory may have been previously freed $@ | test.cpp:191:8:191:11 | free output argument | here |
-| test.cpp:219:11:219:13 | ptr | test.cpp:267:7:267:17 | free output argument | test.cpp:219:11:219:13 | ptr | Memory may have been previously freed $@ | test.cpp:267:7:267:17 | free output argument | here |
-| test.cpp:219:11:219:13 | ptr | test.cpp:268:7:268:17 | free output argument | test.cpp:219:11:219:13 | ptr | Memory may have been previously freed $@ | test.cpp:268:7:268:17 | free output argument | here |
-| test.cpp:219:11:219:13 | ptr | test.cpp:378:7:378:10 | free output argument | test.cpp:219:11:219:13 | ptr | Memory may have been previously freed $@ | test.cpp:378:7:378:10 | free output argument | here |
 | test.cpp:270:17:270:17 | a | test.cpp:262:7:262:7 | free output argument | test.cpp:270:17:270:17 | a | Memory may have been previously freed $@ | test.cpp:262:7:262:7 | free output argument | here |
 | test.cpp:271:17:271:17 | b | test.cpp:263:7:263:7 | free output argument | test.cpp:271:17:271:17 | b | Memory may have been previously freed $@ | test.cpp:263:7:263:7 | free output argument | here |
 | test.cpp:274:24:274:24 | e | test.cpp:266:7:266:7 | free output argument | test.cpp:274:24:274:24 | e | Memory may have been previously freed $@ | test.cpp:266:7:266:7 | free output argument | here |
