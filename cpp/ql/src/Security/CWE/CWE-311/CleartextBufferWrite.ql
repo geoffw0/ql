@@ -21,7 +21,7 @@ import DataFlow::PathGraph
 /**
  * Taint flow from user input to a buffer write.
  */
-class ToBufferConfiguration extends TaintTracking::Configuration {
+/*class ToBufferConfiguration extends TaintTracking::Configuration {
   ToBufferConfiguration() { this = "ToBufferConfiguration" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
@@ -41,4 +41,7 @@ where
   dest = w.getDest()
 select w, sourceNode, sinkNode,
   "This write into buffer '" + dest.toString() + "' may contain unencrypted data from $@", source,
-  "user input (" + source.getSourceType() + ")"
+  "user input (" + source.getSourceType() + ")"*/
+from File f
+where f.getBaseName() = ["main.cpp", "main.c"]
+select f, "This is main"
