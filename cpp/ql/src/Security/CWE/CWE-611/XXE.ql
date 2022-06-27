@@ -43,6 +43,12 @@ class XXEConfiguration extends DataFlow::Configuration {
     // flowstate value.
     node.asConvertedExpr().(XxeFlowStateTransformer).transform(flowstate) != flowstate
   }
+
+  override predicate isBarrier(DataFlow::Node node) {
+    // the above `isBarrier` definition isn't working well on global variables,
+    // so block all accesses to globals to avoid spurious results.
+    node.asExpr().(Access).getTarget() instanceof GlobalVariable
+  }
 }
 
 from XXEConfiguration conf, DataFlow::PathNode source, DataFlow::PathNode sink
