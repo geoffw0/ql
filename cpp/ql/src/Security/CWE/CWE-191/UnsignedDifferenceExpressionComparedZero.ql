@@ -15,4 +15,4 @@ import cpp
 
 from Function f
 where f.getName() = "main"
-select f
+select f, "This is main."
