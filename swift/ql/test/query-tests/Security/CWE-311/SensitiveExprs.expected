@@ -1,3 +1,13 @@
+| testAlamofire.swift:150:45:150:45 | password | label:password, type:credential |
+| testAlamofire.swift:152:51:152:51 | password | label:password, type:credential |
+| testAlamofire.swift:154:38:154:38 | email | label:email, type:private information |
+| testAlamofire.swift:159:26:159:26 | email | label:email, type:private information |
+| testAlamofire.swift:161:35:161:35 | email | label:email, type:private information |
+| testAlamofire.swift:163:35:163:35 | email | label:email, type:private information |
+| testAlamofire.swift:177:65:177:65 | password | label:password, type:credential |
+| testAlamofire.swift:179:64:179:64 | password | label:password, type:credential |
+| testAlamofire.swift:186:62:186:62 | password | label:password, type:credential |
+| testAlamofire.swift:188:65:188:65 | password | label:password, type:credential |
 | testCoreData.swift:48:15:48:15 | password | label:password, type:credential |
 | testCoreData.swift:51:24:51:24 | password | label:password, type:credential |
 | testCoreData.swift:58:15:58:15 | password | label:password, type:credential |
