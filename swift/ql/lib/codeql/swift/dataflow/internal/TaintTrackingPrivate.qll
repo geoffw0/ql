@@ -62,6 +62,12 @@ private module Cached {
       f.getAReadContent() instanceof TaintInheritingContent
     )
     or
+    // temp: flow out of tuple parts
+    nodeTo.asExpr().(TupleExpr).getAnElement() = nodeFrom.asExpr()
+    or
+    // temp: flow out of dictionary parts
+    nodeTo.asExpr().(DictionaryExpr).getAnElement() = nodeFrom.asExpr()
+    or
     // flow through a flow summary (extension of `SummaryModelCsv`)
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
   }

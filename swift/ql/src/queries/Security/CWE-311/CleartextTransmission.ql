@@ -25,7 +25,7 @@ abstract class Transmitted extends Expr { }
 /**
  * An `Expr` that is transmitted with `NWConnection.send`.
  */
-/*class NWConnectionSend extends Transmitted {
+class NWConnectionSend extends Transmitted {
   NWConnectionSend() {
     // `content` arg to `NWConnection.send` is a sink
     exists(CallExpr call |
@@ -35,13 +35,13 @@ abstract class Transmitted extends Expr { }
       call.getArgument(0).getExpr() = this
     )
   }
-}*/
+}
 
 /**
  * An `Expr` that is used to form a `URL`. Such expressions are very likely to
  * be transmitted over a network, because that's what URLs are for.
  */
-/*class Url extends Transmitted {
+class Url extends Transmitted {
   Url() {
     // `string` arg in `URL.init` is a sink
     // (we assume here that the URL goes on to be used in a network operation)
@@ -52,7 +52,7 @@ abstract class Transmitted extends Expr { }
       call.getArgument(0).getExpr() = this
     )
   }
-}*/
+}
 
 /**
  * An `Expr` that transmitted through the Alamofire library.
@@ -120,13 +120,13 @@ class DictionaryInheritTaint extends TaintInheritingContent, DataFlow::Content::
   }
 }*/
 
-/*from CleartextTransmissionConfig config, DataFlow::PartialPathNode sourceNode, DataFlow::PartialPathNode sinkNode
+from CleartextTransmissionConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
 where config.hasFlowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode,
   "This operation transmits '" + sinkNode.getNode().toString() +
     "', which may contain unencrypted sensitive data from $@.", sourceNode,
-  sourceNode.getNode().toString()*/
-
+  sourceNode.getNode().toString()
+/*
 from CleartextTransmissionConfig config, DataFlow::PartialPathNode sourceNode, DataFlow::PartialPathNode sinkNode
 where config.hasPartialFlow(sourceNode, sinkNode, _)
 and sinkNode.getNode().getLocation().getFile().getBaseName() = "testAlamofire.swift"
@@ -135,7 +135,7 @@ select
   concat(sinkNode.getNode().asExpr().getAQlClass(), ", "),
   concat(ApplyExpr ae | ae.getAnArgument().getExpr() = sinkNode.getNode().asExpr() | ae.getAQlClass(), ", "),
   concat(DictionaryExpr de | de.getAnElement() = sinkNode.getNode().asExpr() | de.getAQlClass(), ", ")
-
+*/
 //from DictionaryExpr de
 //select de, concat(de.getAnElement().toString(), ", "), concat(de.getAnElement().getAQlClass(), ", ")
 //from TupleExpr te
