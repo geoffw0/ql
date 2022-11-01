@@ -46,6 +46,14 @@ module Generated {
     final Argument getAnArgument() { result = getArgument(_) }
 
     /**
+     * Gets the argument of this `ApplyExpr` called `label` (if any).
+     */
+    final Argument getArgumentWithLabel(string label) {
+      result = getAnArgument() and
+      result.getLabel() = label
+    }
+
+    /**
      * Gets the number of arguments passed to the applied function.
      */
     final int getNumberOfArguments() { result = count(getAnArgument()) }
