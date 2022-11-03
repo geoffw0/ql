@@ -1,3 +1,65 @@
+| test2.swift:5:9:5:9 | WriteDef | test2.swift:10:15:10:15 | d1 |
+| test2.swift:5:14:5:57 | [...] | test2.swift:5:9:5:9 | WriteDef |
+| test2.swift:6:9:6:9 | WriteDef | test2.swift:14:18:14:18 | strA |
+| test2.swift:6:16:6:16 | a | test2.swift:6:9:6:9 | WriteDef |
+| test2.swift:7:9:7:9 | WriteDef | test2.swift:15:18:15:18 | strB |
+| test2.swift:7:16:7:16 | b | test2.swift:7:9:7:9 | WriteDef |
+| test2.swift:8:9:8:9 | WriteDef | test2.swift:16:18:16:18 | strC |
+| test2.swift:8:16:8:16 | c | test2.swift:8:9:8:9 | WriteDef |
+| test2.swift:10:15:10:15 | [post] d1 | test2.swift:11:15:11:15 | d1 |
+| test2.swift:10:15:10:15 | d1 | test2.swift:11:15:11:15 | d1 |
+| test2.swift:10:15:10:21 | ...[...] | test2.swift:10:15:10:22 | ...! |
+| test2.swift:11:15:11:15 | [post] d1 | test2.swift:12:15:12:15 | d1 |
+| test2.swift:11:15:11:15 | d1 | test2.swift:12:15:12:15 | d1 |
+| test2.swift:11:15:11:21 | ...[...] | test2.swift:11:15:11:22 | ...! |
+| test2.swift:12:15:12:15 | [post] d1 | test2.swift:14:15:14:15 | d1 |
+| test2.swift:12:15:12:15 | d1 | test2.swift:14:15:14:15 | d1 |
+| test2.swift:12:15:12:21 | ...[...] | test2.swift:12:15:12:22 | ...! |
+| test2.swift:14:15:14:15 | [post] d1 | test2.swift:15:15:15:15 | d1 |
+| test2.swift:14:15:14:15 | d1 | test2.swift:15:15:15:15 | d1 |
+| test2.swift:14:15:14:22 | ...[...] | test2.swift:14:15:14:23 | ...! |
+| test2.swift:15:15:15:15 | [post] d1 | test2.swift:16:15:16:15 | d1 |
+| test2.swift:15:15:15:15 | d1 | test2.swift:16:15:16:15 | d1 |
+| test2.swift:15:15:15:22 | ...[...] | test2.swift:15:15:15:23 | ...! |
+| test2.swift:16:15:16:22 | ...[...] | test2.swift:16:15:16:23 | ...! |
+| test2.swift:32:9:32:9 | WriteDef | test2.swift:34:15:34:15 | d2 |
+| test2.swift:32:14:32:48 | [...] | test2.swift:32:9:32:9 | WriteDef |
+| test2.swift:34:15:34:15 | [post] d2 | test2.swift:35:15:35:15 | d2 |
+| test2.swift:34:15:34:15 | d2 | test2.swift:35:15:35:15 | d2 |
+| test2.swift:34:15:34:19 | ...[...] | test2.swift:34:15:34:20 | ...! |
+| test2.swift:35:15:35:15 | [post] d2 | test2.swift:36:15:36:15 | d2 |
+| test2.swift:35:15:35:15 | d2 | test2.swift:36:15:36:15 | d2 |
+| test2.swift:35:15:35:19 | ...[...] | test2.swift:35:15:35:20 | ...! |
+| test2.swift:36:15:36:15 | [post] d2 | test2.swift:38:15:38:15 | d2 |
+| test2.swift:36:15:36:15 | d2 | test2.swift:38:15:38:15 | d2 |
+| test2.swift:36:15:36:19 | ...[...] | test2.swift:36:15:36:20 | ...! |
+| test2.swift:38:15:38:23 | ...[...] | test2.swift:38:15:38:24 | ...! |
+| test2.swift:42:9:42:28 | WriteDef | test2.swift:44:15:44:15 | d3 |
+| test2.swift:42:32:42:34 | [...] | test2.swift:42:9:42:28 | WriteDef |
+| test2.swift:44:15:44:15 | &... | test2.swift:46:5:46:5 | d3 |
+| test2.swift:44:15:44:15 | [post] &... | test2.swift:46:5:46:5 | d3 |
+| test2.swift:44:15:44:15 | d3 | test2.swift:44:15:44:15 | &... |
+| test2.swift:46:5:46:5 | &... | test2.swift:48:15:48:15 | d3 |
+| test2.swift:46:5:46:5 | [post] &... | test2.swift:48:15:48:15 | d3 |
+| test2.swift:46:5:46:5 | d3 | test2.swift:46:5:46:5 | &... |
+| test2.swift:48:15:48:15 | &... | test2.swift:49:15:49:15 | d3 |
+| test2.swift:48:15:48:15 | [post] &... | test2.swift:49:15:49:15 | d3 |
+| test2.swift:48:15:48:15 | d3 | test2.swift:48:15:48:15 | &... |
+| test2.swift:49:15:49:15 | &... | test2.swift:51:5:51:5 | d3 |
+| test2.swift:49:15:49:15 | [post] &... | test2.swift:51:5:51:5 | d3 |
+| test2.swift:49:15:49:15 | d3 | test2.swift:49:15:49:15 | &... |
+| test2.swift:49:15:49:23 | ...[...] | test2.swift:49:15:49:24 | ...! |
+| test2.swift:51:5:51:5 | &... | test2.swift:53:15:53:15 | d3 |
+| test2.swift:51:5:51:5 | [post] &... | test2.swift:53:15:53:15 | d3 |
+| test2.swift:51:5:51:5 | d3 | test2.swift:51:5:51:5 | &... |
+| test2.swift:53:15:53:15 | &... | test2.swift:54:15:54:15 | d3 |
+| test2.swift:53:15:53:15 | [post] &... | test2.swift:54:15:54:15 | d3 |
+| test2.swift:53:15:53:15 | d3 | test2.swift:53:15:53:15 | &... |
+| test2.swift:54:15:54:15 | d3 | test2.swift:54:15:54:15 | &... |
+| test2.swift:54:15:54:23 | ...[...] | test2.swift:54:15:54:24 | ...! |
+| test2.swift:58:9:58:28 | WriteDef | test2.swift:60:5:60:5 | d4 |
+| test2.swift:58:32:58:34 | [...] | test2.swift:58:9:58:28 | WriteDef |
+| test2.swift:60:5:60:5 | d4 | test2.swift:60:5:60:5 | &... |
 | test.swift:6:9:6:13 | WriteDef | test.swift:7:15:7:15 | t1 |
 | test.swift:6:19:6:26 | call to source() | test.swift:6:9:6:13 | WriteDef |
 | test.swift:7:15:7:15 | t1 | test.swift:8:10:8:10 | t1 |
