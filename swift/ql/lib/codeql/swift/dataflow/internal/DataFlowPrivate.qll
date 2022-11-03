@@ -179,7 +179,13 @@ private module Cached {
   cached
   newtype TContent =
     TFieldContent(FieldDecl f) or
-    TTupleContent(int index) { exists(any(TupleExpr te).getElement(index)) }
+    TTupleContent(int index) { exists(any(TupleExpr tn).getElement(index)) } or
+    TDictionaryValueContent(string key) {
+      exists(DictionaryExpr dict, TupleExpr tuple |
+        tuple = dict.getAnElement() and
+        key = tuple.getElement(0).(StringLiteralExpr).getValue()
+      )
+    }
 }
 
 /**
@@ -523,6 +529,16 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = tuple.getIndex()))
   )
   or
+  // creation of a dictionary `[key: value, ...]` (as a sequence of tuples)
+  exists(DictionaryExpr dict, TupleExpr tuple |
+    tuple = dict.getAnElement() and
+    node1.asExpr() = tuple.getElement(1) and // value
+    node2.asExpr() = dict and
+    c.isSingleton(any(Content::DictionaryValueContent dc |
+        dc.getKey() = tuple.getElement(0).(StringLiteralExpr).getValue()
+      )) // key
+  )
+  or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
 }
 
@@ -542,6 +558,15 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node1.asExpr() = tuple.getSubExpr() and
     node2.asExpr() = tuple and
     c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = tuple.getIndex()))
+  )
+  or
+  // read of a dictionary member `dict[key]`
+  exists(SubscriptExpr se |
+    node1.asExpr() = se.getBase() and // dict
+    node2.asExpr() = se and
+    c.isSingleton(any(Content::DictionaryValueContent dc |
+        dc.getKey() = se.getArgument(0).getExpr().(StringLiteralExpr).getValue()
+      )) // key
   )
 }
 

@@ -9,7 +9,7 @@ func testDicts() {
 
     sink(arg: d1["a"]!)
     sink(arg: d1["b"]!)
-    sink(arg: d1["c"]!) // $ MISSING: flow=318
+    sink(arg: d1["c"]!) // $ flow=5
 
     sink(arg: d1[strA]!)
     sink(arg: d1[strB]!)
