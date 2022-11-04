@@ -32,7 +32,7 @@ func testDicts2() {
     let d2 = [1: "one", 2: source(), 3: "three"]
 
     sink(arg: d2[1]!)
-    sink(arg: d2[2]!) // $ MISSING: flow=32
+    sink(arg: d2[2]!) // $ flow=32
     sink(arg: d2[3]!)
 
     sink(arg: d2[1 + 1]!) // $ MISSING: flow=32

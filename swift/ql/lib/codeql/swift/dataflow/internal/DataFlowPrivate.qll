@@ -183,7 +183,10 @@ private module Cached {
     TDictionaryValueContent(string key) {
       exists(DictionaryExpr dict, TupleExpr tuple |
         tuple = dict.getAnElement() and
-        key = tuple.getElement(0).(StringLiteralExpr).getValue()
+        (
+          key = tuple.getElement(0).(StringLiteralExpr).getValue() or
+          key = tuple.getElement(0).(IntegerLiteralExpr).getStringValue()
+        )
       )
     }
 }
@@ -535,8 +538,9 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node1.asExpr() = tuple.getElement(1) and // value
     node2.asExpr() = dict and
     c.isSingleton(any(Content::DictionaryValueContent dc |
-        dc.getKey() = tuple.getElement(0).(StringLiteralExpr).getValue()
-      )) // key
+        dc.getKey() = tuple.getElement(0).(StringLiteralExpr).getValue() or // key
+        dc.getKey() = tuple.getElement(0).(IntegerLiteralExpr).getStringValue() // key
+      ))
   )
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
@@ -560,13 +564,14 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = tuple.getIndex()))
   )
   or
-  // read of a dictionary member `dict[key]`
+  // read of a dictionary member `dict[key]` with known key
   exists(SubscriptExpr se |
     node1.asExpr() = se.getBase() and // dict
     node2.asExpr() = se and
     c.isSingleton(any(Content::DictionaryValueContent dc |
-        dc.getKey() = se.getArgument(0).getExpr().(StringLiteralExpr).getValue()
-      )) // key
+        dc.getKey() = se.getArgument(0).getExpr().(StringLiteralExpr).getValue() or // key
+        dc.getKey() = se.getArgument(0).getExpr().(IntegerLiteralExpr).getStringValue() // key
+      ))
   )
 }
 
