@@ -46,12 +46,12 @@ func testDicts3() {
     d3["val"] = source()
 
     sink(arg: d3["val"] ?? "default") // $ MISSING: flow=46
-    sink(arg: d3["val"]!) // $ MISSING: flow=46
+    sink(arg: d3["val"]!) // $ flow=46
 
     d3["val"] = nil
 
     sink(arg: d3["val"] ?? "default")
-    sink(arg: d3["val"]!)
+    sink(arg: d3["val"]!) // $ SPURIOUS: flow=46
 }
 
 func testDicts4() {

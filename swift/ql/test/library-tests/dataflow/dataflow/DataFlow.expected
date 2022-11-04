@@ -11,6 +11,13 @@ edges
 | test2.swift:32:28:32:35 | call to source() :  | test2.swift:32:14:32:48 | [...] [Dictionary value at key 2] :  |
 | test2.swift:35:15:35:15 | d2 [Dictionary value at key 2] :  | test2.swift:35:15:35:19 | ...[...] :  |
 | test2.swift:35:15:35:19 | ...[...] :  | test2.swift:35:15:35:20 | ...! |
+| test2.swift:46:5:46:5 | &... [Dictionary value at key val] :  | test2.swift:49:15:49:15 | &... [Dictionary value at key val] :  |
+| test2.swift:46:5:46:5 | &... [Dictionary value at key val] :  | test2.swift:54:15:54:15 | &... [Dictionary value at key val] :  |
+| test2.swift:46:17:46:24 | call to source() :  | test2.swift:46:5:46:5 | &... [Dictionary value at key val] :  |
+| test2.swift:49:15:49:15 | &... [Dictionary value at key val] :  | test2.swift:49:15:49:23 | ...[...] :  |
+| test2.swift:49:15:49:23 | ...[...] :  | test2.swift:49:15:49:24 | ...! |
+| test2.swift:54:15:54:15 | &... [Dictionary value at key val] :  | test2.swift:54:15:54:23 | ...[...] :  |
+| test2.swift:54:15:54:23 | ...[...] :  | test2.swift:54:15:54:24 | ...! |
 | test.swift:6:19:6:26 | call to source() :  | test.swift:7:15:7:15 | t1 |
 | test.swift:6:19:6:26 | call to source() :  | test.swift:9:15:9:15 | t1 |
 | test.swift:6:19:6:26 | call to source() :  | test.swift:10:15:10:15 | t2 |
@@ -150,6 +157,14 @@ nodes
 | test2.swift:35:15:35:15 | d2 [Dictionary value at key 2] :  | semmle.label | d2 [Dictionary value at key 2] :  |
 | test2.swift:35:15:35:19 | ...[...] :  | semmle.label | ...[...] :  |
 | test2.swift:35:15:35:20 | ...! | semmle.label | ...! |
+| test2.swift:46:5:46:5 | &... [Dictionary value at key val] :  | semmle.label | &... [Dictionary value at key val] :  |
+| test2.swift:46:17:46:24 | call to source() :  | semmle.label | call to source() :  |
+| test2.swift:49:15:49:15 | &... [Dictionary value at key val] :  | semmle.label | &... [Dictionary value at key val] :  |
+| test2.swift:49:15:49:23 | ...[...] :  | semmle.label | ...[...] :  |
+| test2.swift:49:15:49:24 | ...! | semmle.label | ...! |
+| test2.swift:54:15:54:15 | &... [Dictionary value at key val] :  | semmle.label | &... [Dictionary value at key val] :  |
+| test2.swift:54:15:54:23 | ...[...] :  | semmle.label | ...[...] :  |
+| test2.swift:54:15:54:24 | ...! | semmle.label | ...! |
 | test.swift:6:19:6:26 | call to source() :  | semmle.label | call to source() :  |
 | test.swift:7:15:7:15 | t1 | semmle.label | t1 |
 | test.swift:9:15:9:15 | t1 | semmle.label | t1 |
@@ -312,6 +327,8 @@ subpaths
 #select
 | test2.swift:12:15:12:22 | ...! | test2.swift:5:49:5:56 | call to source() :  | test2.swift:12:15:12:22 | ...! | result |
 | test2.swift:35:15:35:20 | ...! | test2.swift:32:28:32:35 | call to source() :  | test2.swift:35:15:35:20 | ...! | result |
+| test2.swift:49:15:49:24 | ...! | test2.swift:46:17:46:24 | call to source() :  | test2.swift:49:15:49:24 | ...! | result |
+| test2.swift:54:15:54:24 | ...! | test2.swift:46:17:46:24 | call to source() :  | test2.swift:54:15:54:24 | ...! | result |
 | test.swift:7:15:7:15 | t1 | test.swift:6:19:6:26 | call to source() :  | test.swift:7:15:7:15 | t1 | result |
 | test.swift:9:15:9:15 | t1 | test.swift:6:19:6:26 | call to source() :  | test.swift:9:15:9:15 | t1 | result |
 | test.swift:10:15:10:15 | t2 | test.swift:6:19:6:26 | call to source() :  | test.swift:10:15:10:15 | t2 | result |

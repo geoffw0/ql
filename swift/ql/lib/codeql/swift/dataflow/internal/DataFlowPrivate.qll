@@ -185,6 +185,11 @@ private module Cached {
         tuple = dict.getAnElement() and
         key = tuple.getElement(0).(BuiltinLiteralExpr).getValueString()
       )
+      or
+      exists(SubscriptExpr se |
+        //se.getBase().getType() instanceof DictionaryType and
+        key = se.getArgument(0).getExpr().(BuiltinLiteralExpr).getValueString()
+      )
     }
 }
 
@@ -536,6 +541,16 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node2.asExpr() = dict and
     c.isSingleton(any(Content::DictionaryValueContent dc |
         dc.getKey() = tuple.getElement(0).(BuiltinLiteralExpr).getValueString() // key
+      ))
+  )
+  or
+  // assignment to a dict member `dict[key] = value`
+  exists(SubscriptExpr se, AssignExpr assign |
+    se = assign.getDest() and
+    node1.asExpr() = assign.getSource() and
+    node2/*(PostUpdateNode).getPreUpdateNode().*/ .asExpr() = se.getBase() and
+    c.isSingleton(any(Content::DictionaryValueContent dc |
+        dc.getKey() = se.getArgument(0).getExpr().(BuiltinLiteralExpr).getValueString()
       ))
   )
   or
