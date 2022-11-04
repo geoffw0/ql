@@ -51,7 +51,7 @@ func testDicts3() {
     d3["val"] = nil
 
     sink(arg: d3["val"] ?? "default")
-    sink(arg: d3["val"]!) // $ SPURIOUS: flow=46
+    sink(arg: d3["val"]!)
 }
 
 func testDicts4() {

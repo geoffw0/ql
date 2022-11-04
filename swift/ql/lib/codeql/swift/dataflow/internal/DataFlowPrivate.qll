@@ -548,7 +548,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   exists(SubscriptExpr se, AssignExpr assign |
     se = assign.getDest() and
     node1.asExpr() = assign.getSource() and
-    node2/*(PostUpdateNode).getPreUpdateNode().*/ .asExpr() = se.getBase() and
+    node2.(PostUpdateNode).getPreUpdateNode().asExpr() = se.getBase() and
     c.isSingleton(any(Content::DictionaryValueContent dc |
         dc.getKey() = se.getArgument(0).getExpr().(BuiltinLiteralExpr).getValueString()
       ))
