@@ -183,10 +183,7 @@ private module Cached {
     TDictionaryValueContent(string key) {
       exists(DictionaryExpr dict, TupleExpr tuple |
         tuple = dict.getAnElement() and
-        (
-          key = tuple.getElement(0).(StringLiteralExpr).getValue() or
-          key = tuple.getElement(0).(IntegerLiteralExpr).getStringValue()
-        )
+        key = tuple.getElement(0).(BuiltinLiteralExpr).getValueString()
       )
     }
 }
@@ -538,8 +535,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node1.asExpr() = tuple.getElement(1) and // value
     node2.asExpr() = dict and
     c.isSingleton(any(Content::DictionaryValueContent dc |
-        dc.getKey() = tuple.getElement(0).(StringLiteralExpr).getValue() or // key
-        dc.getKey() = tuple.getElement(0).(IntegerLiteralExpr).getStringValue() // key
+        dc.getKey() = tuple.getElement(0).(BuiltinLiteralExpr).getValueString() // key
       ))
   )
   or
@@ -569,8 +565,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node1.asExpr() = se.getBase() and // dict
     node2.asExpr() = se and
     c.isSingleton(any(Content::DictionaryValueContent dc |
-        dc.getKey() = se.getArgument(0).getExpr().(StringLiteralExpr).getValue() or // key
-        dc.getKey() = se.getArgument(0).getExpr().(IntegerLiteralExpr).getStringValue() // key
+        dc.getKey() = se.getArgument(0).getExpr().(BuiltinLiteralExpr).getValueString() // key
       ))
   )
 }
