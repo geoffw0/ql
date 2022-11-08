@@ -163,11 +163,11 @@ func test1(username: String, password: String, email: String, harmless: String) 
 	let params5 = MyEncodable(value: email)
 	let params6 = MyEncodable(value: harmless)
 
-	AF.request("http://example.com/", parameters: params1) // BAD
+	AF.request("http://example.com/", parameters: params1) // BAD [NOT DETECTED]
 	AF.request("http://example.com/", parameters: params2) // GOOD (not sensitive)
-	AF.request("http://example.com/", method:.post, parameters: params3) // BAD
+	AF.request("http://example.com/", method:.post, parameters: params3) // BAD [NOT DETECTED]
 	AF.request("http://example.com/", method:.post, parameters: params4) // GOOD (not sensitive)
-	AF.request("http://example.com/", parameters: params5) // BAD
+	AF.request("http://example.com/", parameters: params5) // BAD [NOT DETECTED]
 	AF.request("http://example.com/", parameters: params6) // GOOD (not sensitive)
 
 	// request headers
@@ -188,12 +188,12 @@ func test1(username: String, password: String, email: String, harmless: String) 
 	headers7.update(name: "Authorization", value: username + ":" + password)
 	headers8.update(name: "Data", value: harmless)
 
-	AF.request("http://example.com/", headers: headers1) // BAD
+	AF.request("http://example.com/", headers: headers1) // BAD [NOT DETECTED]
 	AF.request("http://example.com/", headers: headers2) // GOOD (not sensitive)
-	AF.request("http://example.com/", headers: headers3) // BAD
+	AF.request("http://example.com/", headers: headers3) // BAD [NOT DETECTED]
 	AF.request("http://example.com/", headers: headers4) // GOOD (not sensitive)
-	AF.request("http://example.com/", headers: headers5) // BAD
+	AF.request("http://example.com/", headers: headers5) // BAD [NOT DETECTED]
 	AF.request("http://example.com/", headers: headers6) // GOOD (not sensitive)
-	AF.request("http://example.com/", headers: headers7) // BAD
+	AF.request("http://example.com/", headers: headers7) // BAD [NOT DETECTED]
 	AF.request("http://example.com/", headers: headers8) // GOOD (not sensitive)
 }
