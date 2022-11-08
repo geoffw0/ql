@@ -86,7 +86,7 @@ private module Cached {
       hasExprNode(n,
         [
           any(Argument arg | modifiable(arg)).getExpr(), any(MemberRefExpr ref).getBase(),
-          any(ApplyExpr apply).getQualifier()
+          any(ApplyExpr apply).getQualifier(), any(TupleElementExpr te).getSubExpr()
         ])
     }
 
@@ -177,7 +177,20 @@ private module Cached {
   newtype TContentSet = TSingletonContent(Content c)
 
   cached
-  newtype TContent = TFieldContent(FieldDecl f)
+  newtype TContent =
+    TFieldContent(FieldDecl f) or
+    TTupleContent(int index) { exists(any(TupleExpr tn).getElement(index)) } or
+    TDictionaryValueContent(string key) {
+      exists(DictionaryExpr dict, TupleExpr tuple |
+        tuple = dict.getAnElement() and
+        key = tuple.getElement(0).(BuiltinLiteralExpr).getValueString()
+      )
+      or
+      exists(SubscriptExpr se |
+        //se.getBase().getType() instanceof DictionaryType and
+        key = se.getArgument(0).getExpr().(BuiltinLiteralExpr).getValueString()
+      )
+    }
 }
 
 /**
@@ -498,11 +511,47 @@ predicate jumpStep(Node pred, Node succ) {
 }
 
 predicate storeStep(Node node1, ContentSet c, Node node2) {
+  // assignment to a member variable `obj.member = value`
   exists(MemberRefExpr ref, AssignExpr assign |
     ref = assign.getDest() and
     node1.asExpr() = assign.getSource() and
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = ref.getBase() and
     c.isSingleton(any(Content::FieldContent ct | ct.getField() = ref.getMember()))
+  )
+  or
+  // creation of a tuple `(v1, v2)`
+  exists(TupleExpr tuple, int pos |
+    node1.asExpr() = tuple.getElement(pos) and
+    node2.asExpr() = tuple and
+    c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = pos))
+  )
+  or
+  // assignment to a tuple member `tuple.index = value`
+  exists(TupleElementExpr tuple, AssignExpr assign |
+    tuple = assign.getDest() and
+    node1.asExpr() = assign.getSource() and
+    node2.(PostUpdateNode).getPreUpdateNode().asExpr() = tuple.getSubExpr() and
+    c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = tuple.getIndex()))
+  )
+  or
+  // creation of a dictionary `[key: value, ...]` (as a sequence of tuples)
+  exists(DictionaryExpr dict, TupleExpr tuple |
+    tuple = dict.getAnElement() and
+    node1.asExpr() = tuple.getElement(1) and // value
+    node2.asExpr() = dict and
+    c.isSingleton(any(Content::DictionaryValueContent dc |
+        dc.getKey() = tuple.getElement(0).(BuiltinLiteralExpr).getValueString() // key
+      ))
+  )
+  or
+  // assignment to a dict member `dict[key] = value`
+  exists(SubscriptExpr se, AssignExpr assign |
+    se = assign.getDest() and
+    node1.asExpr() = assign.getSource() and
+    node2.(PostUpdateNode).getPreUpdateNode().asExpr() = se.getBase() and
+    c.isSingleton(any(Content::DictionaryValueContent dc |
+        dc.getKey() = se.getArgument(0).getExpr().(BuiltinLiteralExpr).getValueString()
+      ))
   )
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
@@ -511,11 +560,28 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
 predicate isLValue(Expr e) { any(AssignExpr assign).getDest() = e }
 
 predicate readStep(Node node1, ContentSet c, Node node2) {
+  // read of a member variable `obj.member`
   exists(MemberRefExpr ref |
     not isLValue(ref) and
     node1.asExpr() = ref.getBase() and
     node2.asExpr() = ref and
     c.isSingleton(any(Content::FieldContent ct | ct.getField() = ref.getMember()))
+  )
+  or
+  // read of a tuple member `tuple.index`
+  exists(TupleElementExpr tuple |
+    node1.asExpr() = tuple.getSubExpr() and
+    node2.asExpr() = tuple and
+    c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = tuple.getIndex()))
+  )
+  or
+  // read of a dictionary member `dict[key]` with known key
+  exists(SubscriptExpr se |
+    node1.asExpr() = se.getBase() and // dict
+    node2.asExpr() = se and
+    c.isSingleton(any(Content::DictionaryValueContent dc |
+        dc.getKey() = se.getArgument(0).getExpr().(BuiltinLiteralExpr).getValueString() // key
+      ))
   )
 }
 

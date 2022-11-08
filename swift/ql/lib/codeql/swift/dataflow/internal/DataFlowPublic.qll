@@ -159,6 +159,30 @@ module Content {
 
     override string toString() { result = f.toString() }
   }
+
+  /** An element of a tuple at a specific index. */
+  class TupleContent extends Content, TTupleContent {
+    private int index;
+
+    TupleContent() { this = TTupleContent(index) }
+
+    /** Gets the index for this tuple element. */
+    int getIndex() { result = index }
+
+    override string toString() { result = "Tuple element at index " + index.toString() }
+  }
+
+  /** A value stored in a dictionary under a specific key. */
+  class DictionaryValueContent extends TDictionaryValueContent, Content {
+    string key;
+
+    DictionaryValueContent() { this = TDictionaryValueContent(key) }
+
+    /** Gets the key associated with this dictionary value. */
+    string getKey() { result = key }
+
+    override string toString() { result = "Dictionary value at key " + key }
+  }
 }
 
 /**
