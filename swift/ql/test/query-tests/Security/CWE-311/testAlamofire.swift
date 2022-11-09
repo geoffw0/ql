@@ -163,6 +163,8 @@ func test1(username: String, password: String, email: String, harmless: String) 
 	let params5 = MyEncodable(value: email)
 	let params6 = MyEncodable(value: harmless)
 
+	AF.request(params1["value"]!) // BAD
+
 	AF.request("http://example.com/", parameters: params1) // BAD [NOT DETECTED]
 	AF.request("http://example.com/", parameters: params2) // GOOD (not sensitive)
 	AF.request("http://example.com/", method:.post, parameters: params3) // BAD [NOT DETECTED]
