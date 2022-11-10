@@ -84,7 +84,7 @@ class CleartextTransmissionConfig extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node node) { node.asExpr() instanceof Transmitted }
 
-/*  override predicate isSanitizerIn(DataFlow::Node node) {
+  override predicate isSanitizerIn(DataFlow::Node node) {
     // make sources barriers so that we only report the closest instance
     isSource(node)
   }
@@ -92,30 +92,28 @@ class CleartextTransmissionConfig extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) {
     // encryption barrier
     node.asExpr() instanceof EncryptedExpr
-  }*/
+  }
 
   override int explorationLimit() { result = 100}
 
-//slow  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) { node.getLocation().getStartLine() = 159 }
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet content) {
+    super.allowImplicitRead(node, content) or
+    (
+      isSink(node) and
+      // constrain `content` to a dictionary value inside the node.
+      content.getAReadContent() instanceof DataFlow::Content::DictionaryValueContent
+      // TODO: -> DictionaryAnyValueContent!  it will be a singleton!
+    )
+  }
 }
 
-/*from CleartextTransmissionConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
+from CleartextTransmissionConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
 where config.hasFlowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode,
   "This operation transmits '" + sinkNode.getNode().toString() +
     "', which may contain unencrypted sensitive data from $@.", sourceNode,
   sourceNode.getNode().toString()
-*/
-/*from CleartextTransmissionConfig config, DataFlow::PartialPathNode sourceNode, DataFlow::PartialPathNode sinkNode
-where config.hasPartialFlow(sourceNode, sinkNode, _)
-select sinkNode.getNode(), sinkNode.getNode().toString()*/
-
-/*from CleartextTransmissionConfig config, DataFlow::PartialPathNode sourceNode, DataFlow::PartialPathNode sinkNode
-where config.hasPartialFlowRev(sourceNode, sinkNode, _)
-and sourceNode.getNode().getLocation().getFile().getBaseName() = "testAlamofire.swift"
-select sourceNode.getNode()
-*/
-
+/*
 string describe(DataFlow::Node n) {
   (any(CleartextTransmissionConfig c).isSource(n) and result = "isSource") or
   (any(CleartextTransmissionConfig c).isSink(n) and result = "isSink") or
@@ -124,9 +122,11 @@ string describe(DataFlow::Node n) {
     (any(CleartextTransmissionConfig c).hasPartialFlow(_, pn, _) and result = "flow") or
     (any(CleartextTransmissionConfig c).hasPartialFlowRev(pn, _, _) and result = "rev")
   ) or
-  (any(CleartextTransmissionConfig c).hasFlow(_, n) and result = "RESULT")
+  (any(CleartextTransmissionConfig c).hasFlow(_, n) and result = "RESULT") or
+  (n.getLocation().getStartLine() = 167 and result = "167")
 }
 
 from DataFlow::Node n
 where n.getLocation().getFile().getBaseName() = "testAlamofire.swift"
 select n, strictconcat(describe(n), ", ")
+*/

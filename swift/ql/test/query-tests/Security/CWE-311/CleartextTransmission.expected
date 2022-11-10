@@ -2,6 +2,16 @@ edges
 | testAlamofire.swift:150:45:150:45 | password :  | testAlamofire.swift:150:13:150:45 | ... .+(_:_:) ... |
 | testAlamofire.swift:152:51:152:51 | password :  | testAlamofire.swift:152:19:152:51 | ... .+(_:_:) ... |
 | testAlamofire.swift:154:38:154:38 | email :  | testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... |
+| testAlamofire.swift:159:16:159:31 | [...] [Dictionary value at key value] :  | testAlamofire.swift:166:13:166:13 | params1 [Dictionary value at key value] :  |
+| testAlamofire.swift:159:16:159:31 | [...] [Dictionary value at key value] :  | testAlamofire.swift:169:48:169:48 | params1 |
+| testAlamofire.swift:159:26:159:26 | email :  | testAlamofire.swift:159:16:159:31 | [...] [Dictionary value at key value] :  |
+| testAlamofire.swift:166:13:166:13 | params1 [Dictionary value at key value] :  | testAlamofire.swift:166:13:166:28 | ...[...] :  |
+| testAlamofire.swift:166:13:166:28 | ...[...] :  | testAlamofire.swift:166:13:166:29 | ...! |
+| testAlamofire.swift:167:48:167:63 | [...] [Dictionary value at key value] :  | testAlamofire.swift:167:48:167:63 | [...] |
+| testAlamofire.swift:167:58:167:58 | email :  | testAlamofire.swift:167:48:167:63 | [...] [Dictionary value at key value] :  |
+| testAlamofire.swift:180:30:180:73 | [...] [Dictionary value at key Authorization] :  | testAlamofire.swift:194:45:194:45 | headers1 |
+| testAlamofire.swift:180:48:180:65 | ... .+(_:_:) ... :  | testAlamofire.swift:180:30:180:73 | [...] [Dictionary value at key Authorization] :  |
+| testAlamofire.swift:180:65:180:65 | password :  | testAlamofire.swift:180:48:180:65 | ... .+(_:_:) ... :  |
 | testSend.swift:41:10:41:18 | data :  | testSend.swift:41:45:41:45 | data :  |
 | testSend.swift:45:13:45:13 | password :  | testSend.swift:52:27:52:27 | str1 |
 | testSend.swift:46:13:46:13 | password :  | testSend.swift:53:27:53:27 | str2 |
@@ -17,6 +27,19 @@ nodes
 | testAlamofire.swift:152:51:152:51 | password :  | semmle.label | password :  |
 | testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
 | testAlamofire.swift:154:38:154:38 | email :  | semmle.label | email :  |
+| testAlamofire.swift:159:16:159:31 | [...] [Dictionary value at key value] :  | semmle.label | [...] [Dictionary value at key value] :  |
+| testAlamofire.swift:159:26:159:26 | email :  | semmle.label | email :  |
+| testAlamofire.swift:166:13:166:13 | params1 [Dictionary value at key value] :  | semmle.label | params1 [Dictionary value at key value] :  |
+| testAlamofire.swift:166:13:166:28 | ...[...] :  | semmle.label | ...[...] :  |
+| testAlamofire.swift:166:13:166:29 | ...! | semmle.label | ...! |
+| testAlamofire.swift:167:48:167:63 | [...] | semmle.label | [...] |
+| testAlamofire.swift:167:48:167:63 | [...] [Dictionary value at key value] :  | semmle.label | [...] [Dictionary value at key value] :  |
+| testAlamofire.swift:167:58:167:58 | email :  | semmle.label | email :  |
+| testAlamofire.swift:169:48:169:48 | params1 | semmle.label | params1 |
+| testAlamofire.swift:180:30:180:73 | [...] [Dictionary value at key Authorization] :  | semmle.label | [...] [Dictionary value at key Authorization] :  |
+| testAlamofire.swift:180:48:180:65 | ... .+(_:_:) ... :  | semmle.label | ... .+(_:_:) ... :  |
+| testAlamofire.swift:180:65:180:65 | password :  | semmle.label | password :  |
+| testAlamofire.swift:194:45:194:45 | headers1 | semmle.label | headers1 |
 | testSend.swift:29:19:29:19 | passwordPlain | semmle.label | passwordPlain |
 | testSend.swift:41:10:41:18 | data :  | semmle.label | data :  |
 | testSend.swift:41:45:41:45 | data :  | semmle.label | data :  |
@@ -38,6 +61,10 @@ subpaths
 | testAlamofire.swift:150:13:150:45 | ... .+(_:_:) ... | testAlamofire.swift:150:45:150:45 | password :  | testAlamofire.swift:150:13:150:45 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testAlamofire.swift:150:45:150:45 | password :  | password |
 | testAlamofire.swift:152:19:152:51 | ... .+(_:_:) ... | testAlamofire.swift:152:51:152:51 | password :  | testAlamofire.swift:152:19:152:51 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testAlamofire.swift:152:51:152:51 | password :  | password |
 | testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... | testAlamofire.swift:154:38:154:38 | email :  | testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testAlamofire.swift:154:38:154:38 | email :  | email |
+| testAlamofire.swift:166:13:166:29 | ...! | testAlamofire.swift:159:26:159:26 | email :  | testAlamofire.swift:166:13:166:29 | ...! | This operation transmits '...!', which may contain unencrypted sensitive data from $@. | testAlamofire.swift:159:26:159:26 | email :  | email |
+| testAlamofire.swift:167:48:167:63 | [...] | testAlamofire.swift:167:58:167:58 | email :  | testAlamofire.swift:167:48:167:63 | [...] | This operation transmits '[...]', which may contain unencrypted sensitive data from $@. | testAlamofire.swift:167:58:167:58 | email :  | email |
+| testAlamofire.swift:169:48:169:48 | params1 | testAlamofire.swift:159:26:159:26 | email :  | testAlamofire.swift:169:48:169:48 | params1 | This operation transmits 'params1', which may contain unencrypted sensitive data from $@. | testAlamofire.swift:159:26:159:26 | email :  | email |
+| testAlamofire.swift:194:45:194:45 | headers1 | testAlamofire.swift:180:65:180:65 | password :  | testAlamofire.swift:194:45:194:45 | headers1 | This operation transmits 'headers1', which may contain unencrypted sensitive data from $@. | testAlamofire.swift:180:65:180:65 | password :  | password |
 | testSend.swift:29:19:29:19 | passwordPlain | testSend.swift:29:19:29:19 | passwordPlain | testSend.swift:29:19:29:19 | passwordPlain | This operation transmits 'passwordPlain', which may contain unencrypted sensitive data from $@. | testSend.swift:29:19:29:19 | passwordPlain | passwordPlain |
 | testSend.swift:52:27:52:27 | str1 | testSend.swift:45:13:45:13 | password :  | testSend.swift:52:27:52:27 | str1 | This operation transmits 'str1', which may contain unencrypted sensitive data from $@. | testSend.swift:45:13:45:13 | password :  | password |
 | testSend.swift:53:27:53:27 | str2 | testSend.swift:46:13:46:13 | password :  | testSend.swift:53:27:53:27 | str2 | This operation transmits 'str2', which may contain unencrypted sensitive data from $@. | testSend.swift:46:13:46:13 | password :  | password |

@@ -100,7 +100,7 @@ class Session {
 			return DataRequest()
 	}
 
-	func request<Parameters: Encodable>(
+	/*func request<Parameters: Encodable>(
 		_ convertible: URLConvertible,
 		method: HTTPMethod = .get,
 		parameters: Parameters? = nil,
@@ -109,7 +109,7 @@ class Session {
 		interceptor: RequestInterceptor? = nil,
 		requestModifier: RequestModifier? = nil) -> DataRequest {
 			return DataRequest()
-	}
+	}*/
 
 	func streamRequest(
 		_ convertible: URLConvertible,
@@ -160,17 +160,18 @@ func test1(username: String, password: String, email: String, harmless: String) 
 	let params2 = ["value": harmless]
 	let params3 = ["values": ["...", email, "..."]]
 	let params4 = ["values": ["...", harmless, "..."]]
-	let params5 = MyEncodable(value: email)
-	let params6 = MyEncodable(value: harmless)
+	//let params5 = MyEncodable(value: email)
+	//let params6 = MyEncodable(value: harmless)
 
 	AF.request(params1["value"]!) // BAD
+	AF.request("http://example.com/", parameters: ["value": email]) // BAD
 
-	AF.request("http://example.com/", parameters: params1) // BAD [NOT DETECTED]
+	AF.request("http://example.com/", parameters: params1) // BAD
 	AF.request("http://example.com/", parameters: params2) // GOOD (not sensitive)
 	AF.request("http://example.com/", method:.post, parameters: params3) // BAD [NOT DETECTED]
 	AF.request("http://example.com/", method:.post, parameters: params4) // GOOD (not sensitive)
-	AF.request("http://example.com/", parameters: params5) // BAD [NOT DETECTED]
-	AF.request("http://example.com/", parameters: params6) // GOOD (not sensitive)
+	//AF.request("http://example.com/", parameters: params5) // BAD [NOT DETECTED]
+	//AF.request("http://example.com/", parameters: params6) // GOOD (not sensitive)
 
 	// request headers
 	//  - in real usage a password here would normally be base64 encoded for transmission
@@ -190,7 +191,7 @@ func test1(username: String, password: String, email: String, harmless: String) 
 	headers7.update(name: "Authorization", value: username + ":" + password)
 	headers8.update(name: "Data", value: harmless)
 
-	AF.request("http://example.com/", headers: headers1) // BAD [NOT DETECTED]
+	AF.request("http://example.com/", headers: headers1) // BAD
 	AF.request("http://example.com/", headers: headers2) // GOOD (not sensitive)
 	AF.request("http://example.com/", headers: headers3) // BAD [NOT DETECTED]
 	AF.request("http://example.com/", headers: headers4) // GOOD (not sensitive)
