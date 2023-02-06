@@ -171,6 +171,20 @@ private module Cached {
       nodeFrom.asExpr() = ie.getBranch(_)
     )
     or
+    // flow from constructor args -> constructed object (return value)
+    exists(CallExpr ce, ConstructorDecl c |
+      ce.getStaticTarget() = c and
+      nodeFrom.asExpr() = ce.getAnArgument().getExpr() and
+      nodeTo.asExpr() = ce
+    )
+    or
+    // flow from method qualifier -> return value
+    exists(CallExpr ce, MethodDecl m |
+      ce.getStaticTarget() = m and
+      nodeFrom.asExpr() = ce.getQualifier() and
+      nodeTo.asExpr() = ce
+    )
+    or
     // flow through a flow summary (extension of `SummaryModelCsv`)
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
   }

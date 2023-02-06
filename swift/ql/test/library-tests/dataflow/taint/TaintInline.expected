@@ -1,0 +1,7 @@
+| string.swift:258:13:262:4 | call to enumerateLines(invoking:) | Unexpected result: tainted=212 |
+| string.swift:574:13:574:13 | tainted | Fixed missing result:tainted=571 |
+| string.swift:582:13:582:37 | call to String.init(decoding:) | Fixed missing result:tainted=571 |
+| string.swift:583:13:583:40 | ...! | Fixed missing result:tainted=571 |
+| string.swift:616:13:616:33 | call to appending(_:) | Fixed missing result:tainted=571 |
+| string.swift:617:13:617:40 | call to appending(_:) | Unexpected result: tainted=571 |
+| string.swift:629:13:629:27 | ...! | Fixed missing result:tainted=629 |

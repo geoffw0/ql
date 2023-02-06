@@ -6,6 +6,7 @@ edges
 | testSend.swift:33:14:33:32 | call to Data.init(_:) :  | testSend.swift:37:19:37:19 | data2 |
 | testSend.swift:33:19:33:19 | passwordPlain :  | testSend.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  |
 | testSend.swift:33:19:33:19 | passwordPlain :  | testSend.swift:33:14:33:32 | call to Data.init(_:) :  |
+| testSend.swift:33:19:33:19 | passwordPlain :  | testSend.swift:37:19:37:19 | data2 |
 | testSend.swift:41:10:41:18 | data :  | testSend.swift:41:45:41:45 | data :  |
 | testSend.swift:45:13:45:13 | password :  | testSend.swift:52:27:52:27 | str1 |
 | testSend.swift:46:13:46:13 | password :  | testSend.swift:53:27:53:27 | str2 |

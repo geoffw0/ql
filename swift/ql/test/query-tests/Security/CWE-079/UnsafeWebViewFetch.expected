@@ -15,14 +15,25 @@ edges
 | UnsafeWebViewFetch.swift:117:21:117:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:124:25:124:51 | ... .+(_:_:) ... |
 | UnsafeWebViewFetch.swift:117:21:117:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:127:25:127:25 | "..." |
 | UnsafeWebViewFetch.swift:117:21:117:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:131:30:131:30 | remoteString :  |
+| UnsafeWebViewFetch.swift:117:21:117:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:132:52:132:52 | remoteURL :  |
 | UnsafeWebViewFetch.swift:117:21:117:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:135:25:135:25 | remoteString |
 | UnsafeWebViewFetch.swift:117:21:117:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:137:25:137:25 | remoteString |
+| UnsafeWebViewFetch.swift:117:21:117:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:138:47:138:56 | ...! |
 | UnsafeWebViewFetch.swift:117:21:117:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:139:25:139:25 | remoteString |
+| UnsafeWebViewFetch.swift:117:21:117:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:139:48:139:57 | ...! |
+| UnsafeWebViewFetch.swift:117:21:117:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:140:47:140:57 | ...! |
 | UnsafeWebViewFetch.swift:117:21:117:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:141:25:141:25 | remoteString |
+| UnsafeWebViewFetch.swift:117:21:117:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:141:48:141:58 | ...! |
 | UnsafeWebViewFetch.swift:117:21:117:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:150:24:150:37 | .utf8 :  |
+| UnsafeWebViewFetch.swift:117:21:117:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:152:15:152:15 | remoteData |
+| UnsafeWebViewFetch.swift:117:21:117:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:153:85:153:94 | ...! |
+| UnsafeWebViewFetch.swift:117:21:117:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:154:15:154:15 | remoteData |
+| UnsafeWebViewFetch.swift:117:21:117:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:154:86:154:95 | ...! |
 | UnsafeWebViewFetch.swift:131:18:131:42 | call to URL.init(string:) :  | UnsafeWebViewFetch.swift:132:52:132:52 | remoteURL :  |
 | UnsafeWebViewFetch.swift:131:18:131:42 | call to URL.init(string:) :  | UnsafeWebViewFetch.swift:138:47:138:56 | ...! |
 | UnsafeWebViewFetch.swift:131:18:131:42 | call to URL.init(string:) :  | UnsafeWebViewFetch.swift:139:48:139:57 | ...! |
+| UnsafeWebViewFetch.swift:131:18:131:42 | call to URL.init(string:) :  | UnsafeWebViewFetch.swift:140:47:140:57 | ...! |
+| UnsafeWebViewFetch.swift:131:18:131:42 | call to URL.init(string:) :  | UnsafeWebViewFetch.swift:141:48:141:58 | ...! |
 | UnsafeWebViewFetch.swift:131:18:131:42 | call to URL.init(string:) :  | UnsafeWebViewFetch.swift:153:85:153:94 | ...! |
 | UnsafeWebViewFetch.swift:131:18:131:42 | call to URL.init(string:) :  | UnsafeWebViewFetch.swift:154:86:154:95 | ...! |
 | UnsafeWebViewFetch.swift:131:30:131:30 | remoteString :  | UnsafeWebViewFetch.swift:10:2:10:25 | [summary param] 0 in URL.init(string:) :  |
@@ -35,18 +46,31 @@ edges
 | UnsafeWebViewFetch.swift:150:19:150:41 | call to Data.init(_:) :  | UnsafeWebViewFetch.swift:154:15:154:15 | remoteData |
 | UnsafeWebViewFetch.swift:150:24:150:37 | .utf8 :  | UnsafeWebViewFetch.swift:43:5:43:29 | [summary param] 0 in Data.init(_:) :  |
 | UnsafeWebViewFetch.swift:150:24:150:37 | .utf8 :  | UnsafeWebViewFetch.swift:150:19:150:41 | call to Data.init(_:) :  |
+| UnsafeWebViewFetch.swift:150:24:150:37 | .utf8 :  | UnsafeWebViewFetch.swift:152:15:152:15 | remoteData |
+| UnsafeWebViewFetch.swift:150:24:150:37 | .utf8 :  | UnsafeWebViewFetch.swift:154:15:154:15 | remoteData |
 | UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:168:25:168:25 | remoteString |
 | UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:171:25:171:51 | ... .+(_:_:) ... |
 | UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:174:25:174:25 | "..." |
 | UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:178:30:178:30 | remoteString :  |
+| UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:179:52:179:52 | remoteURL :  |
 | UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:182:25:182:25 | remoteString |
 | UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:184:25:184:25 | remoteString |
+| UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:185:47:185:56 | ...! |
 | UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:186:25:186:25 | remoteString |
+| UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:186:48:186:57 | ...! |
+| UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:187:47:187:57 | ...! |
 | UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:188:25:188:25 | remoteString |
+| UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:188:48:188:58 | ...! |
 | UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:197:24:197:37 | .utf8 :  |
+| UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:199:15:199:15 | remoteData |
+| UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:200:90:200:99 | ...! |
+| UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:201:15:201:15 | remoteData |
+| UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:201:91:201:100 | ...! |
 | UnsafeWebViewFetch.swift:178:18:178:42 | call to URL.init(string:) :  | UnsafeWebViewFetch.swift:179:52:179:52 | remoteURL :  |
 | UnsafeWebViewFetch.swift:178:18:178:42 | call to URL.init(string:) :  | UnsafeWebViewFetch.swift:185:47:185:56 | ...! |
 | UnsafeWebViewFetch.swift:178:18:178:42 | call to URL.init(string:) :  | UnsafeWebViewFetch.swift:186:48:186:57 | ...! |
+| UnsafeWebViewFetch.swift:178:18:178:42 | call to URL.init(string:) :  | UnsafeWebViewFetch.swift:187:47:187:57 | ...! |
+| UnsafeWebViewFetch.swift:178:18:178:42 | call to URL.init(string:) :  | UnsafeWebViewFetch.swift:188:48:188:58 | ...! |
 | UnsafeWebViewFetch.swift:178:18:178:42 | call to URL.init(string:) :  | UnsafeWebViewFetch.swift:200:90:200:99 | ...! |
 | UnsafeWebViewFetch.swift:178:18:178:42 | call to URL.init(string:) :  | UnsafeWebViewFetch.swift:201:91:201:100 | ...! |
 | UnsafeWebViewFetch.swift:178:30:178:30 | remoteString :  | UnsafeWebViewFetch.swift:10:2:10:25 | [summary param] 0 in URL.init(string:) :  |
@@ -59,6 +83,8 @@ edges
 | UnsafeWebViewFetch.swift:197:19:197:41 | call to Data.init(_:) :  | UnsafeWebViewFetch.swift:201:15:201:15 | remoteData |
 | UnsafeWebViewFetch.swift:197:24:197:37 | .utf8 :  | UnsafeWebViewFetch.swift:43:5:43:29 | [summary param] 0 in Data.init(_:) :  |
 | UnsafeWebViewFetch.swift:197:24:197:37 | .utf8 :  | UnsafeWebViewFetch.swift:197:19:197:41 | call to Data.init(_:) :  |
+| UnsafeWebViewFetch.swift:197:24:197:37 | .utf8 :  | UnsafeWebViewFetch.swift:199:15:199:15 | remoteData |
+| UnsafeWebViewFetch.swift:197:24:197:37 | .utf8 :  | UnsafeWebViewFetch.swift:201:15:201:15 | remoteData |
 | UnsafeWebViewFetch.swift:206:17:206:31 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:210:25:210:25 | htmlData |
 | UnsafeWebViewFetch.swift:206:17:206:31 | call to getRemoteData() :  | UnsafeWebViewFetch.swift:211:25:211:25 | htmlData |
 nodes
