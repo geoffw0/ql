@@ -128,6 +128,14 @@ class SensitiveExpr extends Expr {
       // member variable reference
       this.(MemberRefExpr).getMember().(SensitiveVarDecl).hasInfo(label, sensitiveType)
       or
+      // qualifier
+      this.(LookupExpr)
+          .getBase*()
+          .(DeclRefExpr)
+          .getDecl()
+          .(SensitiveVarDecl)
+          .hasInfo(label, sensitiveType)
+      or
       // function call
       this.(ApplyExpr).getStaticTarget().(SensitiveFunctionDecl).hasInfo(label, sensitiveType)
       or
