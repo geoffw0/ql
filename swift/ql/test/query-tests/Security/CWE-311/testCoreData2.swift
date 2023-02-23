@@ -65,3 +65,22 @@ class testCoreData2_2 {
 		obj.myBankAccountNumber = bankAccountNo // BAD
 	}
 }
+
+class MySource {
+    var value: Int {
+        get { return 0 }
+        set {}
+    }
+
+    var password: Int {
+        get { return 0 }
+        set {}
+    }
+}
+
+func testCoreData2_3(dbObj: MyManagedObject2, harmless: MySource, password: MySource) {
+	dbObj.myValue = harmless.value // GOOD (not sensitive)
+	dbObj.myValue = password.value // BAD [NOT DETECTED]
+	dbObj.myValue = harmless.password // BAD
+	dbObj.myValue = password.password // BAD
+}
