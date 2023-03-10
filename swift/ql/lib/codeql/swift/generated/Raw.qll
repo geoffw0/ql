@@ -158,7 +158,8 @@ module Raw {
   }
 
   class PlatformVersionAvailabilitySpec extends @platform_version_availability_spec,
-    AvailabilitySpec {
+    AvailabilitySpec
+  {
     override string toString() { result = "PlatformVersionAvailabilitySpec" }
 
     /**
@@ -1317,22 +1318,26 @@ module Raw {
   }
 
   class CollectionUpcastConversionExpr extends @collection_upcast_conversion_expr,
-    ImplicitConversionExpr {
+    ImplicitConversionExpr
+  {
     override string toString() { result = "CollectionUpcastConversionExpr" }
   }
 
   class ConditionalBridgeFromObjCExpr extends @conditional_bridge_from_obj_c_expr,
-    ImplicitConversionExpr {
+    ImplicitConversionExpr
+  {
     override string toString() { result = "ConditionalBridgeFromObjCExpr" }
   }
 
   class CovariantFunctionConversionExpr extends @covariant_function_conversion_expr,
-    ImplicitConversionExpr {
+    ImplicitConversionExpr
+  {
     override string toString() { result = "CovariantFunctionConversionExpr" }
   }
 
   class CovariantReturnConversionExpr extends @covariant_return_conversion_expr,
-    ImplicitConversionExpr {
+    ImplicitConversionExpr
+  {
     override string toString() { result = "CovariantReturnConversionExpr" }
   }
 
@@ -1358,7 +1363,8 @@ module Raw {
   }
 
   class DifferentiableFunctionExtractOriginalExpr extends @differentiable_function_extract_original_expr,
-    ImplicitConversionExpr {
+    ImplicitConversionExpr
+  {
     override string toString() { result = "DifferentiableFunctionExtractOriginalExpr" }
   }
 
@@ -1373,7 +1379,8 @@ module Raw {
   }
 
   class ExistentialMetatypeToObjectExpr extends @existential_metatype_to_object_expr,
-    ImplicitConversionExpr {
+    ImplicitConversionExpr
+  {
     override string toString() { result = "ExistentialMetatypeToObjectExpr" }
   }
 
@@ -1432,12 +1439,14 @@ module Raw {
   }
 
   class LinearFunctionExtractOriginalExpr extends @linear_function_extract_original_expr,
-    ImplicitConversionExpr {
+    ImplicitConversionExpr
+  {
     override string toString() { result = "LinearFunctionExtractOriginalExpr" }
   }
 
   class LinearToDifferentiableFunctionExpr extends @linear_to_differentiable_function_expr,
-    ImplicitConversionExpr {
+    ImplicitConversionExpr
+  {
     override string toString() { result = "LinearToDifferentiableFunctionExpr" }
   }
 
@@ -1520,7 +1529,8 @@ module Raw {
   }
 
   class ProtocolMetatypeToObjectExpr extends @protocol_metatype_to_object_expr,
-    ImplicitConversionExpr {
+    ImplicitConversionExpr
+  {
     override string toString() { result = "ProtocolMetatypeToObjectExpr" }
   }
 
@@ -1595,12 +1605,14 @@ module Raw {
   }
 
   class UnresolvedMemberChainResultExpr extends @unresolved_member_chain_result_expr, IdentityExpr,
-    ErrorElement {
+    ErrorElement
+  {
     override string toString() { result = "UnresolvedMemberChainResultExpr" }
   }
 
   class UnresolvedTypeConversionExpr extends @unresolved_type_conversion_expr,
-    ImplicitConversionExpr, ErrorElement {
+    ImplicitConversionExpr, ErrorElement
+  {
     override string toString() { result = "UnresolvedTypeConversionExpr" }
   }
 
@@ -2350,7 +2362,8 @@ module Raw {
   }
 
   class NominalOrBoundGenericNominalType extends @nominal_or_bound_generic_nominal_type,
-    AnyGenericType { }
+    AnyGenericType
+  { }
 
   class ParenType extends @paren_type, SugarType {
     override string toString() { result = "ParenType" }
