@@ -1,0 +1,6 @@
+| nsstring.swift:199:49:200:1 | // $ tainted=199\n | Missing result:tainted=199 |
+| nsstring.swift:248:87:249:1 | // $ tainted=248\n | Missing result:tainted=248 |
+| nsstring.swift:288:77:289:1 | // $ tainted=288\n | Missing result:tainted=288 |
+| nsstring.swift:289:77:290:1 | // $ tainted=289\n | Missing result:tainted=289 |
+| string.swift:224:47:225:1 | // $ tainted=217\n | Missing result:tainted=217 |
+| string.swift:228:65:229:1 | // $ tainted=217\n | Missing result:tainted=217 |

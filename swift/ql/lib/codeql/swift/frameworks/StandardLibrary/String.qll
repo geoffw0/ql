@@ -39,7 +39,7 @@ private class StringSummaries extends SummaryModelCsv {
         ";StringProtocol;true;addingPercentEncoding(withAllowedCharacter:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;addingPercentEscapes(using:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;appending(_:);;;Argument[-1..0];ReturnValue;taint",
-        ";StringProtocol;true;appendingFormat(_:_:);;;Argument[-1..0];ReturnValue;taint", //-1..
+        ";StringProtocol;true;appendingFormat(_:_:);;;Argument[-1..];ReturnValue;taint",
         ";StringProtocol;true;applyingTransform(_:reverse:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;cString(using:);;;Argument[-1];ReturnValue;taint",
         ";StringProtocol;true;capitalized(with:);;;Argument[-1];ReturnValue;taint",
@@ -73,10 +73,12 @@ private class StringSummaries extends SummaryModelCsv {
         ";String;true;init(validatingUTF8:);;;Argument[0];ReturnValue;taint",
         ";String;true;init(utf16CodeUnits:count:);;;Argument[0];ReturnValue;taint",
         ";String;true;init(utf16CodeUnitsNoCopy:count:freeWhenDone:);;;Argument[0];ReturnValue;taint",
-        ";String;true;init(format:_:);;;Argument[0];ReturnValue;taint", //0..
+        ";String;true;init(format:_:);;;Argument[0..];ReturnValue;taint",
         ";String;true;init(format:arguments:);;;Argument[0..1];ReturnValue;taint",
-        ";String;true;init(format:locale:_:);;;Argument[0];ReturnValue;taint", //0,2..
+        ";String;true;init(format:locale:_:);;;Argument[0];ReturnValue;taint",
+        ";String;true;init(format:locale:_:);;;Argument[2..];ReturnValue;taint",
         ";String;true;init(format:locale:arguments:);;;Argument[0];ReturnValue;taint",
+        ";String;true;init(format:locale:arguments:);;;Argument[2];ReturnValue;taint",
         ";String;true;init(_:radix:uppercase:);;;Argument[0];ReturnValue;taint",
         ";String;true;init(bytes:encoding:);;;Argument[0];ReturnValue;taint",
         ";String;true;init(bytesNoCopy:length:encoding:freeWhenDone:);;;Argument[0];ReturnValue;taint",
@@ -97,7 +99,7 @@ private class StringSummaries extends SummaryModelCsv {
         ";String;true;init(utf8String:);;;Argument[0];ReturnValue;taint",
         ";String;true;init(validating:);;;Argument[0];ReturnValue;taint",
         ";String;true;init(validatingPlatformString:);;;Argument[0];ReturnValue;taint",
-        ";String;true;localizedStringWithFormat(_:_:);;;Argument[0..1];ReturnValue;taint",
+        ";String;true;localizedStringWithFormat(_:_:);;;Argument[0..];ReturnValue;taint",
         ";String;true;write(_:);;;Argument[0];Argument[-1];taint",
         ";String;true;write(to:);;;Argument[-1];Argument[0];taint",
         ";String;true;insert(contentsOf:at:);;;Argument[0];Argument[-1];taint",
