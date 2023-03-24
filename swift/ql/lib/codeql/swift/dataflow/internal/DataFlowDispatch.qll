@@ -276,7 +276,11 @@ private module Cached {
   cached
   newtype TParameterPosition =
     TThisParameter() or
-    TPositionalParameter(int n) { n = any(Argument arg).getIndex() }
+    TPositionalParameter(int n) { n = any(Argument arg).getIndex() } or
+    TPositionalParmeterLowerBoundPosition(int n) {
+      //FlowSummaryImplSpecific::ParsePositions::isParsedArgumentLowerBoundPosition(_, n)
+      n = [0 .. 10]
+    }
 }
 
 import Cached
@@ -303,6 +307,12 @@ class PositionalParameterPosition extends ParameterPosition, TPositionalParamete
   int getIndex() { this = TPositionalParameter(result) }
 
   override string toString() { result = this.getIndex().toString() }
+}
+
+class PositionalParmeterLowerBoundPosition extends ParameterPosition, TPositionalParmeterLowerBoundPosition {
+  int getLowerBound() { this = TPositionalParmeterLowerBoundPosition(result) }
+
+  override string toString() { result = this.getLowerBound().toString() + ".." }
 }
 
 class ThisParameterPosition extends ParameterPosition, TThisParameter {
@@ -332,4 +342,6 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   apos instanceof TThisArgument
   or
   ppos.(PositionalParameterPosition).getIndex() = apos.(PositionalArgumentPosition).getIndex()
+  or
+  ppos.(PositionalParmeterLowerBoundPosition).getLowerBound() <= apos.(PositionalArgumentPosition).getIndex()
 }

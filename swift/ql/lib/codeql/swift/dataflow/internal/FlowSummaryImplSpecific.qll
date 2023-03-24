@@ -221,4 +221,8 @@ ParameterPosition parseArgBody(string s) {
     index = -1 and
     result instanceof ThisParameterPosition
   )
+  or
+  exists(int index | index = AccessPath::parseLowerBound(s) |
+    result.(PositionalParmeterLowerBoundPosition).getLowerBound() = index
+  )
 }
