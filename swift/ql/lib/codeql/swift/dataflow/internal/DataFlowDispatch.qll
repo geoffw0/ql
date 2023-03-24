@@ -279,7 +279,7 @@ private module Cached {
     TPositionalParameter(int n) { n = any(Argument arg).getIndex() } or
     TPositionalParmeterLowerBoundPosition(int n) {
       //FlowSummaryImplSpecific::ParsePositions::isParsedArgumentLowerBoundPosition(_, n)
-      n = [0 .. 10]
+      n = [-1 .. 10]
     }
 }
 

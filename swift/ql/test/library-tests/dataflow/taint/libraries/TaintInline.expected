@@ -1,2 +1,0 @@
-| nsstring.swift:288:77:289:1 | // $ tainted=288\n | Missing result:tainted=288 |
-| nsstring.swift:289:77:290:1 | // $ tainted=289\n | Missing result:tainted=289 |
