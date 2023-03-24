@@ -271,7 +271,8 @@ private module Cached {
   newtype TArgumentPosition =
     TThisArgument() or
     // we rely on default exprs generated in the caller for ordering
-    TPositionalArgument(int n) { n = any(Argument arg).getIndex() }
+    TPositionalArgument(int n) { n = any(Argument arg).getIndex()
+      or n = [-1 .. 10] }
 
   cached
   newtype TParameterPosition =
@@ -344,4 +345,8 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   ppos.(PositionalParameterPosition).getIndex() = apos.(PositionalArgumentPosition).getIndex()
   or
   ppos.(PositionalParmeterLowerBoundPosition).getLowerBound() <= apos.(PositionalArgumentPosition).getIndex()
+  // none -> 5 missing results
+  // = -> 1 missing result
+  // <= -> 0 missing results, but there's still a GENUINE missing result
+  // < -> 4 missing results
 }

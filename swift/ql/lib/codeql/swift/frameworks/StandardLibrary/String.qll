@@ -74,6 +74,31 @@ private class StringSummaries extends SummaryModelCsv {
         ";String;true;init(utf16CodeUnits:count:);;;Argument[0];ReturnValue;taint",
         ";String;true;init(utf16CodeUnitsNoCopy:count:freeWhenDone:);;;Argument[0];ReturnValue;taint",
         ";String;true;init(format:_:);;;Argument[0..];ReturnValue;taint",
+        !!! turns out the varargs are packed into one arg, so what we want in this is [0..1] but
+        with unpacking the vararg arg:
+        #  230|     getElement(15): [CallExpr] call to sink(arg:)
+        #  230|       getFunction(): [DeclRefExpr] sink(arg:)
+        #  230|       getArgument(0): [Argument] arg: call to String.init(format:_:)
+        #  230|         getExpr(): [CallExpr] call to String.init(format:_:)
+        #  230|           getFunction(): [MethodLookupExpr] String.init(format:_:)
+        #  230|             getBase(): [TypeExpr] String.Type
+        #  230|               getTypeRepr(): [TypeRepr] String
+        #  230|             getMethodRef(): [DeclRefExpr] String.init(format:_:)
+        #  230|           getArgument(0): [Argument] format: %i %i %i
+        #  230|             getExpr(): [StringLiteralExpr] %i %i %i
+        #  230|           getArgument(1): [Argument] : [...]
+        #  230|             getExpr(): [VarargExpansionExpr] [...]
+        #  230|               getSubExpr(): [ArrayExpr] [...]
+        #  230|                 getElement(0): [IntegerLiteralExpr] 1
+        #  230|                 getElement(0).getFullyConverted(): [ErasureExpr] (CVarArg) ...
+        #  230|                 getElement(1): [IntegerLiteralExpr] 2
+        #  230|                 getElement(1).getFullyConverted(): [ErasureExpr] (CVarArg) ...
+        #  230|                 getElement(2): [DeclRefExpr] taintedInt
+        #  230|                 getElement(2).getFullyConverted(): [ErasureExpr] (CVarArg) ...
+        #  230|         getExpr().getFullyConverted(): [ErasureExpr] (Any) ...
+        !!! Argument[1].something
+            Argument[1].ArrayElement
+            Argument[1].VarArg
         ";String;true;init(format:arguments:);;;Argument[0..1];ReturnValue;taint",
         ";String;true;init(format:locale:_:);;;Argument[0];ReturnValue;taint",
         ";String;true;init(format:locale:_:);;;Argument[2..];ReturnValue;taint",
