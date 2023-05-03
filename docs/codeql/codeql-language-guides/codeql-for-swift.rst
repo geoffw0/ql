@@ -11,8 +11,11 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    :hidden:
 
    basic-query-for-swift-code
+   codeql-library-for-swift
    analyzing-data-flow-in-swift
 
 -  :doc:`Basic query for Swift code <basic-query-for-swift-code>`: Learn to write and run a simple CodeQL query.
+
+-  :doc:`CodeQL library for Swift <codeql-library-for-swift>`: When analyzing Swift code, you can use the large collection of classes in the CodeQL library for Swift.
 
 -  :doc:`Analyzing data flow in Swift <analyzing-data-flow-in-swift>`: You can use CodeQL to track the flow of data through a Swift program to places where the data is used.
