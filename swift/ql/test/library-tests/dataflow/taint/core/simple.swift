@@ -86,3 +86,10 @@ func taintThroughBitwiseOperators() {
 
   sink(arg: ~source()) // $ tainted=87
 }
+
+func taintThroughAs() {
+	sink(arg: source() as Int) // $ tainted=91
+	sink(arg: source() as Any) // $ tainted=92
+	sink(arg: source() as AnyObject) // $ MISSING: tainted=92
+	sink(arg: source() as Sendable) // $ MISSING: tainted=93
+}
