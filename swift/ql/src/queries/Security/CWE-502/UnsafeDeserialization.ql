@@ -11,10 +11,11 @@
  */
 
 import swift
+import codeql.swift.dataflow.DataFlow
 import codeql.swift.security.UnsafeDeserializationQuery
-import DataFlow::PathGraph
+import UnsafeDeserializationFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from UnsafeDeserializationFlow::PathNode source, UnsafeDeserializationFlow::PathNode sink
+where UnsafeDeserializationFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Unsafe deserialization depends on a $@.", source.getNode(),
-  source.getNode().(UnsafeDeserialization::Source).describe()
+  "user-provided value"

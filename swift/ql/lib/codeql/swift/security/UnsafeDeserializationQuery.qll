@@ -1,30 +1,30 @@
 /**
- * Provides a taint-tracking configuration for reasoning about unsafe deserialization.
- *
- * Note, for performance reasons: only import this file if
- * `UnsafeDeserialization::Configuration` is needed, otherwise
- * `UnsafeDeserializationCustomizations` should be imported instead.
+ * Provides a taint-tracking configuration for reasoning about unsafe
+ * deserialization.
  */
 
-private import codeql.ruby.AST
-private import codeql.ruby.DataFlow
-private import codeql.ruby.TaintTracking
-import UnsafeDeserializationCustomizations
+import swift
+private import codeql.swift.dataflow.DataFlow
+private import codeql.swift.dataflow.FlowSources
+private import codeql.swift.dataflow.TaintTracking
+private import codeql.swift.security.UnsafeDeserializationExtensions
 
 /**
- * A taint-tracking configuration for reasoning about unsafe deserialization.
+ * A taint-tracking configuration for unsafe deserialization vulnerabilities.
  */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "UnsafeDeserialization" }
+module UnsafeDeserializationConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof UnsafeDeserialization::Source
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeDeserializationSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeDeserialization::Sink }
+  predicate isBarrier(DataFlow::Node barrier) { barrier instanceof UnsafeDeserializationBarrier }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    node instanceof UnsafeDeserialization::Sanitizer
+  predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
+    any(UnsafeDeserializationAdditionalFlowStep s).step(n1, n2)
   }
 }
+
+/**
+ * Taint flow for unsafe deserialization vulnerabilities.
+ */
+module UnsafeDeserializationFlow = TaintTracking::Global<UnsafeDeserializationConfig>;
