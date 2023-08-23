@@ -1,5 +1,5 @@
 /**
- * Provides models for the `UITextField` and related Swift class.
+ * Provides models for the `UITextField` and related UIKit Swift class.
  */
 
 import swift

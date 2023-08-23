@@ -73,26 +73,26 @@ struct MyStruct {
 	var myView1: some View {
 		TextField("title", text: $input)
 		.onSubmit {
-			sink(arg: input)
+			sink(arg: input) // $ tainted
 
 			mkHarmlessBinding(text: $harmless2)
 
-			sink(arg: harmless)
-			sink(arg: harmless2)
+			sink(arg: harmless) // $ SPURIOUS: tainted
+			sink(arg: harmless2) // $ SPURIOUS: tainted
 		}
 	}
 
 	var myView2: some View {
 		SecureField("title", text: $secureInput, prompt: nil)
 		.onSubmit {
-			sink(arg: secureInput)
+			sink(arg: secureInput) // $ tainted
 		}
 	}
 
 	var myView3: some View {
 		TextEditor(text: $longInput)
 		.onSubmit {
-			sink(arg: longInput)
+			sink(arg: longInput) // $ tainted
 		}
 	}
 }
