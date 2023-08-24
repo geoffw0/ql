@@ -1,0 +1,10 @@
+failures
+#select
+| swiftui.swift:73:25:83:2 | self[return] | reached |
+| swiftui.swift:74:28:74:28 | [post] getter for .$input | SOURCE, reached |
+| swiftui.swift:74:28:74:28 | [post] self | reached |
+| swiftui.swift:76:14:76:14 | .input | SINK, rev |
+| swiftui.swift:80:14:80:14 | .harmless | SINK, rev |
+| swiftui.swift:81:14:81:14 | .harmless2 | SINK, rev |
+| swiftui.swift:88:14:88:14 | .secureInput | SINK, rev |
+| swiftui.swift:95:14:95:14 | .longInput | SINK, rev |

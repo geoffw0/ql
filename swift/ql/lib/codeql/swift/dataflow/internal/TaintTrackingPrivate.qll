@@ -67,6 +67,12 @@ private module Cached {
       f.getAReadContent() instanceof TaintInheritingContent
     )
     or
+    // flow through the store of a content that inherits taint
+/*    exists(DataFlow::ContentSet f |
+      storeStep(nodeFrom, f, nodeTo) and
+      f.getAReadContent() instanceof TaintInheritingContent
+    )
+    or*/
     // flow through a flow summary (extension of `SummaryModelCsv`)
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
       nodeTo.(FlowSummaryNode).getSummaryNode(), false)
