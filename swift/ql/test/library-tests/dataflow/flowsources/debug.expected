@@ -1,5 +1,7 @@
 failures
 #select
+| 12:6 | SSA def(self) | rev |  |
+| 12:6 | self | rev |  |
 | 73:25 | self[return] | partial, reached |  |
 | 74:3 | (some View) ... |  | ql:UnderlyingToOpaqueExpr, type.ql:OpaqueTypeArchetypeType, type:some View |
 | 74:3 | .onSubmit(of:_:) |  | ql:MethodLookupExpr, type.ql:FunctionType, type:(SubmitTriggers, @escaping (() -> Void)) -> some View |
@@ -23,8 +25,8 @@ failures
 | 76:14 | (Any) ... |  | ql:ErasureExpr, type.ql:ExistentialType, type:Any |
 | 76:14 | .input | SINK, rev | ql:MemberRefExpr, sink(arg:)arg0, type.ql:StructType, type:String |
 | 76:14 | [post] getter for .input |  | post.SINK, post.ql:MemberRefExpr, post.rev, post.sink(arg:)arg0, post.type.ql:StructType, post.type:String |
-| 76:14 | [post] self |  | post.ql:SelfRefExpr, post.type.ql:StructType, post.type:MyStruct |
-| 76:14 | self |  | ql:SelfRefExpr, type.ql:StructType, type:MyStruct |
+| 76:14 | [post] self |  | post.ql:SelfRefExpr, post.rev, post.type.ql:StructType, post.type:MyStruct |
+| 76:14 | self | rev | ql:SelfRefExpr, type.ql:StructType, type:MyStruct |
 | 80:14 | .harmless | SINK, rev | ql:MemberRefExpr, sink(arg:)arg0, type.ql:StructType, type:String |
 | 81:14 | .harmless2 | SINK, rev | ql:MemberRefExpr, sink(arg:)arg0, type.ql:StructType, type:String |
 | 88:14 | .secureInput | SINK, rev | ql:MemberRefExpr, sink(arg:)arg0, type.ql:StructType, type:String |

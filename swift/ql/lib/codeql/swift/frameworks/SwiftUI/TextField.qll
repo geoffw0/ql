@@ -35,12 +35,15 @@ private class TextFieldSource extends SourceModelCsv {
 
           ";TextField;true;init(_:text:);;;Argument[1].Field[_input];local",
           ";TextField;true;init(_:text:);;;Argument[1].Field[_input].Field[wrappedValue];local",
+          ";TextField;true;init(_:text:);;;Argument[1]._input;local",
+          ";TextField;true;init(_:text:);;;Argument[1]._input.wrappedValue;local",
 
 
 //          ";Binding;true;;;;;local",
 //          ";Binding;true;get();;;Argument[0];local",
 //          ";Binding;true;get();;;Argument[0].PostUpdate;local",
-        ]
+
+]
   }
 }
 
@@ -59,22 +62,30 @@ private class TextFieldSummaries extends SummaryModelCsv {
         ";State;true;set(_:);;;Argument[0];Argument[-1].wrappedValue;taint",
         ";State;true;?;;;?;wrappedValue;taint",
   //
-  ";TextField;true;init(_:text:);;;Argument[1].PostUpdate;Argument[1];local",
+  ";TextField;true;init(_:text:);;;Argument[1].PostUpdate;Argument[1];taint",
 
-  ";TextField;true;init(_:text:);;;Argument[1];Argument[-1]._input;local",
-  ";TextField;true;init(_:text:);;;Argument[1];Argument[-1].Field[_input];local",
-  ";TextField;true;init(_:text:);;;Argument[1];Argument[-1]._input.wrappedValue;local",
-  ";TextField;true;init(_:text:);;;Argument[1];Argument[-1].Field[_input].Field[wrappedValue];local",
-  ";TextField;true;init(_:text:);;;Argument[1].PostUpdate;Argument[-1]._input;local",
-  ";TextField;true;init(_:text:);;;Argument[1].PostUpdate;Argument[-1].Field[_input];local",
-  ";TextField;true;init(_:text:);;;Argument[1].PostUpdate;Argument[-1]._input.wrappedValue;local",
-  ";TextField;true;init(_:text:);;;Argument[1].PostUpdate;Argument[-1].Field[_input].Field[wrappedValue];local",
-//flow from postupdate of textfield arg into _input (state).wrappedValue
-    ]
-      /*    row = [
+  ";TextField;true;init(_:text:);;;Argument[1];Argument[-1]._input;taint",
+  ";TextField;true;init(_:text:);;;Argument[1];Argument[-1].Field[_input];taint",
+  ";TextField;true;init(_:text:);;;Argument[1];Argument[-1]._input.wrappedValue;taint",
+  ";TextField;true;init(_:text:);;;Argument[1];Argument[-1].Field[_input].Field[wrappedValue];taint",
+  ";TextField;true;init(_:text:);;;Argument[1].PostUpdate;Argument[-1]._input;taint",
+  ";TextField;true;init(_:text:);;;Argument[1].PostUpdate;Argument[-1].Field[_input];taint",
+  ";TextField;true;init(_:text:);;;Argument[1].PostUpdate;Argument[-1]._input.wrappedValue;taint",
+  ";TextField;true;init(_:text:);;;Argument[1].PostUpdate;Argument[-1].Field[_input].Field[wrappedValue];ltaintocal",
+
         ";State;true;get;;;Argument[-1].projectedValue;ReturnValue;taint",
         ";State;true;get();;;Argument[-1].projectedValue;ReturnValue;taint",
-      ]*/
+        ";State;true;get;;;Argument[-1].Field[projectedValue];ReturnValue;taint",
+        ";State;true;get();;;Argument[-1].Field[projectedValue];ReturnValue;taint",
+
+        ";TextField;true;init(_:text:);;;Argument[1];Argument[-1];taint",
+        ";TextField;true;init(_:text:);;;Argument[1];Argument[-1]._input.wrappedValue;taint",
+/*
+        TODO: I think I need a low level dataflow step
+        for projectedValue -> wrappedValue (or something
+          like that) on a State.
+        Or something like that on a Binding, maybe.*/
+      ]
   }
 }
 
@@ -85,16 +96,16 @@ private class StateFieldsInheritTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent
 {
   StateFieldsInheritTaint() {
-none()/*    this.getField().hasQualifiedName("State", "wrappedValue")
+    this.getField().hasQualifiedName("State", "wrappedValue")
     or
     this.getField().hasQualifiedName("State", "projectedValue")
-*//*or
+or
 this.getField().hasQualifiedName("MyStruct", "input")
 or
 this.getField().hasQualifiedName("MyStruct", "$input")
 or
 this.getField().hasQualifiedName("State", "input")
 or
-this.getField().hasQualifiedName("State", "$input")*/
+this.getField().hasQualifiedName("State", "$input")
   }
 }
