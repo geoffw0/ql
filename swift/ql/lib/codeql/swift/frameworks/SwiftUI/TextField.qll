@@ -17,18 +17,30 @@ private class TextFieldSource extends SourceModelCsv {
 //shortcut for now (reaches sink):
 //        ";State;true;wrappedValue;;;;local",
 
+// taints a few random non-located self nodes
+//        ";MyStruct;true;_input;;;;local",
+ //       ";MyStruct;true;_input.wrappedValue;;;;local",
+
 // doesn't reach sink:
 //";State;true;get;;;ReturnValue;local",
 //";State;true;get();;;ReturnValue;local",
 //";State;true;;;;;local",
-
 
 //        ";State;true;projectedValue;;;;local",
 //        ";State;true;;;;;local",
 
 //taint source: TextField.init arg
           ";TextField;true;init(_:text:);;;Argument[1];local",
-      ]
+          //";TextField;true;init(_:text:);;;Argument[1].PostUpdate;local",
+
+          ";TextField;true;init(_:text:);;;Argument[1].Field[_input];local",
+          ";TextField;true;init(_:text:);;;Argument[1].Field[_input].Field[wrappedValue];local",
+
+
+//          ";Binding;true;;;;;local",
+//          ";Binding;true;get();;;Argument[0];local",
+//          ";Binding;true;get();;;Argument[0].PostUpdate;local",
+        ]
   }
 }
 
@@ -39,7 +51,27 @@ private class TextFieldSource extends SourceModelCsv {
  */
 private class TextFieldSummaries extends SummaryModelCsv {
   override predicate row(string row) {
-none()/*    row = [
+    row = [
+        ";MyStruct;true;get();;;Argument[-1].$input;ReturnValue;taint",
+        ";MyStruct;true;get();;;Argument[-1].Field[$input];ReturnValue;taint",
+        ";State;true;;;;projectedValue;wrappedValue;taint",
+        ";State;true;set(_:);;;Argument[0];Argument[-1];taint",
+        ";State;true;set(_:);;;Argument[0];Argument[-1].wrappedValue;taint",
+        ";State;true;?;;;?;wrappedValue;taint",
+  //
+  ";TextField;true;init(_:text:);;;Argument[1].PostUpdate;Argument[1];local",
+
+  ";TextField;true;init(_:text:);;;Argument[1];Argument[-1]._input;local",
+  ";TextField;true;init(_:text:);;;Argument[1];Argument[-1].Field[_input];local",
+  ";TextField;true;init(_:text:);;;Argument[1];Argument[-1]._input.wrappedValue;local",
+  ";TextField;true;init(_:text:);;;Argument[1];Argument[-1].Field[_input].Field[wrappedValue];local",
+  ";TextField;true;init(_:text:);;;Argument[1].PostUpdate;Argument[-1]._input;local",
+  ";TextField;true;init(_:text:);;;Argument[1].PostUpdate;Argument[-1].Field[_input];local",
+  ";TextField;true;init(_:text:);;;Argument[1].PostUpdate;Argument[-1]._input.wrappedValue;local",
+  ";TextField;true;init(_:text:);;;Argument[1].PostUpdate;Argument[-1].Field[_input].Field[wrappedValue];local",
+//flow from postupdate of textfield arg into _input (state).wrappedValue
+    ]
+      /*    row = [
         ";State;true;get;;;Argument[-1].projectedValue;ReturnValue;taint",
         ";State;true;get();;;Argument[-1].projectedValue;ReturnValue;taint",
       ]*/

@@ -1,10 +1,31 @@
 failures
 #select
-| swiftui.swift:73:25:83:2 | self[return] | reached |
-| swiftui.swift:74:28:74:28 | [post] getter for .$input | SOURCE, reached |
-| swiftui.swift:74:28:74:28 | [post] self | reached |
-| swiftui.swift:76:14:76:14 | .input | SINK, rev |
-| swiftui.swift:80:14:80:14 | .harmless | SINK, rev |
-| swiftui.swift:81:14:81:14 | .harmless2 | SINK, rev |
-| swiftui.swift:88:14:88:14 | .secureInput | SINK, rev |
-| swiftui.swift:95:14:95:14 | .longInput | SINK, rev |
+| 73:25 | self[return] | partial, reached |  |
+| 74:3 | (some View) ... |  | ql:UnderlyingToOpaqueExpr, type.ql:OpaqueTypeArchetypeType, type:some View |
+| 74:3 | .onSubmit(of:_:) |  | ql:MethodLookupExpr, type.ql:FunctionType, type:(SubmitTriggers, @escaping (() -> Void)) -> some View |
+| 74:3 | TextField<Text>.Type |  | ql:TypeExpr, type.ql:MetatypeType, type:TextField<Text>.Type |
+| 74:3 | TextField<Text>.init(_:text:) |  | ql:InitializerLookupExpr, type.ql:FunctionType, type:(LocalizedStringKey, Binding<String>) -> TextField<Text> |
+| 74:3 | [post] TextField<Text>.Type |  | post.ql:TypeExpr, post.type.ql:MetatypeType, post.type:TextField<Text>.Type |
+| 74:3 | [post] call to TextField<Text>.init(_:text:) |  | post.ql:InitializerCallExpr, post.type.ql:BoundGenericStructType, post.type:TextField<Text> |
+| 74:3 | call to TextField<Text>.init(_:text:) |  | ql:InitializerCallExpr, type.ql:BoundGenericStructType, type:TextField<Text> |
+| 74:3 | call to onSubmit(of:_:) |  | ql:MethodCallExpr, type.ql:OpaqueTypeArchetypeType, type:some View |
+| 74:13 | [post] title |  | post.init(_:text:)arg0, post.ql:StringLiteralExpr, post.type.ql:StructType, post.type:LocalizedStringKey |
+| 74:13 | title |  | init(_:text:)arg0, ql:StringLiteralExpr, type.ql:StructType, type:LocalizedStringKey |
+| 74:28 | .$input |  | init(_:text:)arg1, ql:MemberRefExpr, type.ql:BoundGenericStructType, type:Binding<String> |
+| 74:28 | [post] getter for .$input | SOURCE, reached | post.init(_:text:)arg1, post.ql:MemberRefExpr, post.type.ql:BoundGenericStructType, post.type:Binding<String> |
+| 74:28 | [post] self | partial, reached | post.ql:SelfRefExpr, post.type.ql:StructType, post.type:MyStruct |
+| 74:28 | self |  | ql:SelfRefExpr, type.ql:StructType, type:MyStruct |
+| 75:13 | [post] default triggers |  | post.onSubmit(of:_:)arg0, post.ql:DefaultArgumentExpr, post.type.ql:StructType, post.type:SubmitTriggers |
+| 75:13 | default triggers |  | onSubmit(of:_:)arg0, ql:DefaultArgumentExpr, type.ql:StructType, type:SubmitTriggers |
+| 75:13 | { ... } |  | onSubmit(of:_:)arg1, ql:CfgScope, ql:ClosureExprScope, ql:ExplicitClosureExpr, ql:Range, type.ql:FunctionType, type:() -> Void |
+| 76:4 | call to sink(arg:) |  | ql:CallExpr, type.ql:TupleType, type:() |
+| 76:4 | sink(arg:) |  | ql:DeclRefExpr, type.ql:FunctionType, type:(Any) -> () |
+| 76:14 | (Any) ... |  | ql:ErasureExpr, type.ql:ExistentialType, type:Any |
+| 76:14 | .input | SINK, rev | ql:MemberRefExpr, sink(arg:)arg0, type.ql:StructType, type:String |
+| 76:14 | [post] getter for .input |  | post.SINK, post.ql:MemberRefExpr, post.rev, post.sink(arg:)arg0, post.type.ql:StructType, post.type:String |
+| 76:14 | [post] self |  | post.ql:SelfRefExpr, post.type.ql:StructType, post.type:MyStruct |
+| 76:14 | self |  | ql:SelfRefExpr, type.ql:StructType, type:MyStruct |
+| 80:14 | .harmless | SINK, rev | ql:MemberRefExpr, sink(arg:)arg0, type.ql:StructType, type:String |
+| 81:14 | .harmless2 | SINK, rev | ql:MemberRefExpr, sink(arg:)arg0, type.ql:StructType, type:String |
+| 88:14 | .secureInput | SINK, rev | ql:MemberRefExpr, sink(arg:)arg0, type.ql:StructType, type:String |
+| 95:14 | .longInput | SINK, rev | ql:MemberRefExpr, sink(arg:)arg0, type.ql:StructType, type:String |
