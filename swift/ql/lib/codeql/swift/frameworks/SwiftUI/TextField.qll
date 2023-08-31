@@ -5,17 +5,72 @@
 import swift
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow
+private import codeql.swift.dataflow.FlowSources
 private import codeql.swift.dataflow.FlowSteps
 
-/**
+
+class TextFieldFlowSource2 extends LocalFlowSource {
+  TextFieldFlowSource2() {
+/*    exists(CallExpr call, VarDecl binding, VarDecl wrappedValue |
+      call.getStaticTarget().(Method).hasQualifiedName("TextField", "init(_:text:)") and
+      call.getArgument(1).getExpr() = binding.getAnAccess() and
+//      binding.getType().
+      binding.getName() = "$" + wrappedValue.getName() and
+      this.asExpr() = wrappedValue.getAnAccess()
+  //    wrappedValue = binding.getAMember() and
+    //  wrappedValue.getName() = "wrappedValue"
+    )*/
+    //exists(VarDecl wrappedValue |
+ //     wrappedValue.getName() = "wrappedValue" and
+//      wrappedValue.getName() = "input" and
+//      wrappedValue.getAnAccess() = this.asExpr()
+    //)
+    // sink(arg: input) <-- self flows to here; input does not,
+    //  or rather it has content probably.
+    exists(CallExpr call, MemberRefExpr callRef, /*, VarDecl binding*/ MemberRefExpr accessRef |
+      call.getStaticTarget().(Method).hasQualifiedName("TextField", "init(_:text:)") and
+      call.getArgument(1).getExpr() = callRef and
+      callRef.getMember().(VarDecl).getName() = "$input" and
+      accessRef.getMember().(VarDecl).getName() = "input" and
+      accessRef = this.asExpr()
+    )
+  }
+
+  override string getSourceType() { result = "TODO" }
+}
+
+
+/*
+ * A read of `UIApplication.LaunchOptionsKey.url` on a dictionary received in
+ * `UIApplicationDelegate.application(_:didFinishLaunchingWithOptions:)` or
+ * `UIApplicationDelegate.application(_:willFinishLaunchingWithOptions:)`.
+ */
+/*private class UrlLaunchOptionsRemoteFlowSource extends RemoteFlowSource {
+  UrlLaunchOptionsRemoteFlowSource() {
+    exists(ApplicationWithLaunchOptionsFunc f, SubscriptExpr e |
+      DataFlow::localExprFlow(f.getParam(1).getAnAccess(), e.getBase()) and
+      e.getAnArgument().getExpr().(MemberRefExpr).getMember() instanceof LaunchOptionsUrlVarDecl and
+      this.asExpr() = e
+    )
+  }
+
+  override string getSourceType() {
+    result = "Remote URL in UIApplicationDelegate.application.launchOptions"
+  }
+}*/
+
+/*
  * A model for `TextField` and related class members that are flow sources.
  */
-private class TextFieldSource extends SourceModelCsv {
+/*private class TextFieldSource extends SourceModelCsv {
   override predicate row(string row) {
     row =
       [
 //shortcut for now (reaches sink):
 //        ";State;true;wrappedValue;;;;local",
+
+// nope:
+//";Binding;true;wrappedValue;;;;local",
 
 // taints a few random non-located self nodes
 //        ";MyStruct;true;_input;;;;local",
@@ -45,7 +100,7 @@ private class TextFieldSource extends SourceModelCsv {
 
 ]
   }
-}
+}*/
 
 
 

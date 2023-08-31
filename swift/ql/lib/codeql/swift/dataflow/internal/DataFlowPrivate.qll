@@ -664,6 +664,16 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = ref.getBase() and
     c.isSingleton(any(Content::FieldContent ct | ct.getField() = ref.getMember()))
   )
+    or
+    // special case for store to a SwiftUI `State.projectedValue`, that morally
+    // writes to `State.wrappedValue`.
+    exists(MemberRefExpr ref, AssignExpr assign |
+      ref = assign.getDest() and
+      node1.asExpr() = assign.getSource() and
+      node2.(PostUpdateNode).getPreUpdateNode().asExpr() = ref.getBase() and
+      ref.getMember().(VarDecl).getName() = "projectedValue" and // TODO: getQualifiedName
+      c.isSingleton(any(Content::FieldContent ct | ct.getField().getName() = "wrappedValue"))
+    )
   or
   // creation of a tuple `(v1, v2)`
   exists(TupleExpr tuple, int pos |
@@ -788,7 +798,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node2.asPattern() = pat.getSubPattern() and
     c instanceof OptionalSomeContentSet
   )
-  or
+/*  or
   // special case for read of a SwiftUI `State.wrappedValue` actually accessing
   // `State.projectedValue`.
   // TODO: the reverse might make more sense.
@@ -799,7 +809,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     ref.getMember().(VarDecl).getName() = "wrappedValue" and // TODO: getQualifiedName
     c.isSingleton(any(Content::FieldContent ct |
       ct.getField().getName() = "projectedValue"))
-  )
+  )*/
   or
   // read of a component in a key-path expression chain
   exists(KeyPathComponent component |
