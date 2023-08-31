@@ -8,33 +8,92 @@ private import codeql.swift.dataflow.ExternalFlow
 private import codeql.swift.dataflow.FlowSources
 private import codeql.swift.dataflow.FlowSteps
 
-
-class TextFieldFlowSource2 extends LocalFlowSource {
-  TextFieldFlowSource2() {
-/*    exists(CallExpr call, VarDecl binding, VarDecl wrappedValue |
-      call.getStaticTarget().(Method).hasQualifiedName("TextField", "init(_:text:)") and
-      call.getArgument(1).getExpr() = binding.getAnAccess() and
-//      binding.getType().
-      binding.getName() = "$" + wrappedValue.getName() and
-      this.asExpr() = wrappedValue.getAnAccess()
-  //    wrappedValue = binding.getAMember() and
-    //  wrappedValue.getName() = "wrappedValue"
-    )*/
-    //exists(VarDecl wrappedValue |
- //     wrappedValue.getName() = "wrappedValue" and
-//      wrappedValue.getName() = "input" and
-//      wrappedValue.getAnAccess() = this.asExpr()
-    //)
-    // sink(arg: input) <-- self flows to here; input does not,
-    //  or rather it has content probably.
-    exists(CallExpr call, MemberRefExpr callRef, /*, VarDecl binding*/ MemberRefExpr accessRef |
+/**
+ * TODO
+ */
+class TextFieldFlowSource extends LocalFlowSource {
+  TextFieldFlowSource() {
+    exists(CallExpr call, MemberRefExpr callRef, MemberRefExpr accessRef |
+      // `callRef` is the `text` argument to `TextField` or similar
+      // TODO: alternative models here
       call.getStaticTarget().(Method).hasQualifiedName("TextField", "init(_:text:)") and
       call.getArgument(1).getExpr() = callRef and
+      // `callRef` is the
+      //callRef.getBase().getType().getName() = "Binding" and
+      // TODO: bases should match
+      // TODO: don't hardcode string "input"
       callRef.getMember().(VarDecl).getName() = "$input" and
       accessRef.getMember().(VarDecl).getName() = "input" and
       accessRef = this.asExpr()
     )
   }
+  // TODO: can we turn this into a general purpose taint step for
+  // property wrappers?
+  PLAN:
+  1. write a dataflow test for a property wrapper that has nothing
+  to do with SwiftUI.
+
+  @propertyWrapper
+  struct MyPropertyWrapper {
+    private var actualValue: Int
+    private var projectedValue: Int
+
+    var wrappedValue: Int {
+      get { return actualValue + projectedValue}
+      set { actualValue = newValue }
+    }
+    init() {
+      actualValue = 0
+      projectedValue = 0
+    }
+    init(wrappedValue: Int) {
+      actualValue = wrappedValue
+    }
+    init(wrappedValue: Int, projectedValue: Int) {
+      self.actualValue = wrappedValue
+      self.projectedValue = projectedValue
+    }
+  }
+
+  struct test {
+    @MyPropertyWrapper v1: Int
+    @MyPropertyWrapper v2: Int = source()
+    @MyPropertyWrapper(wrappedValue: source()) v3: Int
+    @MyPropertyWrapper(wrappedValue: source(), discarded: 0) v4: Int
+    @MyPropertyWrapper(wrappedValue: 0, projectedValue: source()) v5: Int
+    @MyPropertyWrapper(projectedValue: 0) v6: Int = source()
+    @MyPropertyWrapper v7: Int
+
+    func doTest() {
+      v1 = source()
+      $v7 = source() // $v7 is v7.projectedValue
+
+      sink(arg: v1) // $ tainted=?
+      sink(arg: $v1)
+      sink(arg: v2) // $ tainted=?
+      sink(arg: $v2)
+      sink(arg: v3) // $ tainted=?
+      sink(arg: $v3)
+      sink(arg: v4) // $ tainted=?
+      sink(arg: $v4)
+      sink(arg: v5) // $ tainted=?
+      sink(arg: $v5) // $ tainted=?
+      sink(arg: v6) // $ tainted=?
+      sink(arg: $v6)
+      sink(arg: v7) // $ tainted=?
+      sink(arg: $v7) // $ tainted=?
+    }
+  }
+
+
+/*
+  2. do what I can to model taint there; this will be valuable
+      ^^^ better still, do a draft PR of just the property wrappers
+      test and talk to Robert about it.
+  3. return to this, if I can make the TextField taint source
+     simple, if I can't make it figure out the binding like in
+     the code I wrote above (which just about works).
+*/
 
   override string getSourceType() { result = "TODO" }
 }
