@@ -789,6 +789,18 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     c instanceof OptionalSomeContentSet
   )
   or
+  // special case for read of a SwiftUI `State.wrappedValue` actually accessing
+  // `State.projectedValue`.
+  // TODO: the reverse might make more sense.
+  exists(MemberRefExpr ref |
+    not isLValue(ref) and
+    node1.asExpr() = ref.getBase() and
+    node2.asExpr() = ref and
+    ref.getMember().(VarDecl).getName() = "wrappedValue" and // TODO: getQualifiedName
+    c.isSingleton(any(Content::FieldContent ct |
+      ct.getField().getName() = "projectedValue"))
+  )
+  or
   // read of a component in a key-path expression chain
   exists(KeyPathComponent component |
     component = node1.(KeyPathComponentNodeImpl).getComponent() and

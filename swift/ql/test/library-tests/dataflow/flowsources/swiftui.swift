@@ -71,7 +71,7 @@ struct MyStruct {
 	@State var harmless2: String = "default value"
 
 	var myView1: some View {
-		TextField("title", text: $input)
+		TextField("title", text: $input) // $ source=local
 		.onSubmit {
 			sink(arg: input) //
 
