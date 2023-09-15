@@ -1,5 +1,8 @@
 // --- stubs ---
 
+class NSObject {
+}
+
 struct URL
 {
 	init?(string: String) {}
@@ -73,18 +76,6 @@ class YAMLDecoder {
 	func decode<T>(_ type: T.Type = T.self, from yamlData: Data, userInfo: [Int: Any] = [:]) throws -> T where T: Decodable { 0 as! T }
 }
 
-/*
-TODO: use / test this:
-protocol TopLevelDecoder {
-	associatedtype Input
-
-	func decode<T>(_ type: T.Type, from: Self.Input) throws -> T where T: Decodable
-}
-
-extension YAMLDecoder : TopLevelDecoder {
-	func decode<T>(_ type: T.Type, from: Data) throws -> T where T: Decodable { 0 as! T }
-}*/
-
 func load_all(
 	yaml: String,
 	_ resolver: Resolver = .default,
@@ -108,6 +99,67 @@ func compose(
 
 class JSONDecoder {
 	func decode<T>(_ type: T.Type, from data: Data) throws -> T where T : Decodable { return 0 as! T }
+}
+
+protocol TopLevelDecoder {
+	associatedtype Input
+
+	func decode<T>(_ type: T.Type, from: Self.Input) throws -> T where T: Decodable
+}
+
+extension YAMLDecoder : TopLevelDecoder {
+	func decode<T>(_ type: T.Type, from: Data) throws -> T where T: Decodable { 0 as! T }
+}
+
+enum Publishers {
+	struct Map<Upstream, Output> : Publisher where Upstream : Publisher {
+		typealias Output = Data // simplified
+		typealias Failure = URLError
+
+		func map<T>(_ transform: @escaping (Self.Output) -> T) -> Publishers.Map<Self, T> { return Publishers.Map<Self, T>() }
+		func decode<Item, Coder>(type: Item.Type, decoder: Coder) ->
+			Publishers.Decode<Self, Item, Coder> where Item: Decodable, Coder: TopLevelDecoder, Self.Output == Coder.Input { return Publishers.Decode<Self, Item, Coder>() }
+	}
+
+	struct Decode<Upstream, Output, Coder> : Publisher where Upstream : Publisher, Output : Decodable, Coder : TopLevelDecoder, Upstream.Output == Coder.Input {
+		typealias Output = Data // simplified
+		typealias Failure = URLError
+
+		func map<T>(_ transform: @escaping (Self.Output) -> T) -> Publishers.Map<Self, T> { return Publishers.Map<Self, T>() }
+		func decode<Item, Coder>(type: Item.Type, decoder: Coder) ->
+			Publishers.Decode<Self, Item, Coder> where Item: Decodable, Coder: TopLevelDecoder, Self.Output == Coder.Input { return Publishers.Decode<Self, Item, Coder>() }
+	}
+}
+
+protocol Publisher<Output, Failure> {
+	associatedtype Output
+	associatedtype Failure
+
+	func map<T>(_ transform: @escaping (Self.Output) -> T) -> Publishers.Map<Self, T>
+	func decode<Item, Coder>(type: Item.Type, decoder: Coder) ->
+		Publishers.Decode<Self, Item, Coder> where Item: Decodable, Coder: TopLevelDecoder, Self.Output == Coder.Input
+	// ...
+}
+
+class URLResponse : NSObject {
+}
+
+struct URLError {
+}
+
+class URLSession {
+	class var shared: URLSession { get { return URLSession() } }
+
+	struct DataTaskPublisher : Publisher {
+		typealias Output = (data: Data, response: URLResponse)
+		typealias Failure = URLError
+
+		func map<T>(_ transform: @escaping (Self.Output) -> T) -> Publishers.Map<Self, T> { return Publishers.Map() }
+		func decode<Item, Coder>(type: Item.Type, decoder: Coder) ->
+			Publishers.Decode<Self, Item, Coder> where Item: Decodable, Coder: TopLevelDecoder, Self.Output == Coder.Input { return Publishers.Decode() }
+	}
+
+	func dataTaskPublisher(for url: URL) -> URLSession.DataTaskPublisher { return DataTaskPublisher() }
 }
 
 // --- tests ---
@@ -190,4 +242,13 @@ func testYAMSdecode() throws {
 	for g in gs {
 		_ = try! jsonDecoder.decode(MyDecodable.self, from: (g as! String).data(using: .utf8)!)
 	}
+
+	// YAMS + Combine
+
+	_ = URLSession.shared.dataTaskPublisher(for: url) // good (decoded to harmless type)
+		.map(\.data)
+		.decode(type: Int.self, decoder: YAMLDecoder())
+	_ = URLSession.shared.dataTaskPublisher(for: url) // BAD [NOT DETECTED]
+		.map(\.data)
+		.decode(type: MyDecodable.self, decoder: YAMLDecoder())
 }
