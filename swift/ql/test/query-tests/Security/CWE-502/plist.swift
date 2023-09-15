@@ -95,16 +95,16 @@ func testplistdecode(inputStream: InputStream) throws {
 	let plistDecoder = PropertyListDecoder()
 	var fmt = PropertyListSerialization.PropertyListFormat.binary
 
-	_ = try! plistDecoder.decode(MyDecodable.self, from: remoteData) // BAD [NOT DETECTED]
+	_ = try! plistDecoder.decode(MyDecodable.self, from: remoteData) // BAD
 	_ = try! plistDecoder.decode(MyDecodable.self, from: localData) // good (input is local data)
-	_ = try! plistDecoder.decode([MyDecodable].self, from: remoteData) // BAD [NOT DETECTED]
-	_ = try! plistDecoder.decode(MyDecodable.self, from: remoteData, format: &fmt) // BAD [NOT DETECTED]
-	_ = try! plistDecoder.decode(MyDecodableWithConfiguration.self, from: remoteData, configuration: "") // BAD [NOT DETECTED]
-	_ = try! plistDecoder.decode(MyDecodableWithConfiguration.self, from: remoteData, format: &fmt, configuration: "") // BAD [NOT DETECTED]
+	_ = try! plistDecoder.decode([MyDecodable].self, from: remoteData) // BAD
+	_ = try! plistDecoder.decode(MyDecodable.self, from: remoteData, format: &fmt) // BAD
+	_ = try! plistDecoder.decode(MyDecodableWithConfiguration.self, from: remoteData, configuration: "") // BAD
+	_ = try! plistDecoder.decode(MyDecodableWithConfiguration.self, from: remoteData, format: &fmt, configuration: "") // BAD
 
 	// PropertyListSerialization
 
-	let a = try PropertyListSerialization.propertyList(from: remoteData, options: [], format: nil) as! [String: Any] // BAD
+	let a = try PropertyListSerialization.propertyList(from: remoteData, options: [], format: nil) as! [String: Any] // BAD [NOT DETECTED]
 	if let _ = MyDictInitializable(dict: a) {
 		// ...
 	}
@@ -119,7 +119,7 @@ func testplistdecode(inputStream: InputStream) throws {
 		// ...
 	}
 
-	let ds = try PropertyListSerialization.propertyList(from: remoteData, options: [], format: nil) as! [[String: Any]] // BAD
+	let ds = try PropertyListSerialization.propertyList(from: remoteData, options: [], format: nil) as! [[String: Any]] // BAD [NOT DETECTED]
 	for d in ds {
 		if let _ = MyDictInitializable(dict: d) {
 			// ...

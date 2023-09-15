@@ -6,7 +6,6 @@
 import swift
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow
-//private import codeql.swift.frameworks.Xml.Xml
 
 /**
  * A data flow sink for unsafe deserialization vulnerabilities.
@@ -38,6 +37,19 @@ private class DefaultUnsafeDeserializationSink extends UnsafeDeserializationSink
 
 private class UnsafeWebViewFetchSinks extends SinkModelCsv {
   override predicate row(string row) {
-    none()
+    row =
+      [
+        // PropertyListSerialization
+        ";PropertyListDecoder;true;decode(_:from:);;;Argument[1];unsafe-deserialization",
+        ";PropertyListDecoder;true;decode(_:from:format:);;;Argument[1];unsafe-deserialization",
+        ";PropertyListDecoder;true;decode(_:from:configuration:);;;Argument[1];unsafe-deserialization",
+        ";PropertyListDecoder;true;decode(_:from:format:configuration:);;;Argument[1];unsafe-deserialization",
+        // JSONSerialization
+        ";JSONDecoder;true;decode(_:from:);;;Argument[1];unsafe-deserialization",
+        ";JSONDecoder;true;decode(_:from:configuration:);;;Argument[1];unsafe-deserialization",
+        // Yams library (YAML)
+        ";YAMLDecoder;true;decode(_:from:);;;Argument[1];unsafe-deserialization",
+        ";YAMLDecoder;true;decode(_:from:userInfo:);;;Argument[1];unsafe-deserialization",
+      ]
   }
 }

@@ -1,4 +1,47 @@
 edges
+| json.swift:76:23:76:56 | call to Data.init(contentsOf:options:) | json.swift:84:54:84:54 | remoteData |
+| json.swift:76:23:76:56 | call to Data.init(contentsOf:options:) | json.swift:86:56:86:56 | remoteData |
+| json.swift:76:23:76:56 | call to Data.init(contentsOf:options:) | json.swift:87:56:87:56 | remoteData |
+| json.swift:76:23:76:56 | call to Data.init(contentsOf:options:) | json.swift:88:71:88:71 | remoteData |
+| plist.swift:89:23:89:56 | call to Data.init(contentsOf:options:) | plist.swift:98:55:98:55 | remoteData |
+| plist.swift:89:23:89:56 | call to Data.init(contentsOf:options:) | plist.swift:100:57:100:57 | remoteData |
+| plist.swift:89:23:89:56 | call to Data.init(contentsOf:options:) | plist.swift:101:55:101:55 | remoteData |
+| plist.swift:89:23:89:56 | call to Data.init(contentsOf:options:) | plist.swift:102:72:102:72 | remoteData |
+| plist.swift:89:23:89:56 | call to Data.init(contentsOf:options:) | plist.swift:103:72:103:72 | remoteData |
+| yams.swift:187:25:187:47 | call to String.init(contentsOf:) | yams.swift:196:45:196:45 | remoteString |
+| yams.swift:187:25:187:47 | call to String.init(contentsOf:) | yams.swift:198:53:198:53 | remoteString |
+| yams.swift:188:23:188:56 | call to Data.init(contentsOf:options:) | yams.swift:197:45:197:45 | remoteData |
+| yams.swift:188:23:188:56 | call to Data.init(contentsOf:options:) | yams.swift:199:53:199:53 | remoteData |
 nodes
+| json.swift:76:23:76:56 | call to Data.init(contentsOf:options:) | semmle.label | call to Data.init(contentsOf:options:) |
+| json.swift:84:54:84:54 | remoteData | semmle.label | remoteData |
+| json.swift:86:56:86:56 | remoteData | semmle.label | remoteData |
+| json.swift:87:56:87:56 | remoteData | semmle.label | remoteData |
+| json.swift:88:71:88:71 | remoteData | semmle.label | remoteData |
+| plist.swift:89:23:89:56 | call to Data.init(contentsOf:options:) | semmle.label | call to Data.init(contentsOf:options:) |
+| plist.swift:98:55:98:55 | remoteData | semmle.label | remoteData |
+| plist.swift:100:57:100:57 | remoteData | semmle.label | remoteData |
+| plist.swift:101:55:101:55 | remoteData | semmle.label | remoteData |
+| plist.swift:102:72:102:72 | remoteData | semmle.label | remoteData |
+| plist.swift:103:72:103:72 | remoteData | semmle.label | remoteData |
+| yams.swift:187:25:187:47 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| yams.swift:188:23:188:56 | call to Data.init(contentsOf:options:) | semmle.label | call to Data.init(contentsOf:options:) |
+| yams.swift:196:45:196:45 | remoteString | semmle.label | remoteString |
+| yams.swift:197:45:197:45 | remoteData | semmle.label | remoteData |
+| yams.swift:198:53:198:53 | remoteString | semmle.label | remoteString |
+| yams.swift:199:53:199:53 | remoteData | semmle.label | remoteData |
 subpaths
 #select
+| json.swift:84:54:84:54 | remoteData | json.swift:76:23:76:56 | call to Data.init(contentsOf:options:) | json.swift:84:54:84:54 | remoteData | Unsafe deserialization depends on a $@. | json.swift:76:23:76:56 | call to Data.init(contentsOf:options:) | user-provided value |
+| json.swift:86:56:86:56 | remoteData | json.swift:76:23:76:56 | call to Data.init(contentsOf:options:) | json.swift:86:56:86:56 | remoteData | Unsafe deserialization depends on a $@. | json.swift:76:23:76:56 | call to Data.init(contentsOf:options:) | user-provided value |
+| json.swift:87:56:87:56 | remoteData | json.swift:76:23:76:56 | call to Data.init(contentsOf:options:) | json.swift:87:56:87:56 | remoteData | Unsafe deserialization depends on a $@. | json.swift:76:23:76:56 | call to Data.init(contentsOf:options:) | user-provided value |
+| json.swift:88:71:88:71 | remoteData | json.swift:76:23:76:56 | call to Data.init(contentsOf:options:) | json.swift:88:71:88:71 | remoteData | Unsafe deserialization depends on a $@. | json.swift:76:23:76:56 | call to Data.init(contentsOf:options:) | user-provided value |
+| plist.swift:98:55:98:55 | remoteData | plist.swift:89:23:89:56 | call to Data.init(contentsOf:options:) | plist.swift:98:55:98:55 | remoteData | Unsafe deserialization depends on a $@. | plist.swift:89:23:89:56 | call to Data.init(contentsOf:options:) | user-provided value |
+| plist.swift:100:57:100:57 | remoteData | plist.swift:89:23:89:56 | call to Data.init(contentsOf:options:) | plist.swift:100:57:100:57 | remoteData | Unsafe deserialization depends on a $@. | plist.swift:89:23:89:56 | call to Data.init(contentsOf:options:) | user-provided value |
+| plist.swift:101:55:101:55 | remoteData | plist.swift:89:23:89:56 | call to Data.init(contentsOf:options:) | plist.swift:101:55:101:55 | remoteData | Unsafe deserialization depends on a $@. | plist.swift:89:23:89:56 | call to Data.init(contentsOf:options:) | user-provided value |
+| plist.swift:102:72:102:72 | remoteData | plist.swift:89:23:89:56 | call to Data.init(contentsOf:options:) | plist.swift:102:72:102:72 | remoteData | Unsafe deserialization depends on a $@. | plist.swift:89:23:89:56 | call to Data.init(contentsOf:options:) | user-provided value |
+| plist.swift:103:72:103:72 | remoteData | plist.swift:89:23:89:56 | call to Data.init(contentsOf:options:) | plist.swift:103:72:103:72 | remoteData | Unsafe deserialization depends on a $@. | plist.swift:89:23:89:56 | call to Data.init(contentsOf:options:) | user-provided value |
+| yams.swift:196:45:196:45 | remoteString | yams.swift:187:25:187:47 | call to String.init(contentsOf:) | yams.swift:196:45:196:45 | remoteString | Unsafe deserialization depends on a $@. | yams.swift:187:25:187:47 | call to String.init(contentsOf:) | user-provided value |
+| yams.swift:197:45:197:45 | remoteData | yams.swift:188:23:188:56 | call to Data.init(contentsOf:options:) | yams.swift:197:45:197:45 | remoteData | Unsafe deserialization depends on a $@. | yams.swift:188:23:188:56 | call to Data.init(contentsOf:options:) | user-provided value |
+| yams.swift:198:53:198:53 | remoteString | yams.swift:187:25:187:47 | call to String.init(contentsOf:) | yams.swift:198:53:198:53 | remoteString | Unsafe deserialization depends on a $@. | yams.swift:187:25:187:47 | call to String.init(contentsOf:) | user-provided value |
+| yams.swift:199:53:199:53 | remoteData | yams.swift:188:23:188:56 | call to Data.init(contentsOf:options:) | yams.swift:199:53:199:53 | remoteData | Unsafe deserialization depends on a $@. | yams.swift:188:23:188:56 | call to Data.init(contentsOf:options:) | user-provided value |

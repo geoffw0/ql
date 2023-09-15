@@ -193,10 +193,10 @@ func testYAMSdecode() throws {
 
 	let yamsDecoder = YAMLDecoder()
 
-	_ = try yamsDecoder.decode(Int.self, from: remoteString) // good (decoded to harmless type)
-	_ = try yamsDecoder.decode(Int.self, from: remoteData) // good (decoded to harmless type)
-	_ = try yamsDecoder.decode(MyDecodable.self, from: remoteString) // BAD [NOT DETECTED]
-	_ = try yamsDecoder.decode(MyDecodable.self, from: remoteData) // BAD [NOT DETECTED]
+	_ = try yamsDecoder.decode(Int.self, from: remoteString) // good (decoded to harmless type) [FALSE POSITIVE]
+	_ = try yamsDecoder.decode(Int.self, from: remoteData) // good (decoded to harmless type) [FALSE POSITIVE]
+	_ = try yamsDecoder.decode(MyDecodable.self, from: remoteString) // BAD
+	_ = try yamsDecoder.decode(MyDecodable.self, from: remoteData) // BAD
 	_ = try yamsDecoder.decode(MyDecodable.self, from: localString) // good (input is local data)
 	_ = try yamsDecoder.decode(MyDecodable.self, from: localData) // good (input is local data)
 

@@ -81,15 +81,15 @@ func testJSONdecode(inputStream: InputStream) throws {
 
 	let jsonDecoder = JSONDecoder()
 
-	_ = try! jsonDecoder.decode(MyDecodable.self, from: remoteData) // BAD [NOT DETECTED]
+	_ = try! jsonDecoder.decode(MyDecodable.self, from: remoteData) // BAD
 	_ = try! jsonDecoder.decode(MyDecodable.self, from: localData) // good (input is local data)
-	_ = try! JSONDecoder().decode(MyDecodable.self, from: remoteData) // BAD [NOT DETECTED]
-	_ = try! jsonDecoder.decode([MyDecodable].self, from: remoteData) // BAD [NOT DETECTED]
-	_ = try! jsonDecoder.decode(MyDecodableWithConfiguration.self, from: remoteData, configuration: "") // BAD [NOT DETECTED]
+	_ = try! JSONDecoder().decode(MyDecodable.self, from: remoteData) // BAD
+	_ = try! jsonDecoder.decode([MyDecodable].self, from: remoteData) // BAD
+	_ = try! jsonDecoder.decode(MyDecodableWithConfiguration.self, from: remoteData, configuration: "") // BAD
 
 	// JSONSerialization
 
-	let a = try? JSONSerialization.jsonObject(with: remoteData, options: []) as? [String: Any] // BAD
+	let a = try? JSONSerialization.jsonObject(with: remoteData, options: []) as? [String: Any] // BAD [NOT DETECTED]
 	if let _ = MyDictInitializable(dict: a!) {
 		// ...
 	}
@@ -99,7 +99,7 @@ func testJSONdecode(inputStream: InputStream) throws {
 		// ...
 	}
 
-	let cs = try? JSONSerialization.jsonObject(with: remoteData, options: []) as? [[String: Any]] // BAD
+	let cs = try? JSONSerialization.jsonObject(with: remoteData, options: []) as? [[String: Any]] // BAD [NOT DETECTED]
 	for c in cs! {
 		if let _ = MyDictInitializable(dict: c) {
 			// ...
