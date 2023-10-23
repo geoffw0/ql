@@ -323,6 +323,13 @@ class RegexEval extends CallExpr instanceof PotentialRegexEval {
   DataFlow::Node getAnOptionsInput() { result = this.(PotentialRegexEval).getAnOptionsInput() }
 
   /**
+   * Holds if this regular expression evaluation is a 'replacement' operation,
+   * such as replacing all matches of the regular expression in the input
+   * string with another string.
+   */
+  predicate isUsedAsReplace() { this.(PotentialRegexEval).isUsedAsReplace() }
+
+  /**
    * Gets a regular expression value that is evaluated here (if any can be identified).
    */
   RegExp getARegex() {
@@ -385,6 +392,13 @@ abstract class PotentialRegexEval extends CallExpr {
    * before deciding whether a regular expression is actually evaluated.
    */
   predicate doesEvaluate() { any() }
+
+  /**
+   * Holds if this regular expression evaluation is a 'replacement' operation,
+   * such as replacing all matches of the regular expression in the input
+   * string with another string.
+   */
+  abstract predicate isUsedAsReplace();
 }
 
 /**
@@ -442,6 +456,10 @@ private class AlwaysRegexEval extends PotentialRegexEval {
   override DataFlow::Node getRegexInput() { result = regexInput }
 
   override DataFlow::Node getStringInput() { result = stringInput }
+
+  override predicate isUsedAsReplace() {
+    this.getStaticTarget().getName().matches(["replac%", "stringByReplac%", "trim%"])
+  }
 }
 
 /**
@@ -484,4 +502,6 @@ private class NSStringCompareOptionsPotentialRegexEval extends PotentialRegexEva
     // if there isn't, the input won't be interpretted as a regular expression.
     RegexEnableFlagFlow::flow(_, optionsInput)
   }
+
+  override predicate isUsedAsReplace() { this.getStaticTarget().getName().matches(["replac%"]) }
 }
