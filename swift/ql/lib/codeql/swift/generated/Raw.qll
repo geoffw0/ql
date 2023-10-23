@@ -2368,7 +2368,12 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Pattern extends @pattern, AstNode { }
+  class Pattern extends @pattern, AstNode {
+    /**
+     * Gets the type of this pattern, if it exists.
+     */
+    Type getType() { pattern_types(this, result) }
+  }
 
   /**
    * INTERNAL: Do not use.
