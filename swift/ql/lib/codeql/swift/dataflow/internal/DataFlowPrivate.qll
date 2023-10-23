@@ -32,6 +32,8 @@ abstract class NodeImpl extends Node {
 
   /** Do not call: use `toString()` instead. */
   abstract string toStringImpl();
+
+  abstract DataFlowType getTypeImpl();
 }
 
 private class ExprNodeImpl extends ExprNode, NodeImpl {
@@ -40,6 +42,8 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
   override string toStringImpl() { result = expr.toString() }
 
   override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(n.getScope()) }
+
+  override DataFlowType getTypeImpl() { result = expr.getType().getCanonicalType() }
 }
 
 private class KeyPathComponentNodeImpl extends TKeyPathComponentNode, NodeImpl {
@@ -56,6 +60,8 @@ private class KeyPathComponentNodeImpl extends TKeyPathComponentNode, NodeImpl {
   }
 
   KeyPathComponent getComponent() { result = component }
+
+  override DataFlowType getTypeImpl() { result = component.getComponentType().getCanonicalType() }
 }
 
 private class KeyPathComponentPostUpdateNode extends TKeyPathComponentPostUpdateNode, NodeImpl,
@@ -78,6 +84,8 @@ private class KeyPathComponentPostUpdateNode extends TKeyPathComponentPostUpdate
   }
 
   KeyPathComponent getComponent() { result = component }
+
+  override DataFlowType getTypeImpl() { result = component.getComponentType().getCanonicalType() }
 }
 
 private class PatternNodeImpl extends PatternNode, NodeImpl {
@@ -86,6 +94,8 @@ private class PatternNodeImpl extends PatternNode, NodeImpl {
   override string toStringImpl() { result = pattern.toString() }
 
   override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(n.getScope()) }
+
+  override DataFlowType getTypeImpl() { result = pattern.getType().getCanonicalType() }
 }
 
 private class SsaDefinitionNodeImpl extends SsaDefinitionNode, NodeImpl {
@@ -95,6 +105,10 @@ private class SsaDefinitionNodeImpl extends SsaDefinitionNode, NodeImpl {
 
   override DataFlowCallable getEnclosingCallable() {
     result = TDataFlowFunc(def.getBasicBlock().getScope())
+  }
+
+  override DataFlowType getTypeImpl() {
+    result = this.asDefinition().getSourceVariable().asVarDecl().getType().getCanonicalType()
   }
 }
 
@@ -364,6 +378,16 @@ private class DictionarySubscriptNode extends NodeImpl, TDictionarySubscriptNode
   override Location getLocationImpl() { result = expr.getLocation() }
 
   SubscriptExpr getExpr() { result = expr }
+
+  override DataFlowType getTypeImpl() {
+    exists(BoundGenericType dictType, TupleType tupleType |
+      dictType = expr.getBase().getType().getCanonicalType() and
+      tupleType.getType(0) = dictType.getArgType(0) and
+      tupleType.getType(1) = dictType.getArgType(1) and
+      tupleType.getNumberOfTypes() = 2 and
+      result = tupleType
+    )
+  }
 }
 
 private module ParameterNodes {
@@ -394,6 +418,8 @@ private module ParameterNodes {
     override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
 
     override ParamDecl getParameter() { result = param }
+
+    override DataFlowType getTypeImpl() { result = param.getType() }
   }
 
   class SummaryParameterNode extends ParameterNodeImpl, FlowSummaryNode {
@@ -408,6 +434,10 @@ private module ParameterNodes {
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition p) {
       c.getUnderlyingCallable() = this.getSummarizedCallable() and
       p = this.getPosition()
+    }
+
+    override DataFlowType getTypeImpl() {
+      result = FlowSummaryImpl::Private::summaryNodeType(this.getSummaryNode()).getCanonicalType()
     }
   }
 
@@ -431,6 +461,10 @@ private module ParameterNodes {
     KeyPathComponent getAComponent() { result = this.getComponent(_) }
 
     KeyPathExpr getKeyPathExpr() { result = entry.getScope() }
+
+    override DataFlowType getTypeImpl() {
+      result = this.getKeyPathExpr().getType().(BoundGenericType).getArgType(0).getCanonicalType()
+    }
   }
 }
 
@@ -451,6 +485,10 @@ class FlowSummaryNode extends NodeImpl, TFlowSummaryNode {
   override Location getLocationImpl() { result = this.getSummarizedCallable().getLocation() }
 
   override string toStringImpl() { result = this.getSummaryNode().toString() }
+
+  override DataFlowType getTypeImpl() {
+    result = FlowSummaryImpl::Private::summaryNodeType(this.getSummaryNode()).getCanonicalType()
+  }
 }
 
 class KeyPathParameterPostUpdateNode extends NodeImpl, ReturnNode, PostUpdateNodeImpl,
@@ -477,6 +515,10 @@ class KeyPathParameterPostUpdateNode extends NodeImpl, ReturnNode, PostUpdateNod
   KeyPathExpr getKeyPathExpr() { result = entry.getScope() }
 
   override ReturnKind getKind() { result.(ParamReturnKind).getIndex() = -1 }
+
+  override DataFlowType getTypeImpl() {
+    result = this.getKeyPathExpr().getType().(BoundGenericType).getArgType(0).getCanonicalType()
+  }
 }
 
 class KeyPathReturnPostUpdateNode extends NodeImpl, ParameterNodeImpl, PostUpdateNodeImpl,
@@ -501,6 +543,10 @@ class KeyPathReturnPostUpdateNode extends NodeImpl, ParameterNodeImpl, PostUpdat
   override DataFlowCallable getEnclosingCallable() { result.asSourceCallable() = exit.getScope() }
 
   KeyPathExpr getKeyPathExpr() { result = exit.getScope() }
+
+  override DataFlowType getTypeImpl() {
+    result = this.getKeyPathExpr().getType().(BoundGenericType).getArgType(0).getCanonicalType()
+  }
 }
 
 /** A data-flow node that represents a call argument. */
@@ -663,6 +709,10 @@ private module ReturnNodes {
     override Location getLocationImpl() { result = exit.getLocation() }
 
     override string toStringImpl() { result = param.toString() + "[return]" }
+
+    override DataFlowType getTypeImpl() {
+      result = this.getParameter().getType().getCanonicalType()
+    }
   }
 
   private class SummaryReturnNode extends FlowSummaryNode, ReturnNode {
@@ -689,6 +739,10 @@ private module ReturnNodes {
     override string toStringImpl() { result = exit.toString() }
 
     KeyPathExpr getKeyPathExpr() { result = exit.getScope() }
+
+    override DataFlowType getTypeImpl() {
+      result = this.getKeyPathExpr().getType().(BoundGenericType).getArgType(1).getCanonicalType()
+    }
   }
 }
 
@@ -1051,15 +1105,7 @@ predicate localMustFlowStep(Node node1, Node node2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) {
-  result = n.asExpr().getType().getCanonicalType() or
-  result = n.asPattern().getMatchingExpr().getType().getCanonicalType() or
-  result = n.asPattern().(NamedPattern).getVarDecl().getType().getCanonicalType() or
-  result = n.asDefinition().getSourceVariable().asVarDecl().getType().getCanonicalType() or
-  result = n.(ParameterNode).getParameter().getType().getCanonicalType() or
-  result =
-    FlowSummaryImpl::Private::summaryNodeType(n.(FlowSummaryNode).getSummaryNode())
-        .getCanonicalType() or
-  result = getNodeType(n.(PostUpdateNode).getPreUpdateNode())
+  result = n.getType()
 }
 
 /** Gets a string representation of a `DataFlowType`. */
@@ -1129,6 +1175,10 @@ private module PostUpdateNodes {
     override string toStringImpl() { result = "[post] " + n.toString() }
 
     override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(n.getScope()) }
+
+    override DataFlowType getTypeImpl() {
+      result = this.getPreUpdateNode().asExpr().getType().getCanonicalType()
+    }
   }
 
   class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNodeImpl {

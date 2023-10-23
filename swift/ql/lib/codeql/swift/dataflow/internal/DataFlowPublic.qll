@@ -51,6 +51,11 @@ class Node extends TNode {
    * Gets this node's underlying SSA definition, if any.
    */
   Ssa::Definition asDefinition() { none() }
+
+  /**
+   * Gets the type of this node.
+   */
+  DataFlowType getType() { result = this.(NodeImpl).getTypeImpl() }
 }
 
 /**
@@ -195,7 +200,7 @@ module Content {
     int getIndex() { result = index }
 
     override string toString() { result = "Tuple element at index " + index.toString() }
-  
+
     override DataFlowType getType() { result instanceof AnyType }
   }
 
