@@ -220,11 +220,7 @@ module Make<
       not HostnameRegexp::isConstantInvalidInsideOrigin(term.getAChild*()) and
       tld = term.getAChild*() and
       HostnameRegexp::hasTopLevelDomainEnding(tld, i) and
-      isFinalRegExpTerm(tld.getChild(i)) and // nothing is matched after the TLD
-      (
-        tld.getChild(0).(RegExpCaret).getChar() = "^" or
-        tld.getLastChild().(RegExpDollar).getChar() = "$"
-      ) and
+      tld.getChild(0).(RegExpCaret).getChar() = "^" and
       msg =
         "This hostname pattern uses anchors such as '^' and '$', which match the start and end of a line, not the whole string. Use '\\A' and '\\z' instead."
     )

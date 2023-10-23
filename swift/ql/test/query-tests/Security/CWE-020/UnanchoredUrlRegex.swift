@@ -104,12 +104,12 @@ func tests(url: String, secure: Bool) throws {
 
 	let attackUrl1 =  "evil.com/blabla?\ngood.com"
 	let attackUrl1Range = NSMakeRange(0, attackUrl1.utf16.count)
-	_ = try NSRegularExpression(pattern: "^good\\.com$").matches(in: attackUrl1, range: attackUrl1Range) // OK
-	_ = try NSRegularExpression(pattern: "^good\\.com$", options: .anchorsMatchLines).matches(in: attackUrl1, range: attackUrl1Range) // BAD [NOT DETECTED]: with the .anchorsMatchLines option this matches the attack URL
+	_ = try NSRegularExpression(pattern: "^good\\.com$").matches(in: attackUrl1, range: attackUrl1Range) // OK [FALSE POSITIVE]
+	_ = try NSRegularExpression(pattern: "^good\\.com$", options: .anchorsMatchLines).matches(in: attackUrl1, range: attackUrl1Range) // BAD: with the .anchorsMatchLines option this matches the attack URL
 	_ = try NSRegularExpression(pattern: "(?i)^good\\.com$").matches(in: attackUrl1, range: attackUrl1Range) // OK
 	_ = try NSRegularExpression(pattern: "(?i)^good\\.com$", options: .anchorsMatchLines).matches(in: attackUrl1, range: attackUrl1Range) // BAD [NOT DETECTED]: with the .anchorsMatchLines option this matches the attack URL
-	_ = try NSRegularExpression(pattern: "^good\\.com$|^another\\.com$").matches(in: attackUrl1, range: attackUrl1Range) // OK
-	_ = try NSRegularExpression(pattern: "^good\\.com$|^another\\.com$", options: .anchorsMatchLines).matches(in: attackUrl1, range: attackUrl1Range) // BAD [NOT DETECTED]: with the .anchorsMatchLines option this matches the attack URL
+	_ = try NSRegularExpression(pattern: "^good\\.com$|^another\\.com$").matches(in: attackUrl1, range: attackUrl1Range) // OK [FALSE POSITIVE]
+	_ = try NSRegularExpression(pattern: "^good\\.com$|^another\\.com$", options: .anchorsMatchLines).matches(in: attackUrl1, range: attackUrl1Range) // BAD: with the .anchorsMatchLines option this matches the attack URL
 
 	let attackUrl2 =  "evil.com/blabla?\ngood.com/"
 	let attackUrl2Range = NSMakeRange(0, attackUrl2.utf16.count)
