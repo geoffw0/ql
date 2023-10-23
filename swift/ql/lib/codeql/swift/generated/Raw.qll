@@ -271,6 +271,13 @@ module Raw {
      * Gets the error of this unspecified element.
      */
     string getError() { unspecified_elements(this, _, result) }
+
+    /**
+     * Gets the `index`th child of this unspecified element (0-based).
+     *
+     * These will be present only in certain downgraded databases.
+     */
+    AstNode getChild(int index) { unspecified_element_children(this, index, result) }
   }
 
   /**
@@ -2361,7 +2368,12 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Pattern extends @pattern, AstNode { }
+  class Pattern extends @pattern, AstNode {
+    /**
+     * Gets the type of this pattern, if it exists.
+     */
+    Type getType() { pattern_types(this, result) }
+  }
 
   /**
    * INTERNAL: Do not use.

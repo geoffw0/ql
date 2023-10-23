@@ -2,7 +2,33 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.AstNode
+import codeql.swift.elements.type.Type
 
 module Generated {
-  class Pattern extends Synth::TPattern, AstNode { }
+  class Pattern extends Synth::TPattern, AstNode {
+    /**
+     * Gets the type of this pattern, if it exists.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Type getImmediateType() {
+      result = Synth::convertTypeFromRaw(Synth::convertPatternToRaw(this).(Raw::Pattern).getType())
+    }
+
+    /**
+     * Gets the type of this pattern, if it exists.
+     */
+    final Type getType() {
+      exists(Type immediate |
+        immediate = this.getImmediateType() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
+
+    /**
+     * Holds if `getType()` exists.
+     */
+    final predicate hasType() { exists(this.getType()) }
+  }
 }
