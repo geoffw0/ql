@@ -487,4 +487,9 @@ signature module RegexTreeViewSig {
    * Holds if `root` has the `s` flag for multi-line matching.
    */
   predicate isDotAll(RegExpTerm root);
+
+  /**
+   * Holds if `root` has the `m` flag for multi-line matching.
+   */
+  predicate isMultiLine(RegExpTerm root);
 }

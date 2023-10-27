@@ -103,6 +103,9 @@ private module Impl implements RegexTreeViewSig {
     /** Holds if this regex matching is case-insensitive for this regex. */
     predicate isIgnoreCase() { re.isIgnoreCase() }
 
+    /** Holds if this regex matching has `^` and `$` matching newlines. */
+    predicate isMultiLine() { re.isMultiLine() }
+
     /** Get a string representing all modes for this regex. */
     string getFlags() { result = re.getFlags() }
 
@@ -1217,10 +1220,18 @@ private module Impl implements RegexTreeViewSig {
   }
 
   /**
-   * Holds if `root` has the `s` flag for multi-line matching.
+   * Holds if `root` has the `s` flag for '.' matching all characters, including newlines.
    */
   predicate isDotAll(RegExpTerm root) {
     root.isRootTerm() and
     root.getLiteral().isDotAll()
+  }
+
+  /**
+   * Holds if `root` has the `m` flag for `^` and `$` matching newlines.
+   */
+  predicate isMultiLine(RegExpTerm root) {
+    root.isRootTerm() and
+    root.getLiteral().isMultiLine()
   }
 }

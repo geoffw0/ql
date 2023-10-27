@@ -51,17 +51,11 @@
 | UnanchoredUrlRegex.swift:84:3:84:3 | ^https?://good.com | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
 | UnanchoredUrlRegex.swift:95:39:95:39 | https?:\\/\\/good.com\\/([0-9]+) | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | UnanchoredUrlRegex.swift:101:39:101:39 | example\\.com\|whatever | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
-| UnanchoredUrlRegex.swift:107:39:107:39 | ^good\\.com$ | This hostname pattern uses anchors such as '^' and '$', which match the start and end of a line, not the whole string. Use '\\A' and '\\z' instead. |
 | UnanchoredUrlRegex.swift:108:39:108:39 | ^good\\.com$ | This hostname pattern uses anchors such as '^' and '$', which match the start and end of a line, not the whole string. Use '\\A' and '\\z' instead. |
-| UnanchoredUrlRegex.swift:111:39:111:39 | ^good\\.com$\|^another\\.com$ | This hostname pattern uses anchors such as '^' and '$', which match the start and end of a line, not the whole string. Use '\\A' and '\\z' instead. |
-| UnanchoredUrlRegex.swift:112:39:112:39 | ^good\\.com$\|^another\\.com$ | This hostname pattern uses anchors such as '^' and '$', which match the start and end of a line, not the whole string. Use '\\A' and '\\z' instead. |
 | test.swift:56:16:56:16 | ^http://example.com | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
 | test.swift:59:16:59:16 | ^http://test\\.example.com | This hostname pattern may match any domain name, as it is missing a '$' or '/' at the end. |
 | test.swift:69:16:69:16 | ^(.+\\.(?:example-a\|example-b)\\.com)/ | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
-| test.swift:70:16:70:16 | ^(https?:)?//((service\|www).)?example.com(?=$\|/) | This hostname pattern uses anchors such as '^' and '$', which match the start and end of a line, not the whole string. Use '\\A' and '\\z' instead. |
-| test.swift:75:16:75:16 | ^https://[a-z]*.example.com$ | This hostname pattern uses anchors such as '^' and '$', which match the start and end of a line, not the whole string. Use '\\A' and '\\z' instead. |
 | test.swift:76:16:76:16 | ^(example.dev\|example.com) | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | test.swift:77:16:77:16 | ^protos?://(localhost\|.+.example.net\|.+.example-a.com\|.+.example-b.com\|.+.example.internal) | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
 | test.swift:81:16:81:16 | ^(foo.example\\.com\|whatever)$ | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |
-| test.swift:83:16:83:16 | ^test.example.com$ | This hostname pattern uses anchors such as '^' and '$', which match the start and end of a line, not the whole string. Use '\\A' and '\\z' instead. |
 | test.swift:84:16:84:16 | test.example.com | When this is used as a regular expression on a URL, it may match anywhere, and arbitrary hosts may come before or after it. |

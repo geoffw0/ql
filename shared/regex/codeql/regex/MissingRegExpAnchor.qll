@@ -221,6 +221,7 @@ module Make<
       tld = term.getAChild*() and
       HostnameRegexp::hasTopLevelDomainEnding(tld, i) and
       tld.getChild(0).(RegExpCaret).getChar() = "^" and
+      isMultiLine(tld) and
       msg =
         "This hostname pattern uses anchors such as '^' and '$', which match the start and end of a line, not the whole string. Use '\\A' and '\\z' instead."
     )

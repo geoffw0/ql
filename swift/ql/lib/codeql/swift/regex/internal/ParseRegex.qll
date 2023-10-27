@@ -30,7 +30,7 @@ private predicate availableRegexModeCharacter(string char) {
  */
 abstract class RegExp extends Expr {
   /**
-   * Holds if this `RegExp` has the `s` flag for multi-line matching.
+   * Holds if this `RegExp` has the `s` flag for '.' matching all characters, including newlines.
    */
   predicate isDotAll() { this.getAMode() = "DOTALL" }
 
@@ -38,6 +38,11 @@ abstract class RegExp extends Expr {
    * Holds if this `RegExp` has the `i` flag for case-insensitive matching.
    */
   predicate isIgnoreCase() { this.getAMode() = "IGNORECASE" }
+
+  /**
+   * Holds if this `RegExp` has the `m` flag for `^` and `$` matching newlines.
+   */
+  predicate isMultiLine() { this.getAMode() = "MULTILINE" }
 
   /**
    * Gets a string representing the flags for this `RegExp`, or the empty string if it has no flags.
