@@ -187,7 +187,7 @@ module Content {
 
     override string toString() { result = f.toString() }
 
-    override DataFlowType getType() { result.asType() = f.getType().getCanonicalType() }
+    override DataFlowType getType() { result = getDataFlowType(f.getType()) }
   }
 
   /** An element of a tuple at a specific index. */
@@ -230,7 +230,7 @@ module Content {
 
     override string toString() { result = this.getSignature() }
 
-    override DataFlowType getType() { result.asType() = p.getType().getCanonicalType() }
+    override DataFlowType getType() { result = getDataFlowType(p.getType()) }
   }
 
   /**
