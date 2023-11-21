@@ -296,12 +296,9 @@ private module Cached {
     )
     or
     exists(KeyPathExpr keyPath |
-      nodeTo.(KeyPathComponentPostUpdateNode).getComponent() = keyPath.getComponent(keyPath.getNumberOfComponents()-1) and
-      nodeFrom.(KeyPathReturnPostUpdateNode).getKeyPathExpr() = keyPath
+      nodeFrom.(KeyPathReturnPostUpdateNode).getKeyPathExpr() = keyPath and
+      nodeTo.(KeyPathComponentPostUpdateNode).getComponent() = keyPath.getComponent(keyPath.getNumberOfComponents()-1)
     )
-    
-  //  nodeFrom.(KeyPathComponentPostUpdateNode).getComponent() =
-  //    nodeTo.(KeyPathParameterPostUpdateNode).getComponent(0)
     or
     // Flow to the result of a keypath assignment
     exists(KeyPathApplicationExpr apply, AssignExpr assign |
@@ -566,7 +563,7 @@ class KeyPathReturnPostUpdateNode extends NodeImpl, ParameterNodeImpl, PostUpdat
   KeyPathExpr getKeyPathExpr() { result = exit.getScope() }
 
   override DataFlowType getTypeImpl() {
-    result = getDataFlowType(this.getKeyPathExpr().getType().(BoundGenericType).getArgType(0))
+    result = getDataFlowType(this.getKeyPathExpr().getType().(BoundGenericType).getArgType(1))
   }
 }
 
