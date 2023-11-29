@@ -291,13 +291,15 @@ private module Cached {
     // Flow from the unique parameter of a key path expression to
     // the first component in the chain.
     exists(KeyPathExpr keyPath |
-      nodeFrom.(KeyPathComponentNodeImpl).getComponent() = keyPath.getComponent(keyPath.getNumberOfComponents() - 1) and
+      nodeFrom.(KeyPathComponentNodeImpl).getComponent() =
+        keyPath.getComponent(keyPath.getNumberOfComponents() - 1) and
       nodeTo.(KeyPathReturnNodeImpl).getKeyPathExpr() = keyPath
     )
     or
     exists(KeyPathExpr keyPath |
       nodeFrom.(KeyPathReturnPostUpdateNode).getKeyPathExpr() = keyPath and
-      nodeTo.(KeyPathComponentPostUpdateNode).getComponent() = keyPath.getComponent(keyPath.getNumberOfComponents()-1)
+      nodeTo.(KeyPathComponentPostUpdateNode).getComponent() =
+        keyPath.getComponent(keyPath.getNumberOfComponents() - 1)
     )
     or
     // Flow to the result of a keypath assignment
@@ -1024,9 +1026,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     // the first node is either the previous element in the chain
     node1.(KeyPathComponentNodeImpl).getComponent().getNextComponent() = component
     or
-    // or the start node, if this is the first component in the chain 
-    component =
-      node1.(KeyPathParameterNode).getComponent(0)
+    // or the start node, if this is the first component in the chain
+    component = node1.(KeyPathParameterNode).getComponent(0)
   |
     component = node2.(KeyPathComponentNodeImpl).getComponent() and
     (
@@ -1178,7 +1179,7 @@ string ppReprType(DataFlowType t) { none() }
  */
 pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
-    subType(t1) = subType(t2)
+  subType(t1) = subType(t2)
   or
   exists(BoundGenericType bound1, BoundGenericType bound2 |
     stripType(t1.asType()).(BoundGenericType) = bound1 and
