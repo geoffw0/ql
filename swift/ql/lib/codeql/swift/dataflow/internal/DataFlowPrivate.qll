@@ -1192,8 +1192,8 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   )
   or
   exists(TupleType tuple1, TupleType tuple2 |
-    stripType(t1.asType()) = pragma[only_bind_out](tuple1) and
-    stripType(t2.asType()) = pragma[only_bind_into](tuple2) and
+    stripType(t1.asType()) = tuple1 and
+    stripType(t2.asType()) = tuple2 and
     compatibleTuples(tuple1, tuple2)
   )
   or
@@ -1237,7 +1237,7 @@ predicate isAnyOrUnboundType(Type t) {
   )
 }
 
-pragma[noinline]
+pragma[inline]
 predicate compatibleTuples(TupleType tuple1, TupleType tuple2) {
   tuple1.getNumberOfTypes() = tuple2.getNumberOfTypes() and
   tuple1.getType(0) = tuple2.getType(0) and
@@ -1266,14 +1266,7 @@ Type stripType(Type t) {
     result = stripType(iot.getObjectType().getCanonicalType())
   )
   or
-  exists(TupleType labeled, TupleType unlabeled |
-    labeled = t and
-    forall(int index | index in [0 .. labeled.getNumberOfTypes() - 1] |
-      labeled.getType(index) = unlabeled.getType(index) and
-      not exists(unlabeled.getName(index))
-    ) and
-    result = unlabeled
-  )
+  result = t.(TupleType).asUnlabeled()
   or
   not exists(BoundGenericEnumType optional |
     optional = t and
