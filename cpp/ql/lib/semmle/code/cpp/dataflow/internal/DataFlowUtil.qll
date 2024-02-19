@@ -736,6 +736,7 @@ private module FieldFlow {
    * and return statements. Sources and sinks are the values that go into and
    * out of fields, respectively.
    */
+  // TODO: module FieldConfiguration implements DataFlow::ConfigSig {
   private class FieldConfiguration extends Configuration {
     FieldConfiguration() { this = "FieldConfiguration" }
 

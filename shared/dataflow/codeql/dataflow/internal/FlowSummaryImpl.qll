@@ -304,7 +304,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
       SyntheticGlobal() { any() }
     }
 
-    private newtype TSummaryComponent =
+    /*private*/ newtype TSummaryComponent =
       TContentSummaryComponent(ContentSet c) or
       TParameterSummaryComponent(ArgumentPosition pos) or
       TArgumentSummaryComponent(ParameterPosition pos) or
@@ -730,7 +730,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
       outputState(c, s) and s = SummaryComponentStack::argument(_)
     }
 
-    private newtype TSummaryNodeState =
+    /*private*/ newtype TSummaryNodeState =
       TSummaryNodeInputState(SummaryComponentStack s) { inputState(_, s) } or
       TSummaryNodeOutputState(SummaryComponentStack s) { outputState(_, s) }
 
@@ -753,7 +753,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
      *   this state represents that the components in `s` _remain to be written_ to
      *   the output.
      */
-    private class SummaryNodeState extends TSummaryNodeState {
+    /*private*/ class SummaryNodeState extends TSummaryNodeState {
       /** Holds if this state is a valid input state for `c`. */
       pragma[nomagic]
       predicate isInputState(SummarizedCallable c, SummaryComponentStack s) {
@@ -782,7 +782,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
       }
     }
 
-    private newtype TSummaryNode =
+    /*private*/ newtype TSummaryNode =
       TSummaryInternalNode(SummarizedCallable c, SummaryNodeState state) {
         summaryNodeRange(c, state)
       } or
@@ -823,7 +823,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
      * `pos` in `c`. In this case we are not synthesizing a data-flow node,
      * but instead assume that a relevant parameter node already exists.
      */
-    private predicate parameterReadState(
+    /*private*/ predicate parameterReadState(
       SummarizedCallable c, SummaryNodeState state, ParameterPosition pos
     ) {
       state.isInputState(c, SummaryComponentStack::argument(pos))
@@ -841,7 +841,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
     }
 
     pragma[noinline]
-    private SummaryNode summaryNodeInputState(SummarizedCallable c, SummaryComponentStack s) {
+    /*private*/ SummaryNode summaryNodeInputState(SummarizedCallable c, SummaryComponentStack s) {
       exists(SummaryNodeState state | state.isInputState(c, s) |
         result = TSummaryInternalNode(c, state)
         or
@@ -853,7 +853,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
     }
 
     pragma[noinline]
-    private SummaryNode summaryNodeOutputState(SummarizedCallable c, SummaryComponentStack s) {
+    /*private*/ SummaryNode summaryNodeOutputState(SummarizedCallable c, SummaryComponentStack s) {
       exists(SummaryNodeState state |
         state.isOutputState(c, s) and
         result = TSummaryInternalNode(c, state)
@@ -886,7 +886,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
       receiver = summaryNodeInputState(c, s.tail())
     }
 
-    private predicate callbackInput(
+    /*private*/ predicate callbackInput(
       SummarizedCallable c, SummaryComponentStack s, SummaryNode receiver, ArgumentPosition pos
     ) {
       any(SummaryNodeState state).isOutputState(c, s) and
