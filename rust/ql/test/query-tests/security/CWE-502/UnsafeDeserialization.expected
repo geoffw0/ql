@@ -1,0 +1,13 @@
+#select
+edges
+nodes
+subpaths
+testFailures
+| main.rs:15:70:15:88 | //... | Missing result: Source=remote1 |
+| main.rs:19:71:19:89 | //... | Missing result: Source=remote2 |
+| main.rs:33:78:33:124 | //... | Missing result: Alert[rust/unsafe-deserialization]=remote1 |
+| main.rs:36:77:36:123 | //... | Missing result: Alert[rust/unsafe-deserialization]=remote2 |
+| main.rs:40:74:40:92 | //... | Missing result: Source=remote3 |
+| main.rs:46:73:46:119 | //... | Missing result: Alert[rust/unsafe-deserialization]=remote3 |
+| main.rs:50:71:50:89 | //... | Missing result: Source=remote4 |
+| main.rs:58:78:58:124 | //... | Missing result: Alert[rust/unsafe-deserialization]=remote4 |
